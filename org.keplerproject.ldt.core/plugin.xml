@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension
+         id="luaProjectBuilder"
+         name="Lua Project Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="org.keplerproject.ldt.core.project.LuaProjectBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="luaProjectNature"
+         name="Lua Project Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.keplerproject.ldt.core.project.LuaProjectNature">
+         </run>
+      </runtime>
+      <builder
+            id="org.keplerproject.ldt.core.luaProjectBuilder">
+      </builder>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IProject"
+            nameFilter="*"
+            id="org.keplerproject.ldt.core.contribution1">
+         <action
+               class="org.keplerproject.ldt.core.project.ToggleNatureAction"
+               enablesFor="+"
+               icon="icons/project.gif"
+               id="org.keplerproject.ldt.core.addRemoveNatureAction"
+               label="Add/Remove Lua Nature"
+               menubarPath="additions">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         id="xmlProblem"
+         name="XML Problem"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+
+</plugin>

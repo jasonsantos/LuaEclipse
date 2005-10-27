@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LDT UI Plug-in
+Bundle-SymbolicName: org.keplerproject.ldt.ui; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.keplerproject.ldt.ui.LDTUIPlugin
+Bundle-Vendor: Kepler Project
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.workbench.texteditor
+Eclipse-AutoStart: true
