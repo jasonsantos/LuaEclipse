@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.eclipse.jface.text.rules.IPredicateRule;
-import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
 
 /**

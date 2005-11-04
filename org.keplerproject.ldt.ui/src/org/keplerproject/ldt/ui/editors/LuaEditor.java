@@ -10,11 +10,11 @@ import org.keplerproject.ldt.ui.LDTUIPlugin;
 
 public class LuaEditor extends TextEditor {
 
-	private ColorManager colorManager;
+	private LuaColorManager colorManager;
 
 	public LuaEditor() {
 		super();
-		colorManager = new ColorManager();
+		colorManager = new LuaColorManager();
 		setSourceViewerConfiguration(new LuaSourceViewerConfiguration(colorManager));
 		setDocumentProvider(new LuaDocumentProvider());
 		setRangeIndicator(new DefaultRangeIndicator());

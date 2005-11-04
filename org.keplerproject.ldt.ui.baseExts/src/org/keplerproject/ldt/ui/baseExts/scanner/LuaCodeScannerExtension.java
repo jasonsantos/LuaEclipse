@@ -1,6 +1,7 @@
 package org.keplerproject.ldt.ui.baseExts.scanner;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.text.TextAttribute;
@@ -14,6 +15,8 @@ import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.jface.text.rules.WordRule;
 import org.keplerproject.ldt.ui.editors.LuaColorManager;
 import org.keplerproject.ldt.ui.editors.ext.IScannerRuleExtension;
+import org.keplerproject.ldt.ui.text.rules.LuaWhitespaceRule;
+import org.keplerproject.ldt.ui.text.rules.LuaWordRule;
 import org.keplerproject.ldt.ui.text.rules.NestedPatternRule;
 
 /**
@@ -27,7 +30,8 @@ public class LuaCodeScannerExtension implements IScannerRuleExtension {
 
 	private IPredicateRule[] fRules;
 
-	public LuaCodeScannerExtension(LuaColorManager manager) {
+	public LuaCodeScannerExtension() {
+		LuaColorManager manager = new LuaColorManager();
 		IToken keyword = new Token(new TextAttribute(manager
 				.getColor(ILuaColorConstants.KEYWORD), null, 1));
 		IToken function = new Token(new TextAttribute(manager
@@ -49,14 +53,17 @@ public class LuaCodeScannerExtension implements IScannerRuleExtension {
 		rules.add(new SingleLineRule("'", "'", string, '\\'));
 		rules.add(new MultiLineRule("[[", "]]", string));
 		rules.add(new NestedPatternRule("--[[","[[","]]",multi_comment));
-		rules.add(new WhitespaceRule(new LuaWhitespaceDetector()));
-		WordRule wordRule = new WordRule(new LuaWordDetector(), other);
+		rules.add(new LuaWhitespaceRule(new LuaWhitespaceDetector()));
+		LuaWordRule wordRule = new LuaWordRule(new LuaWordDetector(), other);
 		for (int i = 0; i < ILuaSyntax.reservedwords.length; i++)
 			wordRule.addWord(ILuaSyntax.reservedwords[i], keyword);
 
 		rules.add(wordRule);
 		fRules = new IPredicateRule[rules.size()];
-		rules.toArray(fRules);
+		Iterator it = rules.iterator();
+		int i = 0;
+		while(it.hasNext())
+			fRules[i++] = (IPredicateRule)it.next();
 
 	}
 

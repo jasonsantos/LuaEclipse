@@ -23,6 +23,8 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 
 	private static final Object TAG_RULE = "rule";
 
+	private static final String CODE_SCANNER_POINT = "org.keplerproject.ldt.ui.reconcilierScannerRules";
+
 	// The shared instance.
 	private static LDTUIPlugin plugin;
 
@@ -80,6 +82,36 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 		List extensionsList = new ArrayList();
 		IExtensionPoint p = Platform.getExtensionRegistry().getExtensionPoint(
 				PARTITION_SCANNER_POINT);
+		IExtension[] extensions = p.getExtensions();
+		for (int x = 0; x < extensions.length; x++) {
+			IConfigurationElement[] elements = extensions[x]
+					.getConfigurationElements();
+			for (int i = 0; i < elements.length; i++) {
+				IConfigurationElement next = elements[i];
+				if (TAG_RULE.equals(next.getName())) 
+				{
+					try {
+						IScannerRuleExtension ext = (IScannerRuleExtension) next
+								.createExecutableExtension("contributor");
+						extensionsList.add(ext);
+					} catch (CoreException e) {
+						// TODO LOG THIS AND HANDLE EXCEPTION
+						System.out.println("Problems opening Extension Rule Partitioner Scanner point ");
+						e.printStackTrace();
+					}
+				} else
+					continue;
+			}
+		}
+		IScannerRuleExtension [] result = new IScannerRuleExtension[extensionsList.size()];
+		extensionsList.toArray(result);
+		return result;
+	}
+
+	public IScannerRuleExtension[] getReconcilierRuleExtension() {
+		List extensionsList = new ArrayList();
+		IExtensionPoint p = Platform.getExtensionRegistry().getExtensionPoint(
+				CODE_SCANNER_POINT);
 		IExtension[] extensions = p.getExtensions();
 		for (int x = 0; x < extensions.length; x++) {
 			IConfigurationElement[] elements = extensions[x]

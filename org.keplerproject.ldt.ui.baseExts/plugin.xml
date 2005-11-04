@@ -25,5 +25,11 @@
          point="org.keplerproject.ldt.ui.partitionerScannerRules">
          <rule contributor="org.keplerproject.ldt.ui.baseExts.scanner.PartitionerScannerExtension"/>
    </extension>
+   <extension
+         id="org.keplerproject.ldt.ui.baseExts.reconcilierScaner"
+         name="Lua Base Reconcilier Scanner"
+         point="org.keplerproject.ldt.ui.reconcilierScannerRules">
+         <rule contributor="org.keplerproject.ldt.ui.baseExts.scanner.LuaCodeScannerExtension"/>
+   </extension>
 
 </plugin>
