@@ -20,10 +20,10 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	}
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		return new String[] {
-			IDocument.DEFAULT_CONTENT_TYPE,
-			ILuaPartitions.LUA_MULTI_LINE_COMMENT,
-			ILuaPartitions.LUA_SINGLE_LINE_COMMENT,
-			ILuaPartitions.LUA_STRING};
+			IDocument.DEFAULT_CONTENT_TYPE};//,
+			//ILuaPartitions.LUA_MULTI_LINE_COMMENT,
+			//ILuaPartitions.LUA_SINGLE_LINE_COMMENT,
+			//ILuaPartitions.LUA_STRING};
 	}
 	public ITextDoubleClickStrategy getDoubleClickStrategy(
 		ISourceViewer sourceViewer,
@@ -69,8 +69,8 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 
 		DefaultDamagerRepairer dr =
 			new DefaultDamagerRepairer(getXMLTagScanner());
-		reconciler.setDamager(dr, LuaPartitionScanner.XML_TAG);
-		reconciler.setRepairer(dr, LuaPartitionScanner.XML_TAG);
+		reconciler.setDamager(dr, LuaBaseScanner.XML_TAG);
+		reconciler.setRepairer(dr, LuaBaseScanner.XML_TAG);
 
 		dr = new DefaultDamagerRepairer(getXMLScanner());
 		reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
@@ -80,8 +80,8 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 			new NonRuleBasedDamagerRepairer(
 				new TextAttribute(
 					colorManager.getColor(ILuaColorConstants.XML_COMMENT)));
-		reconciler.setDamager(ndr, LuaPartitionScanner.XML_COMMENT);
-		reconciler.setRepairer(ndr, LuaPartitionScanner.XML_COMMENT);
+		reconciler.setDamager(ndr, LuaBaseScanner.XML_COMMENT);
+		reconciler.setRepairer(ndr, LuaBaseScanner.XML_COMMENT);
 
 		return reconciler;
 	}*/
