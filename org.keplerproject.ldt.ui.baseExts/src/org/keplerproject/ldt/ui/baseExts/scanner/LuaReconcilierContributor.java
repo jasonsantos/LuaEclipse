@@ -4,11 +4,9 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
-import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.ITokenScanner;
-import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -19,7 +17,6 @@ import org.keplerproject.ldt.ui.editors.NonRuleBasedDamagerRepairer;
 import org.keplerproject.ldt.ui.editors.ext.ILuaReconcilierExtension;
 import org.keplerproject.ldt.ui.text.rules.LuaWhitespaceRule;
 import org.keplerproject.ldt.ui.text.rules.LuaWordRule;
-import org.keplerproject.ldt.ui.text.rules.NestedPatternRule;
 
 public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 		ILuaSyntax {
@@ -59,9 +56,12 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 	private ITokenScanner getCodeScanner() {
 		LuaBaseScanner scanner = new LuaBaseScanner();
 
-		IToken keyword = new Token(new org.eclipse.jface.text.TextAttribute(
+		IToken keyword = new Token(new TextAttribute(
 				this.fColorManager.getColor(ILuaColorConstants.LUA_KEYWORD),
 				null, SWT.BOLD));
+		IToken constant = new Token(new TextAttribute(
+				this.fColorManager.getColor(ILuaColorConstants.LUA_CONSTANTS),
+				null, SWT.ITALIC));
 		IToken string = new Token(new TextAttribute(fColorManager
 				.getColor(ILuaColorConstants.LUA_STRING)));
 		// IToken function = new Token(new
@@ -77,7 +77,9 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 		LuaWordRule wordRule = new LuaWordRule(new LuaWordDetector(), other);
 		for (int i = 0; i < reservedwords.length; i++)
 			wordRule.addWord(reservedwords[i], keyword);
-
+		LuaWordRule constantRule = new LuaWordRule(new LuaWordDetector(), other);
+		for (int i = 0; i < constants.length; i++)
+			wordRule.addWord(constants[i], constant);
 		/*
 		 * //TODO Add word rule for functions. WordRule funcRule = new
 		 * WordRule(new LuaFunctionDetector(), other); for (int i = 0; i <
@@ -86,7 +88,7 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 		 * rules.add(funcRule);
 		 */
 
-		scanner.setPredicateRules(new IPredicateRule[] { wordRule, whiteRule,
+		scanner.setPredicateRules(new IPredicateRule[] { wordRule, constantRule, whiteRule,
 				new SingleLineRule("\"", "\"", string, '\\'),
 				new SingleLineRule("'", "'", string, '\\'),
 				new LuaWhitespaceRule(new LuaWhitespaceDetector()) });

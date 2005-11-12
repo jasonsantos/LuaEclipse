@@ -18,6 +18,7 @@ public interface ILuaSyntax {
         "or", "not"
     };
     public static final String[] constants = { "false", "true", "nil" };
+    
     public static final String[] functions = {
         "assert", "collectgarbage", "dofile", "error", "getfenv", "getmetatable",
         "gcinfo", "ipairs", "loadfile", "loadstring", "next", "pairs", "pcall",

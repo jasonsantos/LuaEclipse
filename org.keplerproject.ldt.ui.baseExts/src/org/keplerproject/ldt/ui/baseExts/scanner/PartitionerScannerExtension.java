@@ -62,9 +62,4 @@ public class PartitionerScannerExtension implements IScannerRuleExtension {
 		return this.fTokens;
 	}
 
-	public void contribute(LuaBaseScanner scanner, IDocument document) {
-		
-		scanner.setPredicateRules(fRules);
-		
-	}
 }

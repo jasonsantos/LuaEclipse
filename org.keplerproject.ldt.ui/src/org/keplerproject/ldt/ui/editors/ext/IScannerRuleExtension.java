@@ -44,6 +44,4 @@ public interface IScannerRuleExtension {
     */
    IToken[] getTokens();
    
-   void contribute(LuaBaseScanner scanner,IDocument document);
-   
-   }
+  }

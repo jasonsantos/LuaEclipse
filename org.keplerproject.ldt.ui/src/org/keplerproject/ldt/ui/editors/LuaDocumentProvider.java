@@ -30,10 +30,9 @@ public class LuaDocumentProvider extends FileDocumentProvider {
 				
 			for(int i = 0 ; i < ruleExt.length; i++)
 			{
-				ruleExt[i].contribute(lscanner,document);
 				//TODO Exception handler
-				//IPredicateRule[] rules = ruleExt[i].getRules();
-				//lscanner.addRules(rules);
+				IPredicateRule[] rules = ruleExt[i].getRules();
+				lscanner.addRules(rules);
 				IToken[] tokens = ruleExt[i].getTokens();
 				if(tokens == null) throw new CoreException(STATUS_ERROR);
 				for(int j = 0 ; j < tokens.length ; j++)
