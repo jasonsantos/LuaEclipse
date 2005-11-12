@@ -46,7 +46,6 @@ public class NestedPatternRule extends MultiLineRule {
 	
 	protected IToken doEvaluate(ICharacterScanner scanner, boolean resume) {
 		if (resume) {
-			
 			if (endSequenceDetected(scanner)) {
 				return fToken;
 			}
@@ -72,6 +71,7 @@ public class NestedPatternRule extends MultiLineRule {
 	protected boolean endSequenceDetected(ICharacterScanner scanner) {
 		int c;
 		char[][] delimiters= scanner.getLegalLineDelimiters();
+		
 		while ((c= scanner.read()) != ICharacterScanner.EOF) {
 			if (c == fEscapeCharacter) {
 				// Skip the escaped character.

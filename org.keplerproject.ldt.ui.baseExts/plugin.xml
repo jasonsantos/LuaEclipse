@@ -11,7 +11,7 @@
       <library name="baseExts.jar">
          <export name="*"/>
       </library>
-   </runtime>
+   </runtime> 
 
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
@@ -20,16 +20,18 @@
       <import plugin="org.eclipse.jface.text"/>
    </requires>
    <extension
-         id="org.keplerproject.ldt.ui.baseExts.partitionerScaner"
+         id="org.keplerproject.ldt.ui.baseExts.ScannerRulesExtension"
          name="Lua Base PartitionerScanner"
-         point="org.keplerproject.ldt.ui.partitionerScannerRules">
-         <rule contributor="org.keplerproject.ldt.ui.baseExts.scanner.PartitionerScannerExtension"/>
+         point="org.keplerproject.ldt.ui.ScannerRulesExtension"> 
+         <partitioner contributor="org.keplerproject.ldt.ui.baseExts.scanner.PartitionerScannerExtension"/>
    </extension>
    <extension
-         id="org.keplerproject.ldt.ui.baseExts.reconcilierScaner"
-         name="Lua Base Reconcilier Scanner"
-         point="org.keplerproject.ldt.ui.reconcilierScannerRules">
-         <rule contributor="org.keplerproject.ldt.ui.baseExts.scanner.LuaCodeScannerExtension"/>
+         id="org.keplerproject.ldt.ui.baseExts.SourceConfigExt"
+         name="Lua SourceConfigurations Extension"
+         point="org.keplerproject.ldt.ui.SourceConfigurationExtension">
+         <content contributor="org.keplerproject.ldt.ui.baseExts.scanner.LuaContentTypeContributor"/>
+         <reconcilier contributor="org.keplerproject.ldt.ui.baseExts.scanner.LuaReconcilierContributor"/>
+         <!--<assist contributor=""/>-->
    </extension>
 
 </plugin>

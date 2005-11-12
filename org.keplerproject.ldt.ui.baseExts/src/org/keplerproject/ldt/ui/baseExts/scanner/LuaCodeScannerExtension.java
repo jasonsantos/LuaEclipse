@@ -1,23 +1,8 @@
 package org.keplerproject.ldt.ui.baseExts.scanner;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.eclipse.jface.text.TextAttribute;
-import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.IToken;
-import org.eclipse.jface.text.rules.MultiLineRule;
-import org.eclipse.jface.text.rules.SingleLineRule;
-import org.eclipse.jface.text.rules.Token;
-import org.eclipse.jface.text.rules.WhitespaceRule;
-import org.eclipse.jface.text.rules.WordRule;
-import org.keplerproject.ldt.ui.editors.LuaColorManager;
 import org.keplerproject.ldt.ui.editors.ext.IScannerRuleExtension;
-import org.keplerproject.ldt.ui.text.rules.LuaWhitespaceRule;
-import org.keplerproject.ldt.ui.text.rules.LuaWordRule;
-import org.keplerproject.ldt.ui.text.rules.NestedPatternRule;
 
 /**
  * Basic Syntax HighLight Extension Scanner to lua code.
@@ -31,7 +16,7 @@ public class LuaCodeScannerExtension implements IScannerRuleExtension {
 	private IPredicateRule[] fRules;
 
 	public LuaCodeScannerExtension() {
-		LuaColorManager manager = new LuaColorManager();
+	/*	LuaColorManager manager = new LuaColorManager();
 		IToken keyword = new Token(new TextAttribute(manager
 				.getColor(ILuaColorConstants.KEYWORD), null, 1));
 		IToken function = new Token(new TextAttribute(manager
@@ -63,7 +48,7 @@ public class LuaCodeScannerExtension implements IScannerRuleExtension {
 		Iterator it = rules.iterator();
 		int i = 0;
 		while(it.hasNext())
-			fRules[i++] = (IPredicateRule)it.next();
+			fRules[i++] = (IPredicateRule)it.next();*/
 
 	}
 

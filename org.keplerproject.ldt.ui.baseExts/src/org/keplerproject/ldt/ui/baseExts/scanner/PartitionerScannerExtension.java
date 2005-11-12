@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
-import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.SingleLineRule;
@@ -33,7 +32,7 @@ public class PartitionerScannerExtension implements IScannerRuleExtension {
 	 *
 	 */
 	public PartitionerScannerExtension() {
-		this.fTokens = new IToken[] { new Token(ILuaPartitions.LUA_SKIP),
+		this.fTokens = new IToken[] { new Token(ILuaPartitions.LUA_CODE),
 				new Token(ILuaPartitions.LUA_STRING),
 				new Token(ILuaPartitions.LUA_MULTI_LINE_COMMENT),
 				new Token(ILuaPartitions.LUA_SINGLE_LINE_COMMENT) };
