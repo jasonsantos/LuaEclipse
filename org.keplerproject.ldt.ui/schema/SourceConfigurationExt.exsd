@@ -41,9 +41,33 @@
       </complexType>
    </element>
 
-   <element name="partitioner">
+   <element name="contentTypes">
       <complexType>
-         <attribute name="contributor" type="string" use="required">
+         <attribute name="contributor" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="reconcilier">
+      <complexType>
+         <attribute name="contributor" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="assist">
+      <complexType>
+         <attribute name="contributor" type="string">
             <annotation>
                <documentation>
                   

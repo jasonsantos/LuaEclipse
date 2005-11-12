@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.internal.registry.ExtensionPoint;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -11,6 +12,9 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.keplerproject.ldt.ui.editors.ext.ILuaContentAssistExtension;
+import org.keplerproject.ldt.ui.editors.ext.ILuaContentTypeExtension;
+import org.keplerproject.ldt.ui.editors.ext.ILuaReconcilierExtension;
 import org.keplerproject.ldt.ui.editors.ext.IScannerRuleExtension;
 import org.osgi.framework.BundleContext;
 
@@ -19,16 +23,25 @@ import org.osgi.framework.BundleContext;
  */
 public class LDTUIPlugin extends AbstractUIPlugin {
 
-	private static final String PARTITION_SCANNER_POINT = "org.keplerproject.ldt.ui.partitionerScannerRules";
+	private static final String PARTITION_SCANNER_POINT = "org.keplerproject.ldt.ui.ScannerRulesExtension";
+	private static final String SOURCE_CONFIG_POINT     = "org.keplerproject.ldt.ui.SourceConfigurationExtension";
+	
+	private static final String PARTITIONER_TAG = "partitioner";
+	private static final String RECONCILIER_TAG = "reconcilier";
+	private static final String ASSIST_TAG      = "assit";
+	private static final String CONTENT_TAG     = "content";
+	
 
-	private static final Object TAG_RULE = "rule";
-
-	private static final String CODE_SCANNER_POINT = "org.keplerproject.ldt.ui.reconcilierScannerRules";
+	private List scannerExtensions     = null;
+	private List reconcilierExtensions = null;
+	private List assistExtensions      = null;
+	private List contentExtensions     = null;
 
 	// The shared instance.
 	private static LDTUIPlugin plugin;
 
 	private ResourceBundle resourceBundle;
+
 
 	/**
 	 * The constructor.
@@ -78,8 +91,81 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 		return resourceBundle;
 	}
 
-	public IScannerRuleExtension[] getPartitionRuleExtension() {
-		List extensionsList = new ArrayList();
+	/**
+	 * This method recomputes all extensions of the ui plugin and prepare the
+	 * plugins to be used.
+	 * 
+	 * @return
+	 */
+	public boolean initializeSourceViewerExtension() {
+		this.assistExtensions      = new ArrayList();
+		this.reconcilierExtensions = new ArrayList();
+		this.contentExtensions     = new ArrayList();
+		IExtensionPoint p = Platform.getExtensionRegistry().getExtensionPoint(
+				SOURCE_CONFIG_POINT);
+		IExtension[] extensions = p.getExtensions();
+		for (int x = 0; x < extensions.length; x++) {
+			IConfigurationElement[] elements = extensions[x]
+					.getConfigurationElements();
+			for (int i = 0; i < elements.length; i++) {
+				IConfigurationElement next = elements[i];
+				if (RECONCILIER_TAG.equals(next.getName())) {
+					try {
+						ILuaReconcilierExtension ext = (ILuaReconcilierExtension) next
+								.createExecutableExtension("contributor");
+						reconcilierExtensions.add(ext);
+					} catch (CoreException e) {
+						// TODO LOG THIS AND HANDLE EXCEPTION
+						System.out
+								.println("Problems opening Extension Reconcilier point ");
+						e.printStackTrace();
+						continue;
+					}
+				} else if(ASSIST_TAG.equals(next.getName()))
+				{
+					try {
+						ILuaContentAssistExtension ext = (ILuaContentAssistExtension) next
+								.createExecutableExtension("contributor");
+						assistExtensions.add(ext);
+					} catch (CoreException e) {
+						// TODO LOG THIS AND HANDLE EXCEPTION
+						System.out
+								.println("Problems opening Extension Content Assist point ");
+						e.printStackTrace();
+						continue;
+					}
+				}
+				else if(CONTENT_TAG.equals(next.getName()))
+				{
+					try {
+						ILuaContentTypeExtension ext = (ILuaContentTypeExtension) next
+								.createExecutableExtension("contributor");
+						contentExtensions.add(ext);
+					} catch (CoreException e) {
+						// TODO LOG THIS AND HANDLE EXCEPTION
+						System.out
+								.println("Problems opening Extension ContentType point ");
+						e.printStackTrace();
+						continue;
+					}
+					
+				}else
+					continue;
+			}
+		}
+		return true;
+	}
+
+	
+	
+	/**
+	 * This method recomputes all extensions of the ui plugin and prepare the
+	 * plugins to be used.
+	 * 
+	 * @return
+	 */
+	public boolean initializeScannerExtension() {
+		scannerExtensions = new ArrayList();
 		IExtensionPoint p = Platform.getExtensionRegistry().getExtensionPoint(
 				PARTITION_SCANNER_POINT);
 		IExtension[] extensions = p.getExtensions();
@@ -88,53 +174,62 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 					.getConfigurationElements();
 			for (int i = 0; i < elements.length; i++) {
 				IConfigurationElement next = elements[i];
-				if (TAG_RULE.equals(next.getName())) 
-				{
+				if (PARTITIONER_TAG.equals(next.getName())) {
 					try {
 						IScannerRuleExtension ext = (IScannerRuleExtension) next
 								.createExecutableExtension("contributor");
-						extensionsList.add(ext);
+						scannerExtensions.add(ext);
 					} catch (CoreException e) {
 						// TODO LOG THIS AND HANDLE EXCEPTION
-						System.out.println("Problems opening Extension Rule Partitioner Scanner point ");
+						System.out
+								.println("Problems opening Extension Rule Partitioner Scanner point ");
 						e.printStackTrace();
+						return false;
 					}
 				} else
 					continue;
 			}
 		}
-		IScannerRuleExtension [] result = new IScannerRuleExtension[extensionsList.size()];
-		extensionsList.toArray(result);
-		return result;
+		return true;
 	}
-
-	public IScannerRuleExtension[] getReconcilierRuleExtension() {
-		List extensionsList = new ArrayList();
-		IExtensionPoint p = Platform.getExtensionRegistry().getExtensionPoint(
-				CODE_SCANNER_POINT);
-		IExtension[] extensions = p.getExtensions();
-		for (int x = 0; x < extensions.length; x++) {
-			IConfigurationElement[] elements = extensions[x]
-					.getConfigurationElements();
-			for (int i = 0; i < elements.length; i++) {
-				IConfigurationElement next = elements[i];
-				if (TAG_RULE.equals(next.getName())) 
-				{
-					try {
-						IScannerRuleExtension ext = (IScannerRuleExtension) next
-								.createExecutableExtension("contributor");
-						extensionsList.add(ext);
-					} catch (CoreException e) {
-						// TODO LOG THIS AND HANDLE EXCEPTION
-						System.out.println("Problems opening Extension Rule Partitioner Scanner point ");
-						e.printStackTrace();
-					}
-				} else
-					continue;
-			}
+	
+	
+	
+	public List getScannerRulesExtension() {
+		if (scannerExtensions != null)
+			return scannerExtensions;
+		else
+		{
+			
+			initializeScannerExtension();
+			return scannerExtensions;
 		}
-		IScannerRuleExtension [] result = new IScannerRuleExtension[extensionsList.size()];
-		extensionsList.toArray(result);
-		return result;
+	}
+	public List getReconcilierExtension() {
+		if (reconcilierExtensions != null)
+			return reconcilierExtensions;
+		else
+		{
+			initializeSourceViewerExtension();
+			return reconcilierExtensions;
+		}
+	}
+	public List getContentTypeExtension() {
+		if (contentExtensions != null)
+			return contentExtensions;
+		else
+		{
+			initializeSourceViewerExtension();
+			return contentExtensions;
+		}
+	}
+	public List getAssistExtension() {
+		if (assistExtensions != null)
+			return assistExtensions;
+		else
+		{
+			initializeSourceViewerExtension();
+			return assistExtensions;
+		}
 	}
 }

@@ -7,6 +7,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.rules.FastPartitioner;
+import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
 import org.keplerproject.ldt.ui.LDTUIPlugin;
@@ -19,14 +20,18 @@ public class LuaDocumentProvider extends FileDocumentProvider {
 		if (document != null) {
 			LuaBaseScanner lscanner = new LuaBaseScanner();
 			List contentTypes = new ArrayList();
-			IScannerRuleExtension[] ruleExt =  LDTUIPlugin.getDefault().getPartitionRuleExtension();
+			List extensionLists = LDTUIPlugin.getDefault().getScannerRulesExtension();
+			
+			IScannerRuleExtension[] ruleExt =  new IScannerRuleExtension[extensionLists.size()];
+			extensionLists.toArray(ruleExt);
 			if(ruleExt == null)
 				return document;
 				
 			for(int i = 0 ; i < ruleExt.length; i++)
 			{
 				//TODO Exception handler
-				lscanner.addRules(ruleExt[i].getRules());
+				IPredicateRule[] rules = ruleExt[i].getRules();
+				lscanner.addRules(rules);
 				IToken[] tokens = ruleExt[i].getTokens();
 				if(tokens == null) throw new CoreException(STATUS_ERROR);
 				for(int j = 0 ; j < tokens.length ; j++)
@@ -46,11 +51,7 @@ public class LuaDocumentProvider extends FileDocumentProvider {
 			IDocumentPartitioner partitioner =
 				new FastPartitioner(
 					lscanner , contentTypesStr);
-					/*new String[] {
-						ILuaPartitions.LUA_MULTI_LINE_COMMENT,
-						ILuaPartitions.LUA_SINGLE_LINE_COMMENT,
-						ILuaPartitions.LUA_STRING,
-						ILuaPartitions.LUA_SKIP});*/
+					
 			
 			partitioner.connect(document);
 			document.setDocumentPartitioner(partitioner);

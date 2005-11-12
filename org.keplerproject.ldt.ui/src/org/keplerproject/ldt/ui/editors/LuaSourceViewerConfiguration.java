@@ -1,32 +1,54 @@
 package org.keplerproject.ldt.ui.editors;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
-import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.swt.graphics.RGB;
 import org.keplerproject.ldt.ui.LDTUIPlugin;
-import org.keplerproject.ldt.ui.editors.ext.IScannerRuleExtension;
+import org.keplerproject.ldt.ui.editors.ext.ILuaContentAssistExtension;
+import org.keplerproject.ldt.ui.editors.ext.ILuaContentTypeExtension;
+import org.keplerproject.ldt.ui.editors.ext.ILuaReconcilierExtension;
 
 public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	private LuaDoubleClickStrategy doubleClickStrategy;
-	//private XMLTagScanner tagScanner;
-	//private LuaRuleBasedScanner scanner;
 	private LuaColorManager colorManager;
 
 	public LuaSourceViewerConfiguration(LuaColorManager colorManager) {
 		this.colorManager = colorManager;
 	}
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
-		return new String[] {
+		List stringContentTypes = new ArrayList();
+		
+		List extensions = LDTUIPlugin.getDefault().getContentTypeExtension();
+		Iterator extIte = extensions.iterator();
+		while(extIte.hasNext())
+		{
+			ILuaContentTypeExtension ext = (ILuaContentTypeExtension)extIte.next();
+			stringContentTypes.addAll(Arrays.asList(ext.getContentTypes()));
+		}
+		stringContentTypes.add(0,IDocument.DEFAULT_CONTENT_TYPE);
+		String [] resultContents = new String[stringContentTypes.size()];
+		stringContentTypes.toArray(resultContents);
+		return resultContents;		
+		/*history to check......new String[] {
 			IDocument.DEFAULT_CONTENT_TYPE};//,
 			//ILuaPartitions.LUA_MULTI_LINE_COMMENT,
 			//ILuaPartitions.LUA_SINGLE_LINE_COMMENT,
 			//ILuaPartitions.LUA_STRING};
+*/	}
+	public void setColorManager(LuaColorManager colorManager)
+	{
+		this.colorManager= colorManager;
 	}
 	public ITextDoubleClickStrategy getDoubleClickStrategy(
 		ISourceViewer sourceViewer,
@@ -38,50 +60,40 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		ContentAssistant assistant = new ContentAssistant();
-		/*assistant.setContentAssistProcessor(new LuaCompletionProcessor(),IDocument.DEFAULT_CONTENT_TYPE);
+		
+		List extensions = LDTUIPlugin.getDefault().getAssistExtension();
+		Iterator extIte = extensions.iterator();
+		while(extIte.hasNext())
+		{
+			/*assistant.setContentAssistProcessor(new LuaCompletionProcessor(),IDocument.DEFAULT_CONTENT_TYPE);*/
+			ILuaContentAssistExtension ext = (ILuaContentAssistExtension) extIte.next();
+			ext.contribute(assistant);			
+		}
+		
 		assistant.setAutoActivationDelay(400);
 		assistant.setProposalPopupOrientation(ContentAssistant.CONTEXT_INFO_BELOW);
 		assistant.setContextInformationPopupOrientation(ContentAssistant.CONTEXT_INFO_BELOW);
-		assistant.setContextInformationPopupBackground(colorManager.getColor(new RGB(0,191,191)));
-		assistant.enableAutoActivation(true);*/
+		assistant.setContextInformationPopupBackground(colorManager.getColor(new RGB(255,255,255)));
+		assistant.enableAutoActivation(true);
+		
 		return assistant;
 	}
-	/*protected LuaRuleBasedScanner getXMLScanner() {
-		if (scanner == null) {
-			scanner = new LuaRuleBasedScanner(colorManager);
-			scanner.setDefaultReturnToken(
-				new Token(
-					new TextAttribute(
-						colorManager.getColor(ILuaColorConstants.DEFAULT))));
-		}
-		return scanner;
-	}*/
-	/*protected XMLTagScanner getXMLTagScanner() {
-		if (tagScanner == null) {
-			tagScanner = new XMLTagScanner(colorManager);
-			tagScanner.setDefaultReturnToken(
-				new Token(
-					new TextAttribute(
-						colorManager.getColor(ILuaColorConstants.TAG))));
-		}
-		return tagScanner;
-	}*/
-
+	
 	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {
 		
 		PresentationReconciler reconciler = new PresentationReconciler();
-		LuaBaseScanner scanner = new LuaBaseScanner();
-		IScannerRuleExtension[] ruleExt =  LDTUIPlugin.getDefault().getReconcilierRuleExtension();
-		
-		for(int i = 0 ; i < ruleExt.length; i++)
+		List extensions = LDTUIPlugin.getDefault().getReconcilierExtension();
+		Iterator extIte = extensions.iterator();
+		reconciler.install(sourceViewer);
+		while(extIte.hasNext())
 		{
-			scanner.addRules(ruleExt[i].getRules());
+			/*DefaultDamagerRepairer dr = new DefaultDamagerRepairer(scanner);
+        reconciler.setDamager(dr, "__lua_multiline_comment");
+        reconciler.setRepairer(dr, "__lua_multiline_comment");*/
+			ILuaReconcilierExtension ext = (ILuaReconcilierExtension) extIte.next();
+			ext.contribute(colorManager,reconciler);			
 		}
-		
-        DefaultDamagerRepairer dr = new DefaultDamagerRepairer(scanner);
-        reconciler.setDamager(dr, "__dftl_partition_content_type");
-        reconciler.setRepairer(dr, "__dftl_partition_content_type");
-        return reconciler;
+	    return reconciler;
 	}
 
 }
