@@ -17,8 +17,7 @@ public class LuaWhitespaceRule extends WhitespaceRule implements IPredicateRule{
 	}
 
 	public IToken evaluate(ICharacterScanner scanner, boolean resume) {
-		// TODO Auto-generated method stub
-		return null;
+		return super.evaluate(scanner);
 	}
 
 }

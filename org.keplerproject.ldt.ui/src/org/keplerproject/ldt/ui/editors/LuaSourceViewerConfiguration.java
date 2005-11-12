@@ -36,7 +36,6 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 			ILuaContentTypeExtension ext = (ILuaContentTypeExtension)extIte.next();
 			stringContentTypes.addAll(Arrays.asList(ext.getContentTypes()));
 		}
-		stringContentTypes.add(0,IDocument.DEFAULT_CONTENT_TYPE);
 		String [] resultContents = new String[stringContentTypes.size()];
 		stringContentTypes.toArray(resultContents);
 		return resultContents;		
@@ -91,7 +90,7 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
         reconciler.setDamager(dr, "__lua_multiline_comment");
         reconciler.setRepairer(dr, "__lua_multiline_comment");*/
 			ILuaReconcilierExtension ext = (ILuaReconcilierExtension) extIte.next();
-			ext.contribute(colorManager,reconciler);			
+			ext.contribute(colorManager,reconciler, sourceViewer);			
 		}
 	    return reconciler;
 	}

@@ -5,8 +5,8 @@ import org.eclipse.jface.text.rules.*;
 
 public class XMLTagScanner extends RuleBasedScanner {
 
-	public XMLTagScanner(ColorManager manager) {
-		IToken string =
+	public XMLTagScanner(LuaColorManager manager) {
+	/*	IToken string =
 			new Token(
 				new TextAttribute(manager.getColor(ILuaColorConstants.SINGLE_LINE_COMMENT)));
 
@@ -19,6 +19,6 @@ public class XMLTagScanner extends RuleBasedScanner {
 		// Add generic whitespace rule.
 		rules[2] = new WhitespaceRule(new LuaWhitespaceDetector());
 
-		setRules(rules);
+		setRules(rules);*/
 	}
 }

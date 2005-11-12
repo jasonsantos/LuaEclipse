@@ -13,7 +13,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.workbench.texteditor
 Eclipse-AutoStart: true
 Export-Package: org.keplerproject.ldt.ui,
- org.keplerproject.ldt.ui.baseExts.scanner,
  org.keplerproject.ldt.ui.editors,
  org.keplerproject.ldt.ui.editors.ext,
  org.keplerproject.ldt.ui.text.assist,

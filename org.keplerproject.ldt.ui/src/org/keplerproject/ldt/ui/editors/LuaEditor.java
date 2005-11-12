@@ -3,6 +3,7 @@ package org.keplerproject.ldt.ui.editors;
 import java.util.ResourceBundle;
 
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.DefaultRangeIndicator;
 import org.eclipse.ui.texteditor.TextOperationAction;
@@ -11,13 +12,15 @@ import org.keplerproject.ldt.ui.LDTUIPlugin;
 public class LuaEditor extends TextEditor {
 
 	private LuaColorManager colorManager;
+	private SourceViewerConfiguration sourceViewer;
 
 	public LuaEditor() {
 		super();
 		colorManager = new LuaColorManager();
-		setSourceViewerConfiguration(new LuaSourceViewerConfiguration(colorManager));
+		sourceViewer = new LuaSourceViewerConfiguration(colorManager);
+		setSourceViewerConfiguration(sourceViewer);
 		setDocumentProvider(new LuaDocumentProvider());
-		setRangeIndicator(new DefaultRangeIndicator());
+		//setRangeIndicator(new DefaultRangeIndicator());
 	}
 	public void dispose() {
 		colorManager.dispose();
