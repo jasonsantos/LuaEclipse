@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            category="Lua"
+            delegate="org.kepler.ldt.laucher.LuaJavaLaunchConfigurationDelegate"
+            id="org.kepler.ldt.laucher.luajavaLaunchConfigurationType"
+            modes="run"
+            name="LuaJava Runner"
+            public="true">
+         <fileExtension
+               default="true"
+               extension=".lua"/>
+      </launchConfigurationType>
+   </extension>
+
+</plugin>

@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Lua Basic Lauchers Plug-in
+Bundle-SymbolicName: org.kepler.ldt.laucher; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.kepler.ldt.laucher.LaucherPlugin
+Bundle-Vendor: Kepler Project
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.debug.core
+Eclipse-AutoStart: true
