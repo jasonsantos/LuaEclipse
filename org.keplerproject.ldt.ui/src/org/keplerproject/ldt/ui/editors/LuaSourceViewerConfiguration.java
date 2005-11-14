@@ -1,3 +1,6 @@
+/**********************************
+ * 
+ *************************/
 package org.keplerproject.ldt.ui.editors;
 
 import java.util.ArrayList;
@@ -13,20 +16,34 @@ import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.ui.IEditorPart;
 import org.keplerproject.ldt.ui.LDTUIPlugin;
 import org.keplerproject.ldt.ui.editors.ext.ILuaContentAssistExtension;
 import org.keplerproject.ldt.ui.editors.ext.ILuaContentTypeExtension;
 import org.keplerproject.ldt.ui.editors.ext.ILuaReconcilierExtension;
 
+/**
+ * The lua source viewer configuration.
+ * This class captures the SourceViewerConfiguration Extension point.
+ * 
+ * @author Guilherme Martins
+ *
+ */
 public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	private LuaDoubleClickStrategy doubleClickStrategy;
 
 	private LuaColorManager colorManager;
 
+	private IEditorPart editor;
+
 	public LuaSourceViewerConfiguration(LuaColorManager colorManager) {
 		this.colorManager = colorManager;
 	}
-
+	
+	/**
+	 * get the configuredContent Types from the Extensions
+	 * 
+	 */
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		List stringContentTypes = new ArrayList();
 
@@ -42,10 +59,18 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 		return resultContents;
 	}
 
+	
 	public void setColorManager(LuaColorManager colorManager) {
 		this.colorManager = colorManager;
 	}
-
+	
+	public void setEditor(IEditorPart editor)
+	{
+		this.editor = editor;
+	}
+	/**
+	 * This method return a simple DoubleClickStrategy. Just word selection.
+	 */
 	public ITextDoubleClickStrategy getDoubleClickStrategy(
 			ISourceViewer sourceViewer, String contentType) {
 		if (doubleClickStrategy == null)
@@ -53,6 +78,10 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 		return doubleClickStrategy;
 	}
 
+	/**
+	 * get the Content Assist to the sourceviewer contributed by the 
+	 * extensions
+	 */
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		ContentAssistant assistant = new ContentAssistant();
 
@@ -65,7 +94,7 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 			 */
 			ILuaContentAssistExtension ext = (ILuaContentAssistExtension) extIte
 					.next();
-			ext.contribute(assistant);
+			ext.contribute(editor,assistant);
 		}
 
 		assistant.setAutoActivationDelay(400);
@@ -79,7 +108,9 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 
 		return assistant;
 	}
-
+	/**
+	 * get the presentation reconcilier from the extensions
+	 */
 	public IPresentationReconciler getPresentationReconciler(
 			ISourceViewer sourceViewer) {
 

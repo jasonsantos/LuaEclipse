@@ -1,17 +1,23 @@
+/*********************************************
+ * 
+ * 
+ *********************************************/
 package org.keplerproject.ldt.core;
 
-import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * The main plugin class to be used in the desktop.
+ * The Core Plugin Class. This plugin provide the 
+ * common infra-structure to the LDT plugins.
+ * @author Guilherme Martins
+ * @version 1.0.0	
  */
 public class LuaCorePlugin extends AbstractUIPlugin {
 
 	//The shared instance.
 	private static LuaCorePlugin plugin;
-	
 	/**
 	 * The constructor.
 	 */

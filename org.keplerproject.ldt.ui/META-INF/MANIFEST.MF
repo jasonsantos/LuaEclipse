@@ -15,6 +15,5 @@ Eclipse-AutoStart: true
 Export-Package: org.keplerproject.ldt.ui,
  org.keplerproject.ldt.ui.editors,
  org.keplerproject.ldt.ui.editors.ext,
- org.keplerproject.ldt.ui.text.assist,
  org.keplerproject.ldt.ui.text.lua
 Bundle-ClassPath: LDTUI.jar

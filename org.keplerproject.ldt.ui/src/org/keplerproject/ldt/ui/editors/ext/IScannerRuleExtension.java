@@ -5,12 +5,8 @@
  **********************************/
 package org.keplerproject.ldt.ui.editors.ext;
 
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.rules.IPredicateRule;
-import org.eclipse.jface.text.rules.IRule;
 import org.eclipse.jface.text.rules.IToken;
-import org.keplerproject.ldt.ui.editors.LuaBaseScanner;
 
 /**
  * This interface define the extension point to LuaEditor Scanners.

@@ -1,3 +1,6 @@
+/**********************************
+ * 
+ *****************************/
 package org.keplerproject.ldt.ui.editors;
 
 import org.eclipse.jface.text.BadLocationException;
@@ -12,7 +15,12 @@ import org.eclipse.jface.text.presentation.IPresentationDamager;
 import org.eclipse.jface.text.presentation.IPresentationRepairer;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.swt.custom.StyleRange;
-
+/**
+ * A partition Based DemagerRepairer.
+ * Used to highlight a complete partition.
+ * @author guilherme Martins
+ *
+ */
 public class NonRuleBasedDamagerRepairer
 	implements IPresentationDamager, IPresentationRepairer {
 

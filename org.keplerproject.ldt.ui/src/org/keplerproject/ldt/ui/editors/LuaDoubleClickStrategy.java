@@ -1,7 +1,14 @@
+/******************************
+ * 
+ ******************************/
 package org.keplerproject.ldt.ui.editors;
 
 import org.eclipse.jface.text.*;
-
+/**
+ * Simple Double click Strategy. Selects the word. :) not to much usefull.
+ * @author guilherme
+ *
+ */
 public class LuaDoubleClickStrategy implements ITextDoubleClickStrategy {
 	protected ITextViewer fText;
 

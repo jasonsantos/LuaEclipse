@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<fragment
+   id="org.keplerproject.ldt.win32"
+   name="Win32 Fragment"
+   version="1.0.0"
+   provider-name="Kepler Project"
+   plugin-id="org.keplerproject.ldt.core"
+   plugin-version="1.0.0">
+
+   <runtime>
+      <library name="win32.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+</fragment>

@@ -1,3 +1,7 @@
+/**********************************
+ * 
+ * 
+ *******************************/
 package org.keplerproject.ldt.ui.editors;
 
 import java.util.HashMap;
@@ -8,6 +12,11 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
+/**
+ * A simple color manager to the UI Plugin.
+ * @author guilherme
+ *
+ */
 public class LuaColorManager {
 
 	protected Map fColorTable = new HashMap(10);

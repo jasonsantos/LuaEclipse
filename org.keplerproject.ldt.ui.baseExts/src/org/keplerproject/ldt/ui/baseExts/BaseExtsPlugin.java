@@ -1,5 +1,8 @@
 package org.keplerproject.ldt.ui.baseExts;
 
+import luajava.LuaState;
+import luajava.LuaStateFactory;
+
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -10,6 +13,7 @@ public class BaseExtsPlugin extends Plugin {
 
 	//The shared instance.
 	private static BaseExtsPlugin plugin;
+	private LuaState luastate;
 	
 	/**
 	 * The constructor.
@@ -38,6 +42,18 @@ public class BaseExtsPlugin extends Plugin {
 	 */
 	public static BaseExtsPlugin getDefault() {
 		return plugin;
+	}
+
+	/**
+	 * Temporary method
+	 * TODO centralize the lua State??? or not??
+	 * @return
+	 */
+	public LuaState getLuaState() {
+		if(luastate == null)
+			this.luastate = LuaStateFactory.newLuaState();
+					
+		return this.luastate;
 	}
 
 }

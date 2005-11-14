@@ -7,13 +7,11 @@ package org.keplerproject.ldt.ui.baseExts.scanner;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.Token;
-import org.keplerproject.ldt.ui.editors.LuaBaseScanner;
 import org.keplerproject.ldt.ui.editors.ext.IScannerRuleExtension;
 import org.keplerproject.ldt.ui.text.rules.NestedPatternRule;
 /**

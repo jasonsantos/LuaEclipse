@@ -1,3 +1,8 @@
+/*********************************
+ * 
+ *
+ ***********************************/
+
 package org.keplerproject.ldt.core.project;
 
 import java.util.Iterator;
@@ -12,6 +17,11 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+/**
+ * Action that toggle a Lua Project Nature.
+ * @author guilherme
+ *
+ */
 public class ToggleNatureAction implements IObjectActionDelegate {
 
 	private ISelection selection;

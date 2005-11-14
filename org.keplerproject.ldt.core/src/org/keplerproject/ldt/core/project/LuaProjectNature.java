@@ -1,3 +1,7 @@
+/*************************************
+ * 
+ * 
+ *****************************/
 package org.keplerproject.ldt.core.project;
 
 import org.eclipse.core.resources.ICommand;
@@ -6,6 +10,13 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
 
+/**
+ * The Lua Project Nature. Eclipse projects tha use Lua files 
+ * may have this nature.
+ * 
+ * @author guilherme
+ * @version 1.0
+ */
 public class LuaProjectNature implements IProjectNature {
 
 	/**

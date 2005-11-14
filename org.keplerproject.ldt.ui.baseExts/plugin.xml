@@ -11,6 +11,9 @@
       <library name="baseExts.jar">
          <export name="*"/>
       </library>
+      <library name="luajava-1.0.jar">
+         <export name="*"/>
+      </library>
    </runtime> 
 
    <requires>
@@ -18,6 +21,8 @@
       <import plugin="org.keplerproject.ldt.ui"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.keplerproject.ldt.core"/>
+      
    </requires>
    <extension
          id="org.keplerproject.ldt.ui.baseExts.ScannerRulesExtension"
@@ -29,9 +34,10 @@
          id="org.keplerproject.ldt.ui.baseExts.SourceConfigExt"
          name="Lua SourceConfigurations Extension"
          point="org.keplerproject.ldt.ui.SourceConfigurationExtension">
-         <content contributor="org.keplerproject.ldt.ui.baseExts.scanner.LuaContentTypeContributor"/>
+         <content     contributor="org.keplerproject.ldt.ui.baseExts.scanner.LuaContentTypeContributor"/>
          <reconcilier contributor="org.keplerproject.ldt.ui.baseExts.scanner.LuaReconcilierContributor"/>
-         <!--<assist contributor=""/>-->
+         <assist      contributor="org.keplerproject.ldt.ui.baseExts.completion.LuaContentAssistContributorExtension"/>
+         
    </extension>
 
 </plugin>
