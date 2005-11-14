@@ -1,3 +1,6 @@
+/*****************************
+ * 
+ ******************/
 package org.keplerproject.ldt.ui.baseExts.completion;
 
 import java.util.ArrayList;
@@ -19,9 +22,13 @@ import org.keplerproject.ldt.ui.baseExts.BaseExtsPlugin;
 import org.keplerproject.ldt.ui.baseExts.scanner.ILuaSyntax;
 import org.keplerproject.ldt.ui.baseExts.scanner.LuaVariableDetector;
 
-// Referenced classes of package luaeclipse.internal.ui.text.lua:
-//            CompletionProposalComparator
-
+/**
+ * A simple Lua Completion Processor thats use the default Lua Packages
+ * to assist the programmer.
+ * 
+ * @author guilherme
+ *
+ */
 public class LuaCompletionProcessor implements IContentAssistProcessor,
 		ILuaSyntax {
 
@@ -79,18 +86,7 @@ public class LuaCompletionProcessor implements IContentAssistProcessor,
 
 				L.pop(1); // removes `value'; keeps `key' for next iteration
 			}
-			/*
-			 * for(; L.next(-2) != 0; L.pop(1)) { String key = L.toString(-2);
-			 * if(key.startsWith(wordPart.getString())) {
-			 * org.eclipse.swt.graphics.Image image = null; image =
-			 * LDTUIPlugin.getDefault().getImageRegistry().get(L.typeName(L.type(-1)));
-			 * IContextInformation info = new ContextInformation(key,
-			 * getContentInfoString(key)); ICompletionProposal proposal = new
-			 * CompletionProposal(key, wordPart.getOffset(),
-			 * wordPart.getString().length(), key.length(), image, key, info,
-			 * getContentInfoString(key)); proposalList.add(proposal); } }
-			 */
-
+			
 		}
 		L.pop(1);
 		Collections.sort(proposalList, new CompletionProposalComparator());
