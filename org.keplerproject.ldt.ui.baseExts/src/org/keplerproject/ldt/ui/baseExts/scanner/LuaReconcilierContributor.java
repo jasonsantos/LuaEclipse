@@ -64,9 +64,8 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 				null, SWT.ITALIC));
 		IToken string = new Token(new TextAttribute(fColorManager
 				.getColor(ILuaColorConstants.LUA_STRING)));
-		// IToken function = new Token(new
-		// TextAttribute(this.fColorManager.getColor(ILuaColorConstants.LUA_METHOD_NAME),
-		// null, SWT.BOLD));
+		 IToken function = new Token(new
+		 TextAttribute(this.fColorManager.getColor(ILuaColorConstants.LUA_METHOD_NAME), null, SWT.BOLD | SWT.ITALIC));
 		IToken other = new Token(new TextAttribute(this.fColorManager
 				.getColor(ILuaColorConstants.LUA_DEFAULT), null, SWT.NONE));
 		// Add generic whitespace rule.
@@ -77,21 +76,15 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 		LuaWordRule wordRule = new LuaWordRule(new LuaWordDetector(), other);
 		for (int i = 0; i < reservedwords.length; i++)
 			wordRule.addWord(reservedwords[i], keyword);
-		LuaWordRule constantRule = new LuaWordRule(new LuaWordDetector(), other);
 		for (int i = 0; i < constants.length; i++)
 			wordRule.addWord(constants[i], constant);
-		/*
-		 * //TODO Add word rule for functions. WordRule funcRule = new
-		 * WordRule(new LuaFunctionDetector(), other); for (int i = 0; i <
-		 * functions.length; i++) wordRule.addWord(functions[i], function);
-		 * 
-		 * rules.add(funcRule);
-		 */
+				for (int i = 0; i < functions.length; i++)
+			wordRule.addWord(functions[i], function);	 
 
-		scanner.setPredicateRules(new IPredicateRule[] { wordRule, constantRule, whiteRule,
+		scanner.setPredicateRules(new IPredicateRule[] { wordRule,
 				new SingleLineRule("\"", "\"", string, '\\'),
 				new SingleLineRule("'", "'", string, '\\'),
-				new LuaWhitespaceRule(new LuaWhitespaceDetector()) });
+				whiteRule });
 
 		return scanner;
 	}

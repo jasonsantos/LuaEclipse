@@ -1,13 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2003 Ideais Tecnologia LTDA.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- *******************************************************************************/
+*
+*
+*
+********************************************************************************/
 
 package org.keplerproject.ldt.ui.baseExts.scanner;
 
+/**
+ * Lua syntax tokens
+ * @author guilherme
+ *
+ */
 public interface ILuaSyntax {
     public static final String[] reservedwords = {
         "for", "while", "do", "end", "repeat", "until", "if", "elseif", "then",
