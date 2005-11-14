@@ -12,3 +12,4 @@ Require-Bundle: org.eclipse.ui,
 Eclipse-AutoStart: true
 Export-Package: org.keplerproject.ldt.core,
  org.keplerproject.ldt.core.project
+Bundle-ClassPath: luajava-1.0.jar

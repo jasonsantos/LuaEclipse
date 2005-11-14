@@ -2,17 +2,18 @@
 <?eclipse version="3.0"?>
 <plugin>
 
-   <extension
+   <!--<extension
          id="luaProjectBuilder"
          name="Lua Project Builder"
          point="org.eclipse.core.resources.builders">
       <builder
-            hasNature="true">
+            hasNature="true"
+            isConfigurable="true">
          <run
                class="org.keplerproject.ldt.core.project.LuaProjectBuilder">
          </run>
       </builder>
-   </extension>
+   </extension>-->
    <extension
          id="luaProjectNature"
          name="Lua Project Nature"
@@ -42,17 +43,6 @@
                menubarPath="additions">
          </action>
       </objectContribution>
-   </extension>
-   <extension
-         id="xmlProblem"
-         name="XML Problem"
-         point="org.eclipse.core.resources.markers">
-      <super
-            type="org.eclipse.core.resources.problemmarker">
-      </super>
-      <persistent
-            value="true">
-      </persistent>
    </extension>
    
 
