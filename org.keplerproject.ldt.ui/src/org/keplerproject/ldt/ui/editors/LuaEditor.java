@@ -5,6 +5,8 @@ package org.keplerproject.ldt.ui.editors;
 
 import java.util.ResourceBundle;
 
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.SourceViewer;
@@ -13,6 +15,7 @@ import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.DefaultRangeIndicator;
 import org.eclipse.ui.texteditor.TextOperationAction;
 import org.keplerproject.ldt.ui.LDTUIPlugin;
+import org.keplerproject.ldt.ui.compiler.LuaChangeListener;
 /**
  * Lua Text Editor. 
  * @author Guilherme Martins
@@ -36,7 +39,12 @@ public class LuaEditor extends TextEditor {
 		// Setup the LuaDocumentProvider
 		setDocumentProvider(new LuaDocumentProvider());
 		setRangeIndicator(new DefaultRangeIndicator());
+	
 		
+		//TODO Verify if a extension is needed.
+		// This register a resourceChangeListener to compile de lua script and get the error message
+		IResourceChangeListener listener = new LuaChangeListener();
+        LDTUIPlugin.getWorkspace().addResourceChangeListener(listener,IResourceChangeEvent.POST_BUILD);                            
 	}
 	public void dispose() {
 		colorManager.dispose();
@@ -54,7 +62,7 @@ public class LuaEditor extends TextEditor {
 	}
 	
 	public void createPartControl(Composite parent) {
-		// TODO Auto-generated method stub
+//		TODO... implement Folding
 		super.createPartControl(parent);
 	}
 	//TODO... implement Folding

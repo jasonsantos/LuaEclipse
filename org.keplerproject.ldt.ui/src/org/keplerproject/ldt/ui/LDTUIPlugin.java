@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import luajava.LuaState;
+import luajava.LuaStateFactory;
+
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -33,32 +38,40 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 
 	/** Partitioner Scanner Extension Point ID */
 	private static final String PARTITION_SCANNER_POINT = "org.keplerproject.ldt.ui.ScannerRulesExtension";
-	/** Source Configuration Extension Point ID*/
-	private static final String SOURCE_CONFIG_POINT     = "org.keplerproject.ldt.ui.SourceConfigurationExtension";
-	
-	/*** The PARTITIONER tag name*/
+
+	/** Source Configuration Extension Point ID */
+	private static final String SOURCE_CONFIG_POINT = "org.keplerproject.ldt.ui.SourceConfigurationExtension";
+
+	/** * The PARTITIONER tag name */
 	private static final String PARTITIONER_TAG = "partitioner";
-	/*** The RECONCILIER tag name*/
+
+	/** * The RECONCILIER tag name */
 	private static final String RECONCILIER_TAG = "reconcilier";
-	/*** The ASSIST tag name*/
-	private static final String ASSIST_TAG      = "assist";
-	/*** The CONTENT tag name*/
-	private static final String CONTENT_TAG     = "content";
-	
-	/** The Scanner extensions **/
-	private List scannerExtensions     = null;
-	/** The Reconcilier Extensions*/
+
+	/** * The ASSIST tag name */
+	private static final String ASSIST_TAG = "assist";
+
+	/** * The CONTENT tag name */
+	private static final String CONTENT_TAG = "content";
+
+	/** The Scanner extensions * */
+	private List scannerExtensions = null;
+
+	/** The Reconcilier Extensions */
 	private List reconcilierExtensions = null;
-	/** The assist Extesions      */
-	private List assistExtensions      = null;
-	/** The content Extensions    */ 
-	private List contentExtensions     = null;
+
+	/** The assist Extesions */
+	private List assistExtensions = null;
+
+	/** The content Extensions */
+	private List contentExtensions = null;
 
 	// The shared instance.
 	private static LDTUIPlugin plugin;
 
 	private ResourceBundle resourceBundle;
 
+	private LuaState luastate;
 
 	/**
 	 * The constructor.
@@ -109,16 +122,17 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * This method recomputes all source viewer extensions of the ui 
-	 * plugin and prepare the plug-ins to be used.	 
+	 * This method recomputes all source viewer extensions of the ui plugin and
+	 * prepare the plug-ins to be used.
+	 * 
 	 * @return true if the extensions was completely loaded;
 	 */
 	public boolean initializeSourceViewerExtension() {
-		//Initialize the extension lists
-		this.assistExtensions      = new ArrayList();
+		// Initialize the extension lists
+		this.assistExtensions = new ArrayList();
 		this.reconcilierExtensions = new ArrayList();
-		this.contentExtensions     = new ArrayList();
-		
+		this.contentExtensions = new ArrayList();
+
 		// Fetch the Plug-in Registry for the extensions
 		IExtensionPoint p = Platform.getExtensionRegistry().getExtensionPoint(
 				SOURCE_CONFIG_POINT);
@@ -144,8 +158,7 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 					}
 				}
 				// Code Assist Contributor
-				else if(ASSIST_TAG.equals(next.getName()))
-				{
+				else if (ASSIST_TAG.equals(next.getName())) {
 					try {
 						ILuaContentAssistExtension ext = (ILuaContentAssistExtension) next
 								.createExecutableExtension("contributor");
@@ -159,8 +172,7 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 					}
 				}
 				// ContentType Contributor
-				else if(CONTENT_TAG.equals(next.getName()))
-				{
+				else if (CONTENT_TAG.equals(next.getName())) {
 					try {
 						ILuaContentTypeExtension ext = (ILuaContentTypeExtension) next
 								.createExecutableExtension("contributor");
@@ -172,16 +184,17 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 						e.printStackTrace();
 						continue;
 					}
-					
-				}else
+
+				} else
 					continue;
 			}
 		}
 		return true;
 	}
+
 	/**
-	 * This method recomputes all Partitioner Scanner extensions of the ui 
-	 * plugin and prepare the  plugins to be used.
+	 * This method recomputes all Partitioner Scanner extensions of the ui
+	 * plugin and prepare the plugins to be used.
 	 * 
 	 * @return true if the extensions was completely initialized
 	 */
@@ -217,58 +230,77 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 		}
 		return true;
 	}
-	
+
 	/**
-	 * Reuturns the partitioner scanner Extensions. Initialize all of then 
-	 * if is needed.
+	 * Reuturns the partitioner scanner Extensions. Initialize all of then if is
+	 * needed.
+	 * 
 	 * @return
 	 */
 	public List getScannerRulesExtension() {
 		if (scannerExtensions != null)
 			return scannerExtensions;
-		else
-		{			
+		else {
 			initializeScannerExtension();
 			return scannerExtensions;
 		}
 	}
+
 	/**
 	 * Returns the Reconcilier Contributor extension. Init if needed
+	 * 
 	 * @return
 	 */
 	public List getReconcilierExtension() {
 		if (reconcilierExtensions != null)
 			return reconcilierExtensions;
-		else
-		{
+		else {
 			initializeSourceViewerExtension();
 			return reconcilierExtensions;
 		}
 	}
+
 	/**
 	 * Return the content type Extensions. Init if Needed
+	 * 
 	 * @return
 	 */
 	public List getContentTypeExtension() {
 		if (contentExtensions != null)
 			return contentExtensions;
-		else
-		{
+		else {
 			initializeSourceViewerExtension();
 			return contentExtensions;
 		}
 	}
+
 	/**
 	 * Return the content assist Extensions. Initialize if needed.
+	 * 
 	 * @return
 	 */
 	public List getAssistExtension() {
 		if (assistExtensions != null)
 			return assistExtensions;
-		else
-		{
+		else {
 			initializeSourceViewerExtension();
 			return assistExtensions;
 		}
 	}
+
+	public static IWorkspace getWorkspace() {
+		return ResourcesPlugin.getWorkspace();
+	}
+	/**
+	 * Temporary method
+	 * TODO centralize the lua State??? or not??
+	 * @return
+	 */
+	public LuaState getLuaState() {
+		if(luastate == null)
+			this.luastate = LuaStateFactory.newLuaState();
+					
+		return this.luastate;
+	}
+
 }

@@ -23,11 +23,11 @@ import org.keplerproject.ldt.ui.editors.ext.ILuaContentTypeExtension;
 import org.keplerproject.ldt.ui.editors.ext.ILuaReconcilierExtension;
 
 /**
- * The lua source viewer configuration.
- * This class captures the SourceViewerConfiguration Extension point.
+ * The lua source viewer configuration. This class captures the
+ * SourceViewerConfiguration Extension point.
  * 
  * @author Guilherme Martins
- *
+ * 
  */
 public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	private LuaDoubleClickStrategy doubleClickStrategy;
@@ -39,7 +39,7 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	public LuaSourceViewerConfiguration(LuaColorManager colorManager) {
 		this.colorManager = colorManager;
 	}
-	
+
 	/**
 	 * get the configuredContent Types from the Extensions
 	 * 
@@ -59,15 +59,14 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 		return resultContents;
 	}
 
-	
 	public void setColorManager(LuaColorManager colorManager) {
 		this.colorManager = colorManager;
 	}
-	
-	public void setEditor(IEditorPart editor)
-	{
+
+	public void setEditor(IEditorPart editor) {
 		this.editor = editor;
 	}
+
 	/**
 	 * This method return a simple DoubleClickStrategy. Just word selection.
 	 */
@@ -79,8 +78,7 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	}
 
 	/**
-	 * get the Content Assist to the sourceviewer contributed by the 
-	 * extensions
+	 * get the Content Assist to the sourceviewer contributed by the extensions
 	 */
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		ContentAssistant assistant = new ContentAssistant();
@@ -94,7 +92,7 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 			 */
 			ILuaContentAssistExtension ext = (ILuaContentAssistExtension) extIte
 					.next();
-			ext.contribute(editor,assistant);
+			ext.contribute(editor, assistant);
 		}
 
 		assistant.setAutoActivationDelay(400);
@@ -104,10 +102,13 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 				.setContextInformationPopupOrientation(ContentAssistant.CONTEXT_INFO_BELOW);
 		assistant.setContextInformationPopupBackground(colorManager
 				.getColor(new RGB(255, 255, 255)));
+		assistant.setProposalSelectorBackground(colorManager.getColor(new RGB(
+				255, 255, 255)));
 		assistant.enableAutoActivation(true);
 
 		return assistant;
 	}
+
 	/**
 	 * get the presentation reconcilier from the extensions
 	 */
@@ -130,5 +131,5 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 		}
 		return reconciler;
 	}
-
+ 
 }
