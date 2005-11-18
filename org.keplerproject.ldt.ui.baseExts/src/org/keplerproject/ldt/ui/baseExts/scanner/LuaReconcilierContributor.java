@@ -4,9 +4,11 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
+import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.ITokenScanner;
+import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -45,12 +47,12 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 		reconciler.setDamager(ndr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);
 		reconciler.setRepairer(ndr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);
 
-		ndr = new NonRuleBasedDamagerRepairer(new TextAttribute(colorManager
+		/*ndr = new NonRuleBasedDamagerRepairer(new TextAttribute(colorManager
 				.getColor(ILuaColorConstants.LUA_STRING)));
 		ndr.setDocument(viewer.getDocument());
 		dr.setDocument(viewer.getDocument());
 		reconciler.setDamager(ndr, ILuaPartitions.LUA_STRING);
-		reconciler.setRepairer(ndr, ILuaPartitions.LUA_STRING);
+		reconciler.setRepairer(ndr, ILuaPartitions.LUA_STRING);*/
 	}
 
 	private ITokenScanner getCodeScanner() {
@@ -66,6 +68,8 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 				.getColor(ILuaColorConstants.LUA_STRING)));
 		 IToken function = new Token(new
 		 TextAttribute(this.fColorManager.getColor(ILuaColorConstants.LUA_METHOD_NAME), null, SWT.BOLD | SWT.ITALIC));
+		 IToken scommnet = new Token(new TextAttribute(fColorManager
+					.getColor(ILuaColorConstants.LUA_MULTI_LINE_COMMENT)));
 		IToken other = new Token(new TextAttribute(this.fColorManager
 				.getColor(ILuaColorConstants.LUA_DEFAULT), null, SWT.NONE));
 		// Add generic whitespace rule.
@@ -81,9 +85,11 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 				for (int i = 0; i < functions.length; i++)
 			wordRule.addWord(functions[i], function);	 
 
-		scanner.setPredicateRules(new IPredicateRule[] { wordRule,
+		scanner.setPredicateRules(new IPredicateRule[] { new EndOfLineRule("--", scommnet),
 				new SingleLineRule("\"", "\"", string, '\\'),
 				new SingleLineRule("'", "'", string, '\\'),
+				new MultiLineRule("[[", "]]", string, '\\'),
+				wordRule,
 				whiteRule });
 
 		return scanner;
