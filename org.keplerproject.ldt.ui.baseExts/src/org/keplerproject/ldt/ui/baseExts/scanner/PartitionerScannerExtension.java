@@ -33,19 +33,19 @@ public class PartitionerScannerExtension implements IScannerRuleExtension {
 	public PartitionerScannerExtension() {
 		this.fTokens = new IToken[] { 
 				new Token(ILuaPartitions.LUA_MULTI_LINE_COMMENT),
-				new Token(ILuaPartitions.LUA_SINGLE_LINE_COMMENT),
-				new Token(ILuaPartitions.LUA_STRING),								
+				//new Token(ILuaPartitions.LUA_SINGLE_LINE_COMMENT),
+				//new Token(ILuaPartitions.LUA_STRING),								
 				new Token(ILuaPartitions.LUA_CODE)};
 		
 		List rules = new ArrayList();
-//		 Add rule for multi line comments.
+		//Add rule for multi line comments.
 		rules.add(new NestedPatternRule("--[[", "[[", "]]", fTokens[0]));
 		//Add rule for single line comments.
-		rules.add(new EndOfLineRule("--", fTokens[1]));
+		//rules.add(new EndOfLineRule("--", fTokens[1]));
 		//Add rule for strings and character constants.
 		//rules.add(new SingleLineRule("\"", "\"", fTokens[2], '\\'));
 		///rules.add(new SingleLineRule("'", "'", fTokens[2], '\\'));
-		rules.add(new MultiLineRule("[[", "]]", fTokens[2]));
+		//rules.add(new MultiLineRule("[[", "]]", fTokens[2]));
 		
 		
 		this.fRules = new IPredicateRule[rules.size()];
