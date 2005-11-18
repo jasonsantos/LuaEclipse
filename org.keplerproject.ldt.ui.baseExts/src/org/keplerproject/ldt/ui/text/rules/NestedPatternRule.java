@@ -45,10 +45,35 @@ public class NestedPatternRule extends MultiLineRule {
 
 	
 	protected IToken doEvaluate(ICharacterScanner scanner, boolean resume) {
+		//TODO Bacalha sério.. tem que testar mais
 		if (resume) {
-			if (endSequenceDetected(scanner)) {
+			/*if (endSequenceDetected(scanner)) {
 				return fToken;
+			}*/
+			scanner.unread();
+			int c= scanner.read();
+			int d = 0,e = 0,f= 0 ;
+			while(c != fStartSequence[0] || f!= fStartSequence[1] || e != fStartSequence[2] || d != fStartSequence[3] )
+			{
+				scanner.unread();scanner.unread();
+				d = e ;
+				e = f ;
+				f = c;
+				c=scanner.read();
 			}
+			scanner.unread();
+			scanner.unread();
+			c= scanner.read();
+			if (c == fStartSequence[0]) {
+				if (sequenceDetected(scanner, fStartSequence, false)) {
+					fNestingCount = 1;
+					
+					if (endSequenceDetected(scanner)) {
+						return fToken;
+					}
+				}
+			}
+			
 		
 		} else {
 			
