@@ -23,8 +23,8 @@
          os="linux,win32"
          download-size="0"
          install-size="0"
-         unpack="false"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.keplerproject.ldt.ui"
@@ -39,13 +39,5 @@
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-
-   <plugin
-         id="org.keplerproject.ldt.win32"
-         os="win32"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
 
 </feature>

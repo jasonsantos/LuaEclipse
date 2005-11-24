@@ -237,8 +237,7 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 						.getLength());
 
 				if (contType.equals(IDocument.DEFAULT_CONTENT_TYPE)) {
-					if (line.startsWith("local function")
-							|| line.startsWith("function")) {
+					if (line.trim().contains("function".subSequence(0,8))) {
 						funcInit = lineRegion.getOffset();
 
 					} else if (funcInit != -1 && line.startsWith("end")) {
