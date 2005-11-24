@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-import luajava.LuaState;
-
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ContextInformation;
@@ -18,32 +16,36 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.swt.graphics.Image;
 import org.keplerproject.ldt.core.LuaCorePlugin;
-import org.keplerproject.ldt.ui.baseExts.BaseExtsPlugin;
 import org.keplerproject.ldt.ui.baseExts.scanner.ILuaSyntax;
 import org.keplerproject.ldt.ui.baseExts.scanner.LuaVariableDetector;
+import org.keplerproject.luajava.LuaState;
+import org.keplerproject.luajava.LuaStateFactory;
 
 /**
- * A simple Lua Completion Processor thats use the default Lua Packages
- * to assist the programmer.
+ * A simple Lua Completion Processor thats use the default Lua Packages to
+ * assist the programmer.
  * 
  * @author guilherme
- *
+ * 
  */
 public class LuaCompletionProcessor implements IContentAssistProcessor,
 		ILuaSyntax {
 
 	protected ArrayList proposalList;
 
+	protected LuaState L;
+
 	public LuaCompletionProcessor() {
 		proposalList = new ArrayList();
+		L = (LuaStateFactory.newLuaState());
+		L.openBasicLibraries();
 	}
 
-	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
-			int documentOffset) {
+	public ICompletionProposal[] computeCompletionProposals(
+			final ITextViewer viewer, final int documentOffset) {
+
 		LuaVariableDetector wordPart = new LuaVariableDetector(viewer,
 				documentOffset);
-		LuaState L = BaseExtsPlugin.getDefault().getLuaState();
-
 		try {
 			if (wordPart.getVariable() != null)
 				L.doString("return " + wordPart.getVariable());
@@ -86,7 +88,7 @@ public class LuaCompletionProcessor implements IContentAssistProcessor,
 
 				L.pop(1); // removes `value'; keeps `key' for next iteration
 			}
-			
+
 		}
 		L.pop(1);
 		Collections.sort(proposalList, new CompletionProposalComparator());

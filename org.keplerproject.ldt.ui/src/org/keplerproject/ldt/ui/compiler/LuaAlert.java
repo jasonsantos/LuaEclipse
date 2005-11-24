@@ -5,14 +5,13 @@
 
 package org.keplerproject.ldt.ui.compiler;
 
-import luajava.JavaFunction;
-import luajava.LuaState;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.keplerproject.luajava.JavaFunction;
+import org.keplerproject.luajava.LuaState;
 
-public class LuaAlert extends JavaFunction
+public class LuaAlert extends JavaFunction 
 {
 
     public LuaAlert(LuaState arg0, IResource res)
@@ -21,12 +20,11 @@ public class LuaAlert extends JavaFunction
         resource = res;
     }
 
-    public int foo()
+    public int execute()
     {
         try
         {
-            IMarker marker = resource.createMarker(IMarker.PROBLEM);
-            
+            IMarker marker = resource.createMarker(IMarker.PROBLEM);            
             double line = super.L.toNumber(-2);
             String error = super.L.toString(-1);
             marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);

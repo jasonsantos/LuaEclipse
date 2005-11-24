@@ -10,15 +10,19 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * The Core Plugin Class. This plugin provide the 
- * common infra-structure to the LDT plugins.
+ * The Core Plugin Class. This plugin provide the common infra-structure to the
+ * LDT plugins.
+ * 
  * @author Guilherme Martins
- * @version 1.0.0	
+ * @version 1.0.0
  */
 public class LuaCorePlugin extends AbstractUIPlugin {
 
-	//The shared instance.
+	private static final String PLUGIN_CORE_ID = "org.keplerproject.ldt.core";
+
+	// The shared instance.
 	private static LuaCorePlugin plugin;
+
 	/**
 	 * The constructor.
 	 */
@@ -49,29 +53,34 @@ public class LuaCorePlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path.
-	 *
-	 * @param path the path
+	 * Returns an image descriptor for the image file at the given plug-in
+	 * relative path.
+	 * 
+	 * @param path
+	 *            the path
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.keplerproject.ldt.core", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_CORE_ID, path);
 	}
-	
-	 /* (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeImageRegistry(org.eclipse.jface.resource.ImageRegistry)
-     */
-    protected void initializeImageRegistry(ImageRegistry reg) {
-        String[] images = { "function", "table", "string", "userdata"};
 
-        for (int i = 0; i < images.length; i++) {
-            ImageDescriptor image = null;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeImageRegistry(org.eclipse.jface.resource.ImageRegistry)
+	 */
+	protected void initializeImageRegistry(ImageRegistry reg) {
+		String[] images = { "function", "table", "string", "userdata" };
 
-            image = LuaCorePlugin.getImageDescriptor("icons/" + images[i] + ".gif");
+		for (int i = 0; i < images.length; i++) {
+			ImageDescriptor image = null;
+
+			image = LuaCorePlugin.getImageDescriptor("icons/" + images[i]
+					+ ".gif");
 			reg.put(images[i], image);
-        }
+		}
 
-        super.initializeImageRegistry(reg);
-    }
+		super.initializeImageRegistry(reg);
+	}
+
 }

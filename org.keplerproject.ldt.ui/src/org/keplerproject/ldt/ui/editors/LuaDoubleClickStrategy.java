@@ -3,7 +3,10 @@
  ******************************/
 package org.keplerproject.ldt.ui.editors;
 
-import org.eclipse.jface.text.*;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextDoubleClickStrategy;
+import org.eclipse.jface.text.ITextViewer;
 /**
  * Simple Double click Strategy. Selects the word. :) not to much usefull.
  * @author guilherme

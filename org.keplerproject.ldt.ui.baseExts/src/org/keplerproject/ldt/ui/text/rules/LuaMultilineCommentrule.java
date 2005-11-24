@@ -13,12 +13,17 @@ import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.Token;
 
-
-public class NestedPatternRule extends MultiLineRule {
+/**
+ * Lua Multiline comment rule.
+ * @author guilherme
+ *
+ */
+public class LuaMultilineCommentrule extends MultiLineRule {
 
 	/** The pattern's nesting start sequence */
 	protected char[] fNestingStartSequence;
-	/** The counting of nested patterns **/
+
+	/** The counting of nested patterns * */
 	private int fNestingCount;
 
 	/**
@@ -28,80 +33,82 @@ public class NestedPatternRule extends MultiLineRule {
 	 * @param escapeCharacter
 	 * @param breaksOnEOL
 	 */
-	public NestedPatternRule(String startSequence, String nestingStartSequence, String endSequence, IToken token, char escapeCharacter, boolean breaksOnEOL) {
-		super(startSequence, endSequence, token, escapeCharacter, breaksOnEOL);
-
-		fNestingStartSequence= nestingStartSequence.toCharArray();
+	public LuaMultilineCommentrule(IToken token, char escapeCharacter,
+			boolean breaksOnEOL) {
+		super("--[[", "]]", token, escapeCharacter, breaksOnEOL);
+		String nestingStartSequence = "[[";
+		fNestingStartSequence = nestingStartSequence.toCharArray();
 		fNestingCount = 0;
 	}
 
-	public NestedPatternRule(String startSequence, String nestingStartSequence, String endSequence, IToken token, char escapeCharacter, boolean breaksOnEOL, boolean breaksOnEOF) {
-		this(startSequence, nestingStartSequence, endSequence, token, escapeCharacter, breaksOnEOL);
+	public LuaMultilineCommentrule(IToken token, char escapeCharacter,
+			boolean breaksOnEOL, boolean breaksOnEOF) {
+		this(token, escapeCharacter, breaksOnEOL);
 	}
 
-	public NestedPatternRule(String startSequence, String nestingStartSequence, String endSequence, IToken token) {
-		this(startSequence, nestingStartSequence, endSequence, token, (char)0, false);	
+	public LuaMultilineCommentrule(IToken token) {
+		this(token, (char) 0, false);
 	}
 
-	
 	protected IToken doEvaluate(ICharacterScanner scanner, boolean resume) {
-		//TODO Bacalha sério.. tem que testar mais
+		// TODO Bacalha sério.. tem que testar mais
 		if (resume) {
-			/*if (endSequenceDetected(scanner)) {
-				return fToken;
-			}*/
+			/*
+			 * if (endSequenceDetected(scanner)) { return fToken; }
+			 */
 			scanner.unread();
-			int c= scanner.read();
-			int d = 0,e = 0,f= 0 ;
-			while(c != fStartSequence[0] || f!= fStartSequence[1] || e != fStartSequence[2] || d != fStartSequence[3] )
-			{
-				scanner.unread();scanner.unread();
-				d = e ;
-				e = f ;
+			int c = scanner.read();
+			int d = 0, e = 0, f = 0;
+			while (c != fStartSequence[0] || f != fStartSequence[1]
+					|| e != fStartSequence[2] || d != fStartSequence[3]) {
+				scanner.unread();
+				scanner.unread();
+				d = e;
+				e = f;
 				f = c;
-				c=scanner.read();
+				c = scanner.read();
 			}
 			scanner.unread();
 			scanner.unread();
-			c= scanner.read();
+			c = scanner.read();
 			if (c == fStartSequence[0]) {
 				if (sequenceDetected(scanner, fStartSequence, false)) {
 					fNestingCount = 1;
-					
+
 					if (endSequenceDetected(scanner)) {
 						return fToken;
 					}
 				}
 			}
-			
-		
+
 		} else {
-			
-			int c= scanner.read();
+
+			int c = scanner.read();
 			if (c == fStartSequence[0]) {
 				if (sequenceDetected(scanner, fStartSequence, false)) {
 					fNestingCount = 1;
-					
+
 					if (endSequenceDetected(scanner)) {
 						return fToken;
 					}
 				}
 			}
 		}
-		
+
 		scanner.unread();
 		return Token.UNDEFINED;
 	}
 
 	protected boolean endSequenceDetected(ICharacterScanner scanner) {
 		int c;
-		char[][] delimiters= scanner.getLegalLineDelimiters();
-		
-		while ((c= scanner.read()) != ICharacterScanner.EOF) {
+		char[][] delimiters = scanner.getLegalLineDelimiters();
+
+		while ((c = scanner.read()) != ICharacterScanner.EOF) {
 			if (c == fEscapeCharacter) {
 				// Skip the escaped character.
 				scanner.read();
-			} else if (fNestingStartSequence.length > 0 && c == fNestingStartSequence[0]) {
+			} else if (fNestingStartSequence.length > 0
+					&& c == fNestingStartSequence[0]) {
 				// Check if the specified nesting start sequence has been found.
 				if (sequenceDetected(scanner, fNestingStartSequence, true))
 					fNestingCount++;
@@ -113,14 +120,17 @@ public class NestedPatternRule extends MultiLineRule {
 						return true;
 				}
 			} else if (fBreaksOnEOL) {
-				// Check for end of line since it can be used to terminate the pattern.
-				for (int i= 0; i < delimiters.length; i++) {
-					if (c == delimiters[i][0] && sequenceDetected(scanner, delimiters[i], true))
+				// Check for end of line since it can be used to terminate the
+				// pattern.
+				for (int i = 0; i < delimiters.length; i++) {
+					if (c == delimiters[i][0]
+							&& sequenceDetected(scanner, delimiters[i], true))
 						return true;
 				}
 			}
 		}
-		if (fBreaksOnEOF) return true;
+		if (fBreaksOnEOF)
+			return true;
 		scanner.unread();
 		return false;
 	}

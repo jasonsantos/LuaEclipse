@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.ui.editors,
  org.eclipse.ui.workbench.texteditor,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.keplerproject.ldt.core
 Eclipse-AutoStart: true
 Export-Package: org.keplerproject.ldt.ui,
  org.keplerproject.ldt.ui.editors,

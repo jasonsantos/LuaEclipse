@@ -5,13 +5,9 @@ package org.keplerproject.ldt.ui.editors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ResourceBundle;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IInformationControl;
-import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
@@ -20,11 +16,9 @@ import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.DefaultRangeIndicator;
 import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.eclipse.ui.texteditor.TextOperationAction;
 import org.keplerproject.ldt.ui.LDTUIPlugin;
 import org.keplerproject.ldt.ui.compiler.LuaChangeListener;
 
@@ -123,14 +117,15 @@ public class LuaEditor extends TextEditor {
 	 */
 	protected void createActions() {
 		super.createActions();
-		ResourceBundle bundle = LDTUIPlugin.getDefault().getResourceBundle();
 
+	//	ResourceBundle bundle = LDTUIPlugin.getDefault().getResourceBundle();
+/*
 		setAction("LuaContentAssistProposal", new TextOperationAction(bundle,
 				"ContentAssistProposal.", this,
 				ISourceViewer.CONTENTASSIST_PROPOSALS));
 		setAction("LuaContentAssistTipProposal", new TextOperationAction(
 				bundle, "ContentAssistTipProposal.", this,
-				ISourceViewer.CONTENTASSIST_CONTEXT_INFORMATION));
+				ISourceViewer.CONTENTASSIST_CONTEXT_INFORMATION));*/
 	}
 
 	/**

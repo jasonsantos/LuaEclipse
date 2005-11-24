@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import luajava.LuaState;
-import luajava.LuaStateFactory;
-
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -71,7 +68,7 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 
 	private ResourceBundle resourceBundle;
 
-	private LuaState luastate;
+	//private LuaState luastate;
 
 	/**
 	 * The constructor.
@@ -295,12 +292,12 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 	 * Temporary method
 	 * TODO centralize the lua State??? or not??
 	 * @return
-	 */
+	 *//*
 	public LuaState getLuaState() {
 		if(luastate == null)
 			this.luastate = LuaStateFactory.newLuaState();
 					
 		return this.luastate;
-	}
+	}*/
 
 }
