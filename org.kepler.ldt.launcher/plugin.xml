@@ -1,19 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-   <extension
+    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            category="Lua"
-            delegate="org.kepler.ldt.laucher.LuaJavaLaunchConfigurationDelegate"
-            id="org.kepler.ldt.laucher.luajavaLaunchConfigurationType"
+            delegate="org.keplerproject.ldt.internal.launching.LuaApplicationLaunchConfigurationDelegate"
+            id="org.keplerproject.ldt.launching.LaunchConfigurationTypeLuaApplication"
             modes="run"
-            name="LuaJava Runner"
-            public="true">
+            name="Lua Standalone Application"
+            sourceLocatorId="org.keplerproject.ldt.launching.ui.luaSourceLocator">
          <fileExtension
                default="true"
-               extension=".lua"/>
+               extension="lua">
+         </fileExtension>
       </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            icon="icons/run_lua.gif"
+            configTypeID="org.keplerproject.ldt.launching.LaunchConfigurationTypeLuaApplication"
+            id="org.keplerproject.ldt.launching.LaunchConfigurationTypeImageLuaApplication">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.keplerproject.ldt.launching.LaunchConfigurationTypeLuaApplication"
+            class="org.keplerproject.ldt.internal.launching.ui.LuaApplicationTabGroup"
+            id="org.keplerproject.ldt.launching.ui.LaunchConfigurationTabGroupLuaApplication">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            label="Lua Application"
+            icon="icons/run_lua.gif"
+            modes="run"
+            class="org.keplerproject.ldt.launching.ui.LuaApplicationShortcut"
+            id="org.keplerproject.ldt.launching.ui.applicationshortcut.lua">
+         
+         <perspective id="org.eclipse.jdt.ui.JavaPerspective"/>
+         <perspective id="org.eclipse.jdt.ui.JavaHierarchyPerspective"/>
+         <perspective id="org.eclipse.jdt.ui.JavaBrowsingPerspective"/>
+         <perspective id="org.eclipse.debug.ui.DebugPerspective"/>
+      </shortcut>
+   </extension>
+	<extension
+         point="org.eclipse.debug.core.sourceLocators">
+      <sourceLocator
+            name="LuaSourceLocator"
+            class="org.keplerproject.ldt.internal.launching.ui.LuaSourceLocator"
+            id="org.keplerproject.ldt.launching.ui.luaSourceLocator">
+      </sourceLocator>
+   </extension>
+
+	<extension point="org.eclipse.ui.preferencePages">
+     <page
+            name="Installed Interpreters"
+            category="org.keplerproject.ldt.ui.preferences.PreferencePageLua"
+            class="org.keplerproject.ldt.internal.launching.ui.preferences.LuaInterpreterPreferencePage"
+            id="org.keplerproject.ldt.launching.ui.preferences.PreferencePageLuaInterpreter">
+      </page>
    </extension>
 
 </plugin>

@@ -4,6 +4,13 @@
  *********************************************/
 package org.keplerproject.ldt.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -16,12 +23,13 @@ import org.osgi.framework.BundleContext;
  * @author Guilherme Martins
  * @version 1.0.0
  */
-public class LuaCorePlugin extends AbstractUIPlugin {
+public class LuaCorePlugin extends Plugin {
 
 	private static final String PLUGIN_CORE_ID = "org.keplerproject.ldt.core";
 
 	// The shared instance.
 	private static LuaCorePlugin plugin;
+	private ImageRegistry imgReg = new ImageRegistry();
 
 	/**
 	 * The constructor.
@@ -35,8 +43,10 @@ public class LuaCorePlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		initializeImageRegistry(imgReg);
 	}
-
+	
+    
 	/**
 	 * This method is called when the plug-in is stopped
 	 */
@@ -77,10 +87,54 @@ public class LuaCorePlugin extends AbstractUIPlugin {
 
 			image = LuaCorePlugin.getImageDescriptor("icons/" + images[i]
 					+ ".gif");
-			reg.put(images[i], image);
+			reg.put(images[i],(ImageDescriptor) image);
 		}
 
-		super.initializeImageRegistry(reg);
+		//super.initializeImageRegistry(reg);
 	}
+	
+	 public static IProject[] getLuaProjects()
+	    {
+	        List rubyProjectsList = new ArrayList();
+	        IProject workspaceProjects[] = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+	        for(int i = 0; i < workspaceProjects.length; i++)
+	        {
+	            IProject iProject = workspaceProjects[i];
+	            if(isLuaProject(iProject))
+	                rubyProjectsList.add(iProject);
+	        }
+
+	        IProject rubyProjects[] = new IProject[rubyProjectsList.size()];
+	        return (IProject[])rubyProjectsList.toArray(rubyProjects);
+	    }
+
+	    public static LuaProject getLuaProject(String name)
+	    {
+	        IProject aProject = ResourcesPlugin.getWorkspace().getRoot().getProject(name);
+	        if(isLuaProject(aProject))
+	        {
+	            LuaProject theLuaProject = new LuaProject();
+	            theLuaProject.setProject(aProject);
+	            return theLuaProject;
+	        } else
+	        {
+	            return null;
+	        }
+	    }
+	    public static boolean isLuaProject(IProject aProject)
+	    {
+	        try
+	        {
+	            return aProject.hasNature("org.keplerproject.ldt.core.project.LuaProjectNature");
+	        }
+	        catch(CoreException coreexception)
+	        {
+	            return false;
+	        }
+	    }
+
+		public ImageRegistry getImageRegistry() {
+			return imgReg;
+		}
 
 }

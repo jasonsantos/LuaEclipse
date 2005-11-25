@@ -4,7 +4,7 @@
       label="Lua Development Tool"
       version="1.0.0"
       provider-name="Kepler Project "
-      os="linux,win32">
+      colocation-affinity="org.keplerproject.ldt.feature">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -18,26 +18,44 @@
       [Enter License Description here.]
    </license>
 
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.debug.ui"/>
+   </requires>
+
    <plugin
          id="org.keplerproject.ldt.core"
-         os="linux,win32"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.0.0"
          unpack="false"/>
 
    <plugin
          id="org.keplerproject.ldt.ui"
-         os="linux,win32"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="1.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.keplerproject.ldt.ui.baseExts"
-         os="linux,win32"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="1.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.keplerproject.ldt.launcher"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

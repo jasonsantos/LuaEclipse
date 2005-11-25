@@ -17,5 +17,14 @@
             name="Lua File Editor">
       </editor>
    </extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="Lua"
+            class="org.keplerproject.ldt.ui.preferences.LuaPreferencePage"
+            id="org.keplerproject.ldt.ui.preferences.PreferencePageLua">
+      </page>
+   </extension>
 
 </plugin>

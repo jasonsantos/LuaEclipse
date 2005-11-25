@@ -1,21 +1,21 @@
 package org.kepler.ldt.laucher;
 
-import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
  */
-public class LaucherPlugin extends AbstractUIPlugin {
+public class LauncherPlugin extends AbstractUIPlugin {
 
 	//The shared instance.
-	private static LaucherPlugin plugin;
+	private static LauncherPlugin plugin;
 	
 	/**
 	 * The constructor.
 	 */
-	public LaucherPlugin() {
+	public LauncherPlugin() {
 		plugin = this;
 	}
 
@@ -37,7 +37,7 @@ public class LaucherPlugin extends AbstractUIPlugin {
 	/**
 	 * Returns the shared instance.
 	 */
-	public static LaucherPlugin getDefault() {
+	public static LauncherPlugin getDefault() {
 		return plugin;
 	}
 
@@ -49,6 +49,6 @@ public class LaucherPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.kepler.ldt.laucher", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin("org.keplerproject.ldt.launcher", path);
 	}
 }

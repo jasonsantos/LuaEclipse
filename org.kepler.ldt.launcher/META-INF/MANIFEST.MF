@@ -1,12 +1,23 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Lua Basic Lauchers Plug-in
-Bundle-SymbolicName: org.kepler.ldt.laucher; singleton:=true
+Bundle-Name: LDT Interpreter Launcher
+Bundle-SymbolicName: org.keplerproject.ldt.launcher; singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: org.kepler.ldt.laucher.LaucherPlugin
-Bundle-Vendor: Kepler Project
+Bundle-Activator: org.kepler.ldt.laucher.LauncherPlugin
+Bundle-Vendor: KeplerProject
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.eclipse.debug.core
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui,
+ org.eclipse.core.resources,
+ org.keplerproject.ldt.core,
+ org.keplerproject.ldt.ui,
+ org.eclipse.ui.ide
 Eclipse-AutoStart: true
+Bundle-ClassPath: LDTLaunching.jar
+Export-Package: org.kepler.ldt.laucher,
+ org.keplerproject.ldt.internal.launching,
+ org.keplerproject.ldt.internal.launching.ui,
+ org.keplerproject.ldt.internal.launching.ui.preferences,
+ org.keplerproject.ldt.laucher.utils

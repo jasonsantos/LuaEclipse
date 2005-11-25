@@ -11,17 +11,14 @@
       <library name="baseExts.jar">
          <export name="*"/>
       </library>
-      <library name="luajava-1.0.jar">
-         <export name="*"/>
-      </library>
    </runtime>  
 
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.keplerproject.ldt.ui"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.keplerproject.ldt.core"/>
+      <import plugin="org.keplerproject.ldt.core" version="1.0.0" export="false"/>
+      <import plugin="org.keplerproject.ldt.ui" version="1.0.0" export="true"/>
       
    </requires>
    <extension
