@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="http://luaeclipse.luaforge.net/update-site">
+      Lua IDE based on the Eclipse Platform.
+   </description>
+   <feature url="features/org.keplerproject.ldt.feature_1.0.0.jar" id="org.keplerproject.ldt.feature" version="1.0.0" os="win32"/>
+</site>
