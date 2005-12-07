@@ -4,7 +4,11 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.keplerproject.ldt.ui.LDTUIPlugin;
-
+/**
+ * Lua Preference page Extension. The Blank root page.
+ * @author guilherme
+ *
+ */
 public class LuaPreferencePage extends FieldEditorPreferencePage
     implements IWorkbenchPreferencePage
 {

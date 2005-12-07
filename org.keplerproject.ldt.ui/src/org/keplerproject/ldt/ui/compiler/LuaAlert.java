@@ -1,8 +1,3 @@
-// Decompiled by DJ v3.7.7.81 Copyright 2004 Atanas Neshkov  Date: 27/9/2005 10:30:05
-// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
-// Decompiler options: packimports(3) 
-// Source File Name:   LuaAlert.java
-
 package org.keplerproject.ldt.ui.compiler;
 
 import org.eclipse.core.resources.IMarker;
@@ -14,6 +9,7 @@ import org.keplerproject.luajava.LuaState;
 public class LuaAlert extends JavaFunction 
 {
 
+	private IResource resource;
     public LuaAlert(LuaState arg0, IResource res)
     {
         super(arg0);
@@ -35,6 +31,4 @@ public class LuaAlert extends JavaFunction
         catch(CoreException coreexception) { }
         return 0;
     }
-
-    private IResource resource;
 }

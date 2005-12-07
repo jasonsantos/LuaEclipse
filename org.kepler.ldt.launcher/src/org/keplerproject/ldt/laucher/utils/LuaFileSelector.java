@@ -10,6 +10,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+/**
+ * resource selector to Lua Files.
+ *  Used at the "Browse" button at 
+ * launch configurations
+ * @author guilherme
+ *
+ */
 public class LuaFileSelector extends ResourceSelector
 {
 

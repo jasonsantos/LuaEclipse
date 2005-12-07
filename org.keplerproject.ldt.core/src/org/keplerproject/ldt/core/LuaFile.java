@@ -3,7 +3,11 @@ package org.keplerproject.ldt.core;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 
-
+/**
+ * Lua File Model
+ * @author guilherme
+ *
+ */
 public class LuaFile
     implements LuaElement
 {

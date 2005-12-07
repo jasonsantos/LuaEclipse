@@ -7,7 +7,12 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.keplerproject.ldt.core.LuaCorePlugin;
 
-
+/**
+ * Resource Selector to Lua Project. Used at the "Browse" button at 
+ * launch configurations
+ * @author guilherme
+ *
+ */
 public class LuaProjectSelector extends ResourceSelector
 {
 

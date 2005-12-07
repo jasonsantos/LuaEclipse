@@ -8,11 +8,17 @@ public class LuaInterpreter
 
     protected File file;
     protected String name;
+    protected String[] environment;
     public LuaInterpreter(String aName, String validFile)
     {
         if(validFile != null)
             file = new File(validFile);
         name = aName;
+    }
+    public LuaInterpreter(String aName,String validFile,String[] env)
+    {
+    	this(aName,validFile);
+    	this.environment = env;    	
     }
 
     public String getFileName()
@@ -52,10 +58,14 @@ public class LuaInterpreter
         throws IOException
     {
         String command = getCommand() + " " + arguments;
-        return Runtime.getRuntime().exec(command, null, workingDirectory);
+        return Runtime.getRuntime().exec(command, getEnvironment(), workingDirectory);
     }
 
-    public boolean equals(Object other)
+    public String[] getEnvironment() {
+	
+		return environment;
+	}
+	public boolean equals(Object other)
     {
         if(other instanceof LuaInterpreter)
         {

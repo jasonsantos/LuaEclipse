@@ -2,7 +2,11 @@ package org.keplerproject.ldt.core;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-
+/**
+ * 
+ * @author guilherme
+ *
+ */
 public class LoadPathEntry {
 	public static final String TYPE_PROJECT = "project";
 

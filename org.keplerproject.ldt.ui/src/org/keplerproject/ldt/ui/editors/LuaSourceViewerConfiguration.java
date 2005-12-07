@@ -237,10 +237,10 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 						.getLength());
 
 				if (contType.equals(IDocument.DEFAULT_CONTENT_TYPE)) {
-					if (line.trim().contains("function".subSequence(0,8))) {
+					if (line.trim().contains(" function ".subSequence(0,9))) {
 						funcInit = lineRegion.getOffset();
 
-					} else if (funcInit != -1 && line.startsWith("end")) {
+					} else if (funcInit != -1 && line.startsWith("end ")) {
 						int breakCount = 0;
 						if(lineRegion.getOffset()+ 3 + 1 < doc.getLength()){
 						char lineb1 = doc.getChar(lineRegion.getOffset()+3 );

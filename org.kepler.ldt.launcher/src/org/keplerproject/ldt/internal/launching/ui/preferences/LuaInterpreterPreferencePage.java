@@ -27,202 +27,191 @@ import org.kepler.ldt.laucher.LauncherPlugin;
 import org.keplerproject.ldt.internal.launching.LuaInterpreter;
 import org.keplerproject.ldt.internal.launching.LuaRuntime;
 
-public class LuaInterpreterPreferencePage extends PreferencePage
-    implements IWorkbenchPreferencePage
-{
+public class LuaInterpreterPreferencePage extends PreferencePage implements
+		IWorkbenchPreferencePage {
 
-    public LuaInterpreterPreferencePage()
-    {
-        setPreferenceStore(LauncherPlugin.getDefault().getPreferenceStore());
-    }
+	protected CheckboxTableViewer tableViewer;
 
-    public void init(IWorkbench iworkbench)
-    {
-    }
+	protected Button addButton;
 
-    protected Control createContents(Composite parent)
-    {
-        noDefaultAndApplyButton();
-        Composite composite = createPageRoot(parent);
-        Table table = createInstalledInterpretersTable(composite);
-        createInstalledInterpretersTableViewer(table);
-        createButtonGroup(composite);
-        tableViewer.setInput(LuaRuntime.getDefault().getInstalledInterpreters());
-        LuaInterpreter selectedInterpreter = LuaRuntime.getDefault().getSelectedInterpreter();
-        if(selectedInterpreter != null)
-            tableViewer.setChecked(selectedInterpreter, true);
-        enableButtons();
-        return composite;
-    }
+	protected Button editButton;
 
-    protected void createButtonGroup(Composite composite)
-    {
-        Composite buttons = new Composite(composite, 0);
-        buttons.setLayoutData(new GridData(2));
-        GridLayout layout = new GridLayout();
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-        buttons.setLayout(layout);
-        addButton = new Button(buttons, 8);
-        addButton.setLayoutData(new GridData(768));
-        addButton.setText("Add");
-        addButton.addListener(13, new Listener() {
+	protected Button removeButton;
 
-            public void handleEvent(Event evt)
-            {
-                addInterpreter();
-            }
+	public LuaInterpreterPreferencePage() {
+		setPreferenceStore(LauncherPlugin.getDefault().getPreferenceStore());
+	}
 
-        });
-        editButton = new Button(buttons, 8);
-        editButton.setLayoutData(new GridData(768));
-        editButton.setText("Edit");
-        editButton.addListener(13, new Listener() {
+	public void init(IWorkbench iworkbench) {
+	}
 
-            public void handleEvent(Event evt)
-            {
-                editInterpreter();
-            }
+	protected Control createContents(Composite parent) {
+		noDefaultAndApplyButton();
+		Composite composite = createPageRoot(parent);
+		Table table = createInstalledInterpretersTable(composite);
+		createInstalledInterpretersTableViewer(table);
+		createButtonGroup(composite);
+		tableViewer
+				.setInput(LuaRuntime.getDefault().getInstalledInterpreters());
+		LuaInterpreter selectedInterpreter = LuaRuntime.getDefault()
+				.getSelectedInterpreter();
+		if (selectedInterpreter != null)
+			tableViewer.setChecked(selectedInterpreter, true);
+		enableButtons();
+		return composite;
+	}
 
-        });
-        removeButton = new Button(buttons, 8);
-        removeButton.setLayoutData(new GridData(768));
-        removeButton.setText("Remove");
-        removeButton.addListener(13, new Listener() {
+	protected void createButtonGroup(Composite composite) {
+		Composite buttons = new Composite(composite, 0);
+		buttons.setLayoutData(new GridData(2));
+		GridLayout layout = new GridLayout();
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		buttons.setLayout(layout);
+		addButton = new Button(buttons, 8);
+		addButton.setLayoutData(new GridData(768));
+		addButton.setText("Add");
+		addButton.addListener(13, new Listener() {
 
-            public void handleEvent(Event evt)
-            {
-                removeInterpreter();
-            }
+			public void handleEvent(Event evt) {
+				addInterpreter();
+			}
 
-        });
-    }
+		});
+		editButton = new Button(buttons, 8);
+		editButton.setLayoutData(new GridData(768));
+		editButton.setText("Edit");
+		editButton.addListener(13, new Listener() {
 
-    protected void createInstalledInterpretersTableViewer(Table table)
-    {
-        tableViewer = new CheckboxTableViewer(table);
-        tableViewer.setLabelProvider(new LuaInterpreterLabelProvider());
-        tableViewer.setContentProvider(new LuaInterpreterContentProvider());
-        tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			public void handleEvent(Event evt) {
+				editInterpreter();
+			}
 
-            public void selectionChanged(SelectionChangedEvent evt)
-            {
-                enableButtons();
-            }
+		});
+		removeButton = new Button(buttons, 8);
+		removeButton.setLayoutData(new GridData(768));
+		removeButton.setText("Remove");
+		removeButton.addListener(13, new Listener() {
 
-        });
-        tableViewer.addCheckStateListener(new ICheckStateListener() {
+			public void handleEvent(Event evt) {
+				removeInterpreter();
+			}
 
-            public void checkStateChanged(CheckStateChangedEvent event)
-            {
-                updateSelectedInterpreter(event.getElement());
-            }
+		});
+	}
 
-        });
-        tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+	protected void createInstalledInterpretersTableViewer(Table table) {
+		tableViewer = new CheckboxTableViewer(table);
+		tableViewer.setLabelProvider(new LuaInterpreterLabelProvider());
+		tableViewer.setContentProvider(new LuaInterpreterContentProvider());
+		tableViewer
+				.addSelectionChangedListener(new ISelectionChangedListener() {
 
-            public void doubleClick(DoubleClickEvent e)
-            {
-                editInterpreter();
-            }
+					public void selectionChanged(SelectionChangedEvent evt) {
+						enableButtons();
+					}
 
-        });
-    }
+				});
+		tableViewer.addCheckStateListener(new ICheckStateListener() {
 
-    protected Table createInstalledInterpretersTable(Composite composite)
-    {
-        Table table = new Table(composite, 0x10820);
-        GridData data = new GridData(1808);
-        table.setLayoutData(data);
-        table.setHeaderVisible(true);
-        table.setLinesVisible(false);
-        TableColumn column = new TableColumn(table, 0);
-        column.setText("Name");
-        column.setWidth(100);
-        column = new TableColumn(table, 0);
-        column.setText("Path");
-        column.setWidth(250);
-        return table;
-    }
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				updateSelectedInterpreter(event.getElement());
+			}
 
-    protected Composite createPageRoot(Composite parent)
-    {
-        Composite composite = new Composite(parent, 0);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        composite.setLayout(layout);
-        return composite;
-    }
+		});
+		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
 
-    protected void addInterpreter()
-    {
-        LuaInterpreter newInterpreter = new LuaInterpreter(null, null);
-        EditInterpreterDialog editor = new EditInterpreterDialog(getShell(), "Add interpreter");
-        editor.create();
-        editor.setInterpreterToEdit(newInterpreter);
-        if(editor.open() == 0)
-            tableViewer.add(newInterpreter);
-    }
+			public void doubleClick(DoubleClickEvent e) {
+				editInterpreter();
+			}
 
-    protected void removeInterpreter()
-    {
-        tableViewer.remove(getSelectedInterpreter());
-    }
+		});
+	}
 
-    protected void enableButtons()
-    {
-        if(getSelectedInterpreter() != null)
-        {
-            editButton.setEnabled(true);
-            removeButton.setEnabled(true);
-        } else
-        {
-            editButton.setEnabled(false);
-            removeButton.setEnabled(false);
-        }
-    }
+	protected Table createInstalledInterpretersTable(Composite composite) {
+		Table table = new Table(composite, 0x10820);
+		GridData data = new GridData(1808);
+		table.setLayoutData(data);
+		table.setHeaderVisible(true);
+		table.setLinesVisible(false);
+		TableColumn column = new TableColumn(table, 0);
+		column.setText("Name");
+		column.setWidth(100);
+		column = new TableColumn(table, 0);
+		column.setText("Path");
+		column.setWidth(250);
+		return table;
+	}
 
-    protected void updateSelectedInterpreter(Object interpreter)
-    {
-        Object checkedElements[] = tableViewer.getCheckedElements();
-        for(int i = 0; i < checkedElements.length; i++)
-            tableViewer.setChecked(checkedElements[i], false);
+	protected Composite createPageRoot(Composite parent) {
+		Composite composite = new Composite(parent, 0);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		composite.setLayout(layout);
+		return composite;
+	}
 
-        tableViewer.setChecked(interpreter, true);
-    }
+	protected void addInterpreter() {
+		LuaInterpreter newInterpreter = new LuaInterpreter(null, null);
+		EditInterpreterDialog editor = new EditInterpreterDialog(getShell(),
+				"Add interpreter");
+		editor.create();
+		editor.setInterpreterToEdit(newInterpreter);
+		if (editor.open() == 0)
+			tableViewer.add(newInterpreter);
+	}
 
-    protected void editInterpreter()
-    {
-        EditInterpreterDialog editor = new EditInterpreterDialog(getShell(), "Edit interpreter");
-        editor.create();
-        LuaInterpreter anInterpreter = getSelectedInterpreter();
-        editor.setInterpreterToEdit(anInterpreter);
-        if(editor.open() == 0)
-            tableViewer.update(anInterpreter, null);
-    }
+	protected void removeInterpreter() {
+		tableViewer.remove(getSelectedInterpreter());
+	}
 
-    protected LuaInterpreter getSelectedInterpreter()
-    {
-        IStructuredSelection selection = (IStructuredSelection)tableViewer.getSelection();
-        return (LuaInterpreter)selection.getFirstElement();
-    }
+	protected void enableButtons() {
+		if (getSelectedInterpreter() != null) {
+			editButton.setEnabled(true);
+			removeButton.setEnabled(true);
+		} else {
+			editButton.setEnabled(false);
+			removeButton.setEnabled(false);
+		}
+	}
 
-    public boolean performOk()
-    {
-        org.eclipse.swt.widgets.TableItem tableItems[] = tableViewer.getTable().getItems();
-        List installedInterpreters = new ArrayList(tableItems.length);
-        for(int i = 0; i < tableItems.length; i++)
-            installedInterpreters.add(tableItems[i].getData());
+	protected void updateSelectedInterpreter(Object interpreter) {
+		Object checkedElements[] = tableViewer.getCheckedElements();
+		for (int i = 0; i < checkedElements.length; i++)
+			tableViewer.setChecked(checkedElements[i], false);
 
-        LuaRuntime.getDefault().setInstalledInterpreters(installedInterpreters);
-        Object checkedElements[] = tableViewer.getCheckedElements();
-        if(checkedElements.length > 0)
-            LuaRuntime.getDefault().setSelectedInterpreter((LuaInterpreter)checkedElements[0]);
-        return super.performOk();
-    }
+		tableViewer.setChecked(interpreter, true);
+	}
 
-    protected CheckboxTableViewer tableViewer;
-    protected Button addButton;
-    protected Button editButton;
-    protected Button removeButton;
+	protected void editInterpreter() {
+		EditInterpreterDialog editor = new EditInterpreterDialog(getShell(),
+				"Edit interpreter");
+		editor.create();
+		LuaInterpreter anInterpreter = getSelectedInterpreter();
+		editor.setInterpreterToEdit(anInterpreter);
+		if (editor.open() == 0)
+			tableViewer.update(anInterpreter, null);
+	}
+
+	protected LuaInterpreter getSelectedInterpreter() {
+		IStructuredSelection selection = (IStructuredSelection) tableViewer
+				.getSelection();
+		return (LuaInterpreter) selection.getFirstElement();
+	}
+
+	public boolean performOk() {
+		org.eclipse.swt.widgets.TableItem tableItems[] = tableViewer.getTable()
+				.getItems();
+		List installedInterpreters = new ArrayList(tableItems.length);
+		for (int i = 0; i < tableItems.length; i++)
+			installedInterpreters.add(tableItems[i].getData());
+
+		LuaRuntime.getDefault().setInstalledInterpreters(installedInterpreters);
+		Object checkedElements[] = tableViewer.getCheckedElements();
+		if (checkedElements.length > 0)
+			LuaRuntime.getDefault().setSelectedInterpreter(
+					(LuaInterpreter) checkedElements[0]);
+		return super.performOk();
+	}
+
 }

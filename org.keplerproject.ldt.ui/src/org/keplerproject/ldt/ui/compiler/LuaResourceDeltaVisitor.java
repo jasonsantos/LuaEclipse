@@ -54,7 +54,7 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 		} catch (CoreException coreexception) {
 		}
 		String code = readFile(res);
-		code = "return function() " + code + " end";
+		code = "return function() " + code + "\n end";
 		LuaAlert alert = new LuaAlert(L, res);
 		try {
 			alert.register("java_error");

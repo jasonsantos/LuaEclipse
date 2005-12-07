@@ -21,6 +21,15 @@ import org.keplerproject.ldt.internal.launching.LuaInterpreter;
 
 public class EditInterpreterDialog extends Dialog
 {
+	protected LuaInterpreter interpreterToEdit;
+
+	protected Text interpreterNameText;
+
+	protected Text interpreterLocationText;
+	
+	protected Text interpreterInitFile;
+
+	protected IStatus allStatus[];
 
     public EditInterpreterDialog(Shell parentShell, String aDialogTitle)
     {
@@ -35,6 +44,7 @@ public class EditInterpreterDialog extends Dialog
         interpreterNameText.setText(interpreterName == null ? "" : interpreterName);
         String installLocation = interpreterToEdit.getFileName();
         interpreterLocationText.setText(installLocation == null ? "" : installLocation);
+       // interpreterInitFile.setText();
     }
 
     protected void createLocationEntryField(Composite composite)
@@ -141,8 +151,4 @@ public class EditInterpreterDialog extends Dialog
         return composite;
     }
 
-    protected LuaInterpreter interpreterToEdit;
-    protected Text interpreterNameText;
-    protected Text interpreterLocationText;
-    protected IStatus allStatus[];
 }
