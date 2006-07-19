@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.editors,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.jface.text,
- org.keplerproject.ldt.core;visibility:=reexport;bundle-version="1.0.0"
+ org.keplerproject.ldt.core;visibility:=reexport;bundle-version="1.0.0",
+ org.eclipse.ui.ide
 Eclipse-AutoStart: true
 Export-Package: org.keplerproject.ldt.ui,
  org.keplerproject.ldt.ui.compiler,

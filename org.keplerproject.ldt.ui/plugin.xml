@@ -26,5 +26,24 @@
             id="org.keplerproject.ldt.ui.preferences.PreferencePageLua">
       </page>
    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.keplerproject.ldt.ui.NewWizardsCategoryLua"
+            name="Lua"/>
+      <wizard
+            category="org.keplerproject.ldt.ui.NewWizardsCategoryLua"
+            class="org.keplerproject.ldt.ui.wizards.LuaProjectWizard"
+            icon="icons/lua.ico"
+            id="org.keplerproject.ldt.ui.NewWizardProjectCreation"
+            name="Lua Project"
+            project="true"/>
+      <wizard
+            category="org.keplerproject.ldt.ui.NewWizardsCategoryLua"
+            class="org.keplerproject.ldt.ui.wizards.LuaFileWizard"
+            icon="icons/file.gif"
+            id="org.keplerproject.ldt.ui.wizards.LuaFileWizard"
+            name="Lua File"/>
+   </extension>
 
 </plugin>
