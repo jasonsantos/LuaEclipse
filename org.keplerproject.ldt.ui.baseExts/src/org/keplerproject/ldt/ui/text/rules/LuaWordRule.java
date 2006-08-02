@@ -8,6 +8,8 @@ import org.eclipse.jface.text.rules.WordRule;
 
 public class LuaWordRule  extends WordRule implements IPredicateRule{
 
+	/** Buffer used for pattern detection */
+	
 	public IToken getSuccessToken() {
 		return super.fDefaultToken;
 	}

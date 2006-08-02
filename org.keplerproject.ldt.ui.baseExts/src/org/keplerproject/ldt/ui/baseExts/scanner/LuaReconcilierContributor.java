@@ -82,8 +82,9 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 			wordRule.addWord(reservedwords[i], keyword);
 		for (int i = 0; i < constants.length; i++)
 			wordRule.addWord(constants[i], constant);
-				for (int i = 0; i < functions.length; i++)
-			wordRule.addWord(functions[i], function);	 
+		for (int i = 0; i < functions.length; i++)
+			wordRule.addWord(functions[i], function);
+		
 
 		scanner.setPredicateRules(new IPredicateRule[] { new EndOfLineRule("--", scommnet),
 				new SingleLineRule("\"", "\"", string, '\\'),

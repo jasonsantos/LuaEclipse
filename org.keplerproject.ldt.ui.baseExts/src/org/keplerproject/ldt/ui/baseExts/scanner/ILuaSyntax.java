@@ -29,4 +29,6 @@ public interface ILuaSyntax {
         "setmetatable", "tonumber", "tostring", "type", "unpack", "xpcall"
     };
     Object[] allWords = { reservedwords, predicates, constants, functions };
+    
+    
 }
