@@ -26,18 +26,92 @@
             id="org.keplerproject.ldt.ui.preferences.PreferencePageLua">
       </page>
    </extension>
+
+   <extension
+         id="org.eclipse.ui.newWizards.luaEclipse"
+         name="LuaEclipse Wizards"
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.keplerproject.ldt.ui.luaCategory"
+            name="Lua"/>
+      <wizard
+            canFinishEarly="true"
+            category="org.keplerproject.ldt.ui.luaCategory"
+            class="org.keplerproject.ldt.ui.wizards.LuaProjectWizard"
+            finalPerspective="all"
+            hasPages="true"
+            id="org.keplerproject.ldt.ui.luaProject.Wizard"
+            name="New Lua Project Wizard"
+            preferredPerspectives="all"
+            project="true"
+            icon="icons/project.gif">
+         <description>
+            Creation of Lua Projects
+         </description>
+      </wizard>
+      <wizard
+            canFinishEarly="true"
+            category="org.keplerproject.ldt.ui.luaCategory"
+            class="org.keplerproject.ldt.ui.wizards.LuaFileWizard"
+            finalPerspective="all"
+            hasPages="true"
+            id="org.keplerproject.ldt.ui.luaFile.Wizard"
+            name="New Lua File Wizard"
+            preferredPerspectives="all"
+            project="false"
+            icon="icons/file.gif">
+         <description>
+            Creation of Lua Source File
+         </description>
+      </wizard>
+   </extension>
+   
+   <extension id="NewLuaProjectAction"
+         name="New Lua Project Wizard Action"
+         point="org.eclipse.ui.actionSets">
+  <actionSet id="org.keplerproject.ldt.ui.luaProjectAction"
+        label="Lua Actions"
+        visible="true">        
+    <action id="org.keplerproject.ldt.ui.actions.LuaProjectWizardActions"
+          menubarPath="file/new/additions"
+          icon="icons/project.gif"
+          tooltip="Starts the New Lua Project Wizard."
+          label="New Lua Project"
+          class="org.keplerproject.ldt.ui.actions.LuaProjectWizardActions">
+     </action>
+     <action id="org.keplerproject.ldt.ui.actions.LuaFileWizardAction"
+          menubarPath="file/new/additions"
+          icon="icons/file.gif"
+          tooltip="Starts the New Lua File Wizard."
+          label="New Lua File"
+          class="org.keplerproject.ldt.ui.actions.LuaFileWizardAction">
+    </action>
+  </actionSet>
+</extension>
+
+<extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IProject"
+            nameFilter="*"
+            id="org.keplerproject.ldt.ui.newfilecontributor">
+         <action
+               class="org.keplerproject.ldt.ui.actions.LuaFileWizardAction"
+               enablesFor="+"
+               icon="icons/file.gif"
+               id="org.keplerproject.ldt.core.newLuaFileWizard"
+               label="New Lua File"
+               menubarPath="new/additions">
+         </action>
+      </objectContribution>
+   </extension>
+
    <extension
          point="org.eclipse.ui.newWizards">
       <category
             id="org.keplerproject.ldt.ui.NewWizardsCategoryLua"
-            name="Lua"/>
-      <wizard
-            category="org.keplerproject.ldt.ui.NewWizardsCategoryLua"
-            class="org.keplerproject.ldt.ui.wizards.LuaProjectWizard"
-            icon="icons/lua.ico"
-            id="org.keplerproject.ldt.ui.NewWizardProjectCreation"
-            name="Lua Project"
-            project="true"/>
+            name="Lua thiago"/>
       <wizard
             category="org.keplerproject.ldt.ui.NewWizardsCategoryLua"
             class="org.keplerproject.ldt.ui.wizards.LuaFileWizard"
@@ -45,5 +119,6 @@
             id="org.keplerproject.ldt.ui.wizards.LuaFileWizard"
             name="Lua File"/>
    </extension>
+
 
 </plugin>
