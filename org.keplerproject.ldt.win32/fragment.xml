@@ -12,6 +12,9 @@
       <library name="win32.jar">
          <export name="*"/>
       </library>
+      <library name="luajava-1.0.dll">
+         <export name="*"/>
+      </library>
    </runtime>
 
 </fragment>
