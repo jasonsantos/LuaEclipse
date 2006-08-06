@@ -229,28 +229,33 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 			cNextPos = nextPos;
 			int funcInit = -1;
 
-			while (cNextPos < fRangeEnd) {
+			while (cNextPos < fRangeEnd) 
+      {
 				ITypedRegion region = doc.getPartition(cNextPos);
 				String contType = region.getType();
 				IRegion lineRegion = doc.getLineInformationOfOffset(cNextPos);
 				String line = doc.get(lineRegion.getOffset(), lineRegion
 						.getLength());
 
-				if (contType.equals(IDocument.DEFAULT_CONTENT_TYPE)) {
-					if (line.trim().contains(" function ".subSequence(0,9))) {
+				if (contType.equals(IDocument.DEFAULT_CONTENT_TYPE)) 
+        {
+					if (line.trim().contains("function")) 
+          {
 						funcInit = lineRegion.getOffset();
-
-					} else if (funcInit != -1 && line.startsWith("end ")) {
+					} 
+          else if (funcInit != -1 && line.startsWith("end"))
+          {
 						int breakCount = 0;
-						if(lineRegion.getOffset()+ 3 + 1 < doc.getLength()){
-						char lineb1 = doc.getChar(lineRegion.getOffset()+3 );
-						char lineb2 = doc.getChar(lineRegion.getOffset()+ 3 + 1 );
-						
-						if( lineb1 == '\r' && lineb2 == '\n')
-							//Windows
-							breakCount = 2;
-						else if(lineb1 == '\r' || lineb1 == '\n')
-							breakCount = 1;
+						if(lineRegion.getOffset()+ 3 + 1 < doc.getLength())
+            {
+  						char lineb1 = doc.getChar(lineRegion.getOffset()+3 );
+  						char lineb2 = doc.getChar(lineRegion.getOffset()+ 3 + 1 );
+  						
+  						if( lineb1 == '\r' && lineb2 == '\n')
+  							//Windows
+  							breakCount = 2;
+  						else if(lineb1 == '\r' || lineb1 == '\n')
+  							breakCount = 1;
 						}
 						emitPosition(funcInit, lineRegion.getOffset()
 								+ lineRegion.getLength() - funcInit + breakCount);
@@ -258,18 +263,20 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 
 					}
 					cNextPos += lineRegion.getLength() + 2;
-				} else if (contType.equals("__lua_multiline_comment")) {
+				} 
+        else if (contType.equals("__lua_multiline_comment")) {
 					int breakCount = 0;
-					if(region.getOffset()+region.getLength()+ 1 < doc.getLength()){
-					char lineb1 = doc.getChar(region.getOffset()+region.getLength() );
-					char lineb2 = doc.getChar(region.getOffset()+region.getLength() + 1 );
-					
-					if( lineb1 == '\r' && lineb2 == '\n')
-						//Windows
-						breakCount = 2;
-					else if(lineb1 == '\r' || lineb1 == '\n')
-						breakCount = 1;
-					}	
+					if(region.getOffset()+region.getLength()+ 1 < doc.getLength())
+          {
+  					char lineb1 = doc.getChar(region.getOffset()+region.getLength() );
+  					char lineb2 = doc.getChar(region.getOffset()+region.getLength() + 1 );
+  					
+  					if( lineb1 == '\r' && lineb2 == '\n')
+  						//Windows
+  						breakCount = 2;
+  					else if(lineb1 == '\r' || lineb1 == '\n')
+  						breakCount = 1;
+					}
 					
 					emitPosition(region.getOffset(), region.getLength() + breakCount);
 					cNextPos += region.getLength() + 2;

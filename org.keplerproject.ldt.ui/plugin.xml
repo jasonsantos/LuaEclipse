@@ -41,7 +41,7 @@
             finalPerspective="all"
             hasPages="true"
             id="org.keplerproject.ldt.ui.luaProject.Wizard"
-            name="New Lua Project Wizard"
+            name="New Lua Project"
             preferredPerspectives="all"
             project="true"
             icon="icons/project.gif">
@@ -56,7 +56,7 @@
             finalPerspective="all"
             hasPages="true"
             id="org.keplerproject.ldt.ui.luaFile.Wizard"
-            name="New Lua File Wizard"
+            name="New Lua File"
             preferredPerspectives="all"
             project="false"
             icon="icons/file.gif">
@@ -89,36 +89,7 @@
   </actionSet>
 </extension>
 
-<extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            adaptable="true"
-            objectClass="org.eclipse.core.resources.IProject"
-            nameFilter="*"
-            id="org.keplerproject.ldt.ui.newfilecontributor">
-         <action
-               class="org.keplerproject.ldt.ui.actions.LuaFileWizardAction"
-               enablesFor="+"
-               icon="icons/file.gif"
-               id="org.keplerproject.ldt.core.newLuaFileWizard"
-               label="New Lua File"
-               menubarPath="new/additions">
-         </action>
-      </objectContribution>
-   </extension>
 
-   <extension
-         point="org.eclipse.ui.newWizards">
-      <category
-            id="org.keplerproject.ldt.ui.NewWizardsCategoryLua"
-            name="Lua thiago"/>
-      <wizard
-            category="org.keplerproject.ldt.ui.NewWizardsCategoryLua"
-            class="org.keplerproject.ldt.ui.wizards.LuaFileWizard"
-            icon="icons/file.gif"
-            id="org.keplerproject.ldt.ui.wizards.LuaFileWizard"
-            name="Lua File"/>
-   </extension>
 
 
 </plugin>
