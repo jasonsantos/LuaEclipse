@@ -28,7 +28,12 @@ public interface ILuaSyntax {
         "print", "rawequal", "rawget", "rawset", "require", "setfenv",
         "setmetatable", "tonumber", "tostring", "type", "unpack", "xpcall"
     };
-    Object[] allWords = { reservedwords, predicates, constants, functions };
+    Object[] allWords = { reservedwords, predicates, constants };
+    
+    
+    // The string type for functions
+    public static final String FUNCTION_TYPE_NAME = "function";
+    
     
     
 }

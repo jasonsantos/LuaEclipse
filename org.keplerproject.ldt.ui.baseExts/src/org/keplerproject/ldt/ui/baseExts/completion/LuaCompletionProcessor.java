@@ -70,10 +70,16 @@ public class LuaCompletionProcessor implements IContentAssistProcessor,
 						contextKey = key;
 
 					Image image = null;
-
+					String strLuaType = L.typeName(L.type(-1));
 					// load function.gif, table.gif or string.gif
 					image = LuaCorePlugin.getDefault().getImageRegistry().get(
-							L.typeName(L.type(-1)));
+							strLuaType);
+					
+					//To functions, use de ().
+					if(FUNCTION_TYPE_NAME.equals(strLuaType))
+					{
+						key+="()";
+					}
 
 					IContextInformation info = new ContextInformation(
 							contextKey, getContentInfoString(contextKey));
@@ -85,7 +91,6 @@ public class LuaCompletionProcessor implements IContentAssistProcessor,
 
 					proposalList.add(proposal);
 				}
-
 				L.pop(1); // removes `value'; keeps `key' for next iteration
 			}
 
