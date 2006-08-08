@@ -1,5 +1,7 @@
 package org.keplerproject.ldt.internal.launching.ui;
 
+import java.io.File;
+
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
@@ -53,7 +55,7 @@ public class LuaSourceLocator implements IPersistableSourceLocator,
 				.getWorkspace().getRoot()
 				.getFileForLocation(new Path(filename));
 		if (eclipseFile == null) {
-			filename = getAbsoluteWorkingDirectory() + "/" + filename;
+			filename = getAbsoluteWorkingDirectory() + File.pathSeparator + filename;
 			eclipseFile = ResourcesPlugin.getWorkspace().getRoot()
 					.getFileForLocation(new Path(filename));
 			if (eclipseFile == null)

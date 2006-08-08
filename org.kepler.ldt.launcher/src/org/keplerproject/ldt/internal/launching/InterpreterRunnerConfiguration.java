@@ -20,7 +20,7 @@ public class InterpreterRunnerConfiguration implements LuaLaunchConfigurationAtt
     public String getAbsoluteFileName()
     {
         IProject project = getProject().getProject();
-        return project.getLocation().toOSString() + "\\" + getFileName();
+        return project.getLocation().toOSString() + File.separator + getFileName();
     }
 
     public String getFileName()

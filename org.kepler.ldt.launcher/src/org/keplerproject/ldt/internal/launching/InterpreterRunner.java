@@ -43,7 +43,6 @@ public class InterpreterRunner
 
     protected String renderCommandLine(InterpreterRunnerConfiguration configuration)
     {
-//        LuaInterpreter interpreter = configuration.getInterpreter();
         StringBuffer buffer = new StringBuffer();
         buffer.append(getDebugCommandLineArgument());
         buffer.append(" " + configuration.getInterpreterArguments());
