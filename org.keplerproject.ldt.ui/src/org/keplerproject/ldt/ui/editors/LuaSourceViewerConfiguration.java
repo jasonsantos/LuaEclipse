@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.BadLocationException;
@@ -47,7 +49,7 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	private LuaColorManager colorManager;
 
 	private IEditorPart editor;
-
+  
 	public LuaSourceViewerConfiguration(LuaColorManager colorManager) {
 		this.colorManager = colorManager;
 	}
@@ -224,22 +226,91 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 			});
 		}
 
-		private void findNextFunction(int nextPos) throws BadLocationException {
-
+		private void findNextFunction(int nextPos) throws BadLocationException 
+    {
 			cNextPos = nextPos;
-			int funcInit = -1;
+			//int funcInit = -1;
+      
+      Stack stk = new Stack();
+      boolean onMultStr = false;
 
 			while (cNextPos < fRangeEnd) 
       {
 				ITypedRegion region = doc.getPartition(cNextPos);
 				String contType = region.getType();
 				IRegion lineRegion = doc.getLineInformationOfOffset(cNextPos);
-				String line = doc.get(lineRegion.getOffset(), lineRegion
-						.getLength());
+				String line = doc.get(lineRegion.getOffset(), lineRegion.getLength());
 
 				if (contType.equals(IDocument.DEFAULT_CONTENT_TYPE)) 
         {
-					if (line.trim().contains("function")) 
+          StringTokenizer tk = new StringTokenizer(line, " ");
+          while (tk.hasMoreTokens())
+          {
+            String word = tk.nextToken();
+            
+            if (!onMultStr)
+            {
+              if (word.equals("while") || word.equals("function") || word.equals("if") || word.equals("for"))
+              {
+                stk.push(lineRegion);
+              }
+              else if (word.equals("end"))
+              {
+                IRegion lReg = (IRegion) stk.pop();
+                if (lReg.getOffset() == lineRegion.getOffset())
+                  continue;
+                
+                int breakCount = 0;
+                if(lineRegion.getOffset()+ 3 + 1 < doc.getLength())
+                {
+                  char lineb1 = doc.getChar(lineRegion.getOffset()+3 );
+                  char lineb2 = doc.getChar(lineRegion.getOffset()+ 3 + 1 );
+                  
+                  if( lineb1 == '\r' && lineb2 == '\n')
+                    //Windows
+                    breakCount = 2;
+                  else if(lineb1 == '\r' || lineb1 == '\n')
+                    breakCount = 1;
+                }
+                emitPosition(lReg.getOffset(), lineRegion.getOffset()
+                    + lineRegion.getLength() - lReg.getOffset() + breakCount);
+              }
+              else if (word.equals("\""))
+              {
+                while(tk.hasMoreTokens() && !tk.nextToken().equals("\""));
+              }
+              else if (word.equals("[["))
+              {
+                onMultStr = true;
+                stk.push(lineRegion);
+              }
+            }
+            else if (word.equals("]]"))
+            {
+              onMultStr = false;
+              
+              IRegion lReg = (IRegion) stk.pop();
+              if (lReg.getOffset() == lineRegion.getOffset())
+                continue;
+              
+              int breakCount = 0;
+              if(lineRegion.getOffset()+ 3 + 1 < doc.getLength())
+              {
+                char lineb1 = doc.getChar(lineRegion.getOffset()+3 );
+                char lineb2 = doc.getChar(lineRegion.getOffset()+ 3 + 1 );
+                
+                if( lineb1 == '\r' && lineb2 == '\n')
+                  //Windows
+                  breakCount = 2;
+                else if(lineb1 == '\r' || lineb1 == '\n')
+                  breakCount = 1;
+              }
+              emitPosition(lReg.getOffset(), lineRegion.getOffset()
+                  + lineRegion.getLength() - lReg.getOffset() + breakCount);
+            }
+          }
+          cNextPos += lineRegion.getLength() + 2;
+/*					if (line.trim().contains("function")) 
           {
 						funcInit = lineRegion.getOffset();
 					} 
@@ -262,9 +333,10 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 						funcInit = -1;
 
 					}
-					cNextPos += lineRegion.getLength() + 2;
+					cNextPos += lineRegion.getLength() + 2;*/
 				} 
-        else if (contType.equals("__lua_multiline_comment")) {
+        else if (contType.equals("__lua_multiline_comment")) 
+        {
 					int breakCount = 0;
 					if(region.getOffset()+region.getLength()+ 1 < doc.getLength())
           {
