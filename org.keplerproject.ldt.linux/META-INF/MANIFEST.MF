@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.keplerproject.ldt.linux; singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Vendor: Kepler Project
 Fragment-Host: org.keplerproject.ldt.core;bundle-version="1.0.0"
-Bundle-Localization: fragment
+Bundle-Localization: plugin
 Eclipse-AutoStart: true
 Eclipse-ExtensibleAPI: true
-Eclipse-PlatformFilter: (& (osgi.os=linux) )
+Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=x86))
