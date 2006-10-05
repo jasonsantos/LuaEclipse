@@ -30,6 +30,7 @@ public class LuaFileWizardAction extends Action implements IWorkbenchWindowActio
         IStructuredSelection selection = (IStructuredSelection)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().getSelection();
         wizard.init(PlatformUI.getWorkbench(),ResourceSelectionUtil.allResources(selection,0));
         WizardDialog dialog= new WizardDialog(shell, wizard);
+        dialog.setTitle("Lua File Wizard");
         dialog.create();
         dialog.open();
     }
@@ -37,4 +38,5 @@ public class LuaFileWizardAction extends Action implements IWorkbenchWindowActio
     /** Called when objects in the editor are selected or deselected. */
     public void selectionChanged(IAction action, ISelection selection) {
     }
+    
 }
