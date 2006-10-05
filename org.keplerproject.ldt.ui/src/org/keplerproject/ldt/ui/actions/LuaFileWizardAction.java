@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.views.navigator.ResourceSelectionUtil;
 import org.keplerproject.ldt.ui.wizards.LuaFileWizard;
 
 
@@ -26,8 +27,8 @@ public class LuaFileWizardAction extends Action implements IWorkbenchWindowActio
         LuaFileWizard wizard= new LuaFileWizard();
         Shell shell =
           PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-        ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().getSelection();
-        wizard.init(PlatformUI.getWorkbench(),(IStructuredSelection)selection);
+        IStructuredSelection selection = (IStructuredSelection)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().getSelection();
+        wizard.init(PlatformUI.getWorkbench(),ResourceSelectionUtil.allResources(selection,0));
         WizardDialog dialog= new WizardDialog(shell, wizard);
         dialog.create();
         dialog.open();
