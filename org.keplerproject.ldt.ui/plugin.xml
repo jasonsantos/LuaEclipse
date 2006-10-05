@@ -60,6 +60,7 @@
             preferredPerspectives="all"
             project="false"
             icon="icons/file.gif">
+            <selection class="org.eclipse.core.resources.IResource" />
          <description>
             Creation of Lua Source File
          </description>

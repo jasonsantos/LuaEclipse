@@ -43,6 +43,7 @@ import org.eclipse.ui.ide.IDE;
 public class LuaFileWizard extends Wizard implements INewWizard {
 	private WizardNewFileCreationPage page;
 	private IStructuredSelection selection;
+	private IWorkbench workbench;
 
 	/**
 	 * Constructor for LuaFileWizard.
@@ -158,6 +159,9 @@ public class LuaFileWizard extends Wizard implements INewWizard {
 	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selection = selection;
+		  this.workbench = workbench;
+	      this.selection = selection;
+	      setWindowTitle("New Lua File Wizard");
+	      //setDefaultPageImageDescriptor(ReadmeImages.README_WIZARD_BANNER);
 	}
 }
