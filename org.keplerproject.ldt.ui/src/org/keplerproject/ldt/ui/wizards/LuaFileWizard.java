@@ -51,6 +51,7 @@ public class LuaFileWizard extends Wizard implements INewWizard {
 	public LuaFileWizard() {
 		super();
 		setNeedsProgressMonitor(true);
+		
 	}
 	
 	/**
