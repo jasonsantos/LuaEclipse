@@ -6,6 +6,6 @@ Bundle-Version: 1.0.0
 Bundle-Vendor: Kepler Project
 Fragment-Host: org.keplerproject.ldt.core;bundle-version="1.0.0"
 Bundle-Localization: plugin
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
 Eclipse-ExtensibleAPI: true
 Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=x86))
