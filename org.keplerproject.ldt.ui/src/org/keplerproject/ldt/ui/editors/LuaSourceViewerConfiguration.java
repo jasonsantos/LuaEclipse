@@ -3,12 +3,13 @@
  *************************/
 package org.keplerproject.ldt.ui.editors;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
-import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.BadLocationException;
@@ -35,12 +36,16 @@ import org.keplerproject.ldt.ui.LDTUIPlugin;
 import org.keplerproject.ldt.ui.editors.ext.ILuaContentAssistExtension;
 import org.keplerproject.ldt.ui.editors.ext.ILuaContentTypeExtension;
 import org.keplerproject.ldt.ui.editors.ext.ILuaReconcilierExtension;
+import org.keplerproject.ldt.ui.editors.lex.Scanner;
+import org.keplerproject.ldt.ui.editors.lex.Symbol;
+import org.keplerproject.ldt.ui.editors.lex.sym;
 
 /**
  * The lua source viewer configuration. This class captures the
  * SourceViewerConfiguration Extension point.
  * 
  * @author Guilherme Martins
+ * @author Thiago Ponte
  * 
  */
 public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
@@ -217,6 +222,10 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			}
+      catch (IOException e)
+      {
+        e.printStackTrace();
+      }
 			
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
@@ -226,13 +235,14 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 			});
 		}
 
-		private void findNextFunction(int nextPos) throws BadLocationException 
+		private void findNextFunction(int nextPos) throws BadLocationException, IOException 
     {
 			cNextPos = nextPos;
 			//int funcInit = -1;
       
       Stack stk = new Stack();
       boolean onMultStr = false;
+      boolean elseIf = false;
 
 			while (cNextPos < fRangeEnd) 
       {
@@ -240,21 +250,46 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 				String contType = region.getType();
 				IRegion lineRegion = doc.getLineInformationOfOffset(cNextPos);
 				String line = doc.get(lineRegion.getOffset(), lineRegion.getLength());
-
+        
 				if (contType.equals(IDocument.DEFAULT_CONTENT_TYPE)) 
         {
-          StringTokenizer tk = new StringTokenizer(line, " ");
-          while (tk.hasMoreTokens())
+          Scanner scanner = new Scanner(new StringReader(line));
+          //Symbol symbol = scanner.yylex();
+          Symbol symbol;
+
+          //StringTokenizer tk = new StringTokenizer(line, " ");
+          //while (tk.hasMoreTokens())
+          //while (symbol.sym != sym.EOF)
+          do
           {
-            String word = tk.nextToken();
+            symbol = scanner.yylex();
+            //String word = tk.nextToken();
             
             if (!onMultStr)
             {
-              if (word.equals("while") || word.equals("function") || word.equals("if") || word.equals("for"))
+            	//if (symbol.value)//(word.startsWith("--"))
+            	//{
+            //		break;
+            //	}
+            	//else if (word.equals("while") || word.equals("function") || word.equals("if") || word.equals("for"))
+            	//else if (word.equals("do") || word.equals("then") || word.equals("function"))
+              if (symbol.sym == sym.DO || symbol.sym == sym.FUNCTION)
               {
                 stk.push(lineRegion);
               }
-              else if (word.equals("end"))
+              else if (symbol.sym == sym.THEN)
+              {
+                if (elseIf)
+                  elseIf = false;
+                else
+                  stk.push(lineRegion);
+              }
+              else if (symbol.sym == sym.ELSEIF)
+              {
+                elseIf = true;
+              }
+              //else if (word.equals("end"))
+              else if (symbol.sym == sym.END)
               {
                 IRegion lReg = (IRegion) stk.pop();
                 if (lReg.getOffset() == lineRegion.getOffset())
@@ -275,17 +310,21 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
                 emitPosition(lReg.getOffset(), lineRegion.getOffset()
                     + lineRegion.getLength() - lReg.getOffset() + breakCount);
               }
-              else if (word.equals("\""))
-              {
-                while(tk.hasMoreTokens() && !tk.nextToken().equals("\""));
-              }
-              else if (word.equals("[["))
+              //else if (word.equals("\""))
+              //else if (symbol.sym == sym.STRING_LITERAL || symbol.sym == sym.CHARACTER_LITERAL)
+              //{
+                
+                //while(tk.hasMoreTokens() && !tk.nextToken().equals("\""));
+              //}
+              //else if (word.equals("[["))
+              else if (symbol.sym == sym.DBLBRACK)
               {
                 onMultStr = true;
                 stk.push(lineRegion);
               }
             }
-            else if (word.equals("]]"))
+            //else if (word.equals("]]"))
+            else if (symbol.sym == sym.DBRBRACK)
             {
               onMultStr = false;
               
@@ -309,31 +348,9 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
                   + lineRegion.getLength() - lReg.getOffset() + breakCount);
             }
           }
+          while(symbol.sym != sym.EOF);
+          
           cNextPos += lineRegion.getLength() + 2;
-/*					if (line.trim().contains("function")) 
-          {
-						funcInit = lineRegion.getOffset();
-					} 
-          else if (funcInit != -1 && line.startsWith("end"))
-          {
-						int breakCount = 0;
-						if(lineRegion.getOffset()+ 3 + 1 < doc.getLength())
-            {
-  						char lineb1 = doc.getChar(lineRegion.getOffset()+3 );
-  						char lineb2 = doc.getChar(lineRegion.getOffset()+ 3 + 1 );
-  						
-  						if( lineb1 == '\r' && lineb2 == '\n')
-  							//Windows
-  							breakCount = 2;
-  						else if(lineb1 == '\r' || lineb1 == '\n')
-  							breakCount = 1;
-						}
-						emitPosition(funcInit, lineRegion.getOffset()
-								+ lineRegion.getLength() - funcInit + breakCount);
-						funcInit = -1;
-
-					}
-					cNextPos += lineRegion.getLength() + 2;*/
 				} 
         else if (contType.equals("__lua_multiline_comment")) 
         {
