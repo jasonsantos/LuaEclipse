@@ -186,7 +186,7 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 		private int fRangeEnd;
 
 		private int cNextPos;
-
+		
 		public void setDocument(IDocument document) {
 			this.doc = document;
 		}
@@ -213,6 +213,9 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 		}
 
 		protected void calculatePositions() {
+			
+			if (reditor.isDirty()) return;
+			
 			fPositions.clear();
 			cNextPos = fOffset;
 			// String contType;
@@ -254,25 +257,14 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 				if (contType.equals(IDocument.DEFAULT_CONTENT_TYPE)) 
         {
           Scanner scanner = new Scanner(new StringReader(line));
-          //Symbol symbol = scanner.yylex();
           Symbol symbol;
 
-          //StringTokenizer tk = new StringTokenizer(line, " ");
-          //while (tk.hasMoreTokens())
-          //while (symbol.sym != sym.EOF)
           do
           {
             symbol = scanner.yylex();
-            //String word = tk.nextToken();
             
             if (!onMultStr)
             {
-            	//if (symbol.value)//(word.startsWith("--"))
-            	//{
-            //		break;
-            //	}
-            	//else if (word.equals("while") || word.equals("function") || word.equals("if") || word.equals("for"))
-            	//else if (word.equals("do") || word.equals("then") || word.equals("function"))
               if (symbol.sym == sym.DO || symbol.sym == sym.FUNCTION)
               {
                 stk.push(lineRegion);
