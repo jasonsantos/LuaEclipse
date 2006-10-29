@@ -7,6 +7,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -18,6 +19,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.keplerproject.ldt.internal.launching.LuaInterpreter;
 import org.keplerproject.ldt.internal.launching.LuaLaunchConfigurationAttribute;
 import org.keplerproject.ldt.internal.launching.LuaRuntime;
@@ -25,6 +27,10 @@ import org.keplerproject.ldt.internal.launching.ui.preferences.EditInterpreterDi
 
 public class LuaEnvironmentTab extends AbstractLaunchConfigurationTab implements LuaLaunchConfigurationAttribute
 {
+	protected List installedInterpretersWorkingCopy;  
+    protected Combo interpreterCombo;
+    protected Text enVar;
+
 
     public LuaEnvironmentTab()
     {
@@ -37,7 +43,7 @@ public class LuaEnvironmentTab extends AbstractLaunchConfigurationTab implements
         interpreterCombo = new Combo(composite, 8);
         interpreterCombo.setLayoutData(new GridData(768));
         initializeInterpreterCombo(interpreterCombo);
-        interpreterCombo.addModifyListener(getInterpreterComboModifyListener());
+        interpreterCombo.addModifyListener(getEnvironmentModifyListener());
         Button interpreterAddButton = new Button(composite, 8);
         interpreterAddButton.setText("N&ew...");
         interpreterAddButton.addSelectionListener(new SelectionAdapter() {
@@ -57,9 +63,34 @@ public class LuaEnvironmentTab extends AbstractLaunchConfigurationTab implements
             }
 
         });
+        (new Label(composite, 0)).setText("&Variables (line separated):");
+        enVar = new Text(composite,SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+        GridData gd = new GridData(768);
+        gd.heightHint = 200;
+        gd.minimumHeight=150;
+        enVar.setLayoutData(gd);
+        
+        enVar.addModifyListener(getEnvironmentModifyListener());
+           
     }
 
-    protected ModifyListener getInterpreterComboModifyListener()
+    protected void initializeLuaInitText(ILaunchConfiguration configuration) {
+    	String enVarsStr = null;
+        try
+        {
+        	enVarsStr = configuration.getAttribute(ENVIRONMENT_VARS, "");
+        }
+        catch(CoreException e)
+        {
+            log(e);
+        }
+        if(enVarsStr != null && !enVarsStr.equals(""))
+        {
+        	this.enVar.setText(enVarsStr);
+        }
+	}
+
+	protected ModifyListener getEnvironmentModifyListener()
     {
         return new ModifyListener() {
 
@@ -78,6 +109,7 @@ public class LuaEnvironmentTab extends AbstractLaunchConfigurationTab implements
     public void initializeFrom(ILaunchConfiguration configuration)
     {
         initializeInterpreterSelection(configuration);
+        initializeLuaInitText(configuration);
     }
 
     protected void initializeInterpreterSelection(ILaunchConfiguration configuration)
@@ -117,6 +149,12 @@ public class LuaEnvironmentTab extends AbstractLaunchConfigurationTab implements
         int selectionIndex = interpreterCombo.getSelectionIndex();
         if(selectionIndex >= 0)
             configuration.setAttribute(SELECTED_INTERPRETER, interpreterCombo.getItem(selectionIndex));
+        
+        String envVarsstr = enVar.getText();
+        if(envVarsstr ==null )
+        	configuration.setAttribute(ENVIRONMENT_VARS,"");
+        else
+        	configuration.setAttribute(ENVIRONMENT_VARS, envVarsstr);
     }
 
     protected Composite createPageRoot(Composite parent)
@@ -162,8 +200,6 @@ public class LuaEnvironmentTab extends AbstractLaunchConfigurationTab implements
         return null;
     }
 
-    protected List installedInterpretersWorkingCopy;
-    protected Combo interpreterCombo;
-
+    
 
 }

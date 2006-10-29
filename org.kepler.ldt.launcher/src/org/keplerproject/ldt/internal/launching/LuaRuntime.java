@@ -175,7 +175,7 @@ public class LuaRuntime {
 					installedInterpreters.add(interpreter);
 					if (atts.getValue("selected") != null)
 						selectedInterpreter = interpreter;
-				}
+				} 
 			}
 
 			public void endElement(String s, String s1, String s2)

@@ -76,4 +76,9 @@ public class LuaInterpreter
         return false;
     }
 
+	public void setEnvironment(String[] strings) {
+		environment = strings;
+		
+	}
+
 }

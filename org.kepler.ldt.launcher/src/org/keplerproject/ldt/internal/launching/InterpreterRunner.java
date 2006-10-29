@@ -21,10 +21,13 @@ public class InterpreterRunner
     {
         String commandLine = renderCommandLine(configuration);
         java.io.File workingDirectory = configuration.getAbsoluteWorkingDirectory();
+        LuaInterpreter luaInterpreter =null;
         Process nativeLuaProcess = null;
         try
         {
-            nativeLuaProcess = configuration.getInterpreter().exec(commandLine, workingDirectory);
+      
+        	luaInterpreter =configuration.getInterpreter();
+            nativeLuaProcess = luaInterpreter.exec(commandLine, workingDirectory);
         }
         catch(IOException e)
         {
