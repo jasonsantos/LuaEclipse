@@ -47,29 +47,30 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 		reconciler.setDamager(ndr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);
 		reconciler.setRepairer(ndr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);
 
-		/*ndr = new NonRuleBasedDamagerRepairer(new TextAttribute(colorManager
-				.getColor(ILuaColorConstants.LUA_STRING)));
-		ndr.setDocument(viewer.getDocument());
-		dr.setDocument(viewer.getDocument());
-		reconciler.setDamager(ndr, ILuaPartitions.LUA_STRING);
-		reconciler.setRepairer(ndr, ILuaPartitions.LUA_STRING);*/
+		/*
+		 * ndr = new NonRuleBasedDamagerRepairer(new TextAttribute(colorManager
+		 * .getColor(ILuaColorConstants.LUA_STRING)));
+		 * ndr.setDocument(viewer.getDocument());
+		 * dr.setDocument(viewer.getDocument()); reconciler.setDamager(ndr,
+		 * ILuaPartitions.LUA_STRING); reconciler.setRepairer(ndr,
+		 * ILuaPartitions.LUA_STRING);
+		 */
 	}
 
 	private ITokenScanner getCodeScanner() {
 		LuaBaseScanner scanner = new LuaBaseScanner();
 
-		IToken keyword = new Token(new TextAttribute(
-				this.fColorManager.getColor(ILuaColorConstants.LUA_KEYWORD),
-				null, SWT.BOLD));
-		IToken constant = new Token(new TextAttribute(
-				this.fColorManager.getColor(ILuaColorConstants.LUA_CONSTANTS),
-				null, SWT.ITALIC));
+		IToken keyword = new Token(new TextAttribute(this.fColorManager
+				.getColor(ILuaColorConstants.LUA_KEYWORD), null, SWT.BOLD));
+		IToken constant = new Token(new TextAttribute(this.fColorManager
+				.getColor(ILuaColorConstants.LUA_CONSTANTS), null, SWT.ITALIC));
 		IToken string = new Token(new TextAttribute(fColorManager
 				.getColor(ILuaColorConstants.LUA_STRING)));
-		 IToken function = new Token(new
-		 TextAttribute(this.fColorManager.getColor(ILuaColorConstants.LUA_METHOD_NAME), null, SWT.BOLD | SWT.ITALIC));
-		 IToken scommnet = new Token(new TextAttribute(fColorManager
-					.getColor(ILuaColorConstants.LUA_MULTI_LINE_COMMENT)));
+		IToken otherPredicates = new Token(new TextAttribute(this.fColorManager
+				.getColor(ILuaColorConstants.LUA_OTHER_PREDICATE), null,
+				SWT.BOLD | SWT.ITALIC));
+		IToken scommnet = new Token(new TextAttribute(fColorManager
+				.getColor(ILuaColorConstants.LUA_MULTI_LINE_COMMENT)));
 		IToken other = new Token(new TextAttribute(this.fColorManager
 				.getColor(ILuaColorConstants.LUA_DEFAULT), null, SWT.NONE));
 		// Add generic whitespace rule.
@@ -82,16 +83,17 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 			wordRule.addWord(reservedwords[i], keyword);
 		for (int i = 0; i < constants.length; i++)
 			wordRule.addWord(constants[i], constant);
-		for (int i = 0; i < functions.length; i++)
-			wordRule.addWord(functions[i], function);
-		
 
-		scanner.setPredicateRules(new IPredicateRule[] { new EndOfLineRule("--", scommnet),
+		LuaWordRule predRule = new LuaWordRule(new LuaWordDetector());
+		for (int i = 0; i < otherpredicates.length; i++)
+			predRule.addWord(otherpredicates[i], otherPredicates);
+
+		scanner.setPredicateRules(new IPredicateRule[] {
+				new EndOfLineRule("--", scommnet),
 				new SingleLineRule("\"", "\"", string, '\\'),
 				new SingleLineRule("'", "'", string, '\\'),
-				new MultiLineRule("[[", "]]", string, '\\'),
-				wordRule,
-				whiteRule });
+				new MultiLineRule("[[", "]]", string, '\\'), predRule,
+				wordRule, whiteRule });
 
 		return scanner;
 	}

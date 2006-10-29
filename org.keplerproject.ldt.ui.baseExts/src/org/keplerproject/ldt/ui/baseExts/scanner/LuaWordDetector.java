@@ -20,6 +20,9 @@ public class LuaWordDetector
         for(int i = 0; i < ILuaSyntax.constants.length; i++)
             if(ILuaSyntax.constants[i].charAt(0) == c)
                 return true;
+        for(int i = 0; i < ILuaSyntax.otherpredicates.length; i++)
+            if(ILuaSyntax.otherpredicates[i].charAt(0) == c)
+                return true;
         return false;
     }
 
@@ -32,6 +35,9 @@ public class LuaWordDetector
 
         for(int i = 0; i < ILuaSyntax.constants.length; i++)
             if(ILuaSyntax.constants[i].indexOf(c) != -1)
+                return true;
+        for(int i = 0; i < ILuaSyntax.otherpredicates.length; i++)
+            if(ILuaSyntax.otherpredicates[i].charAt(0) == c)
                 return true;
        
         return false;
