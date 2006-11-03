@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
 <feature
       id="org.keplerproject.ldt.feature"
       label="Lua Development Tool"
@@ -61,16 +62,20 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    </license>
 
+   <url>
+      <update label="LuaEclipse" url="http://luaeclipse.luaforge.net/update-site"/>
+   </url>
+
    <requires>
-      <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.eclipse.ui.workbench.texteditor"/>
-      <import plugin="org.eclipse.debug.core"/>
       <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.debug.core"/>
    </requires>
 
    <plugin
@@ -78,27 +83,40 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          download-size="113"
          install-size="113"
          version="1.0.0"
-         unpack="false"/>
+         unpack="true"/>
 
    <plugin
          id="org.keplerproject.ldt.ui"
          download-size="117"
          install-size="117"
-         version="1.0.0"
-         unpack="false"/>
+         version="1.0.0"/>
 
    <plugin
          id="org.keplerproject.ldt.ui.baseExts"
          download-size="81"
          install-size="81"
-         version="1.0.0"
-         unpack="false"/>
+         version="1.0.0"/>
 
    <plugin
          id="org.keplerproject.ldt.launcher"
          download-size="48"
          install-size="48"
+         version="1.0.0"/>
+
+   <plugin
+         id="org.keplerproject.ldt.linux"
+         os="linux,macosx,win32"
+         download-size="75"
+         install-size="75"
          version="1.0.0"
-         unpack="false"/>
+         fragment="true"/>
+
+   <plugin
+         id="org.keplerproject.ldt.win32"
+         os="linux,macosx,win32"
+         download-size="75"
+         install-size="75"
+         version="1.0.0"
+         fragment="true"/>
 
 </feature>
