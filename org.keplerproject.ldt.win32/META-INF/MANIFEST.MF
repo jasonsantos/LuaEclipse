@@ -8,6 +8,6 @@ Bundle-Vendor: Kepler Project
 Bundle-Localization: fragment
 Eclipse-LazyStart: true
 Eclipse-ExtensibleAPI: true
-Eclipse-PlatformFilter: (& (osgi.ws=win32) (osgi.os=win32) (osgi.arch=x86))
+Eclipse-PlatformFilter: (& (| (osgi.os=win32) (osgi.os=linux) ) (osgi.arch=x86))
 
 
