@@ -20,7 +20,6 @@ import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.DefaultRangeIndicator;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.keplerproject.ldt.ui.LDTUIPlugin;
-import org.keplerproject.ldt.ui.compiler.LuaChangeListener;
 
 /**
  * Lua Text Editor.
@@ -57,7 +56,8 @@ public class LuaEditor extends TextEditor {
 		// get the error message
 		IResourceChangeListener listener = createResourceChangeListener(this);
 		LDTUIPlugin.getWorkspace().addResourceChangeListener(listener,
-				IResourceChangeEvent.POST_BUILD);
+				IResourceChangeEvent.POST_BUILD | IResourceChangeEvent.PRE_BUILD);
+		
 	}
 
 	/**
@@ -198,6 +198,10 @@ public class LuaEditor extends TextEditor {
 	   annotationModel.modifyAnnotations(oldAnnotations, newAnnotations,null);
 
 	   oldAnnotations = annotations;
+	}
+
+	public LuaSourceViewerConfiguration getLuaSourceViewer() {
+		return sourceViewer;
 	}
 
 

@@ -48,16 +48,16 @@ import org.keplerproject.ldt.ui.editors.lex.sym;
  * @author Thiago Ponte
  * 
  */
-public class LuaSourceViewerConfiguration extends SourceViewerConfiguration
-{
+public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	private LuaDoubleClickStrategy doubleClickStrategy;
 
 	private LuaColorManager colorManager;
 
 	private IEditorPart editor;
 
-	public LuaSourceViewerConfiguration(LuaColorManager colorManager)
-	{
+	private LuaFoldingReconcilingStrategy strategy;
+
+	public LuaSourceViewerConfiguration(LuaColorManager colorManager) {
 		this.colorManager = colorManager;
 	}
 
@@ -65,15 +65,14 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration
 	 * get the configuredContent Types from the Extensions
 	 * 
 	 */
-	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer)
-	{
+	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		List stringContentTypes = new ArrayList();
 
 		List extensions = LDTUIPlugin.getDefault().getContentTypeExtension();
 		Iterator extIte = extensions.iterator();
-		while (extIte.hasNext())
-		{
-			ILuaContentTypeExtension ext = (ILuaContentTypeExtension) extIte.next();
+		while (extIte.hasNext()) {
+			ILuaContentTypeExtension ext = (ILuaContentTypeExtension) extIte
+					.next();
 			stringContentTypes.addAll(Arrays.asList(ext.getContentTypes()));
 		}
 		String[] resultContents = new String[stringContentTypes.size()];
@@ -81,21 +80,19 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration
 		return resultContents;
 	}
 
-	public void setColorManager(LuaColorManager colorManager)
-	{
+	public void setColorManager(LuaColorManager colorManager) {
 		this.colorManager = colorManager;
 	}
 
-	public void setEditor(IEditorPart editor)
-	{
+	public void setEditor(IEditorPart editor) {
 		this.editor = editor;
 	}
 
 	/**
 	 * This method return a simple DoubleClickStrategy. Just word selection.
 	 */
-	public ITextDoubleClickStrategy getDoubleClickStrategy(ISourceViewer sourceViewer, String contentType)
-	{
+	public ITextDoubleClickStrategy getDoubleClickStrategy(
+			ISourceViewer sourceViewer, String contentType) {
 		if (doubleClickStrategy == null)
 			doubleClickStrategy = new LuaDoubleClickStrategy();
 		return doubleClickStrategy;
@@ -104,27 +101,30 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration
 	/**
 	 * get the Content Assist to the sourceviewer contributed by the extensions
 	 */
-	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer)
-	{
+	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		ContentAssistant assistant = new ContentAssistant();
 
 		List extensions = LDTUIPlugin.getDefault().getAssistExtension();
 		Iterator extIte = extensions.iterator();
-		while (extIte.hasNext())
-		{
+		while (extIte.hasNext()) {
 			/*
 			 * assistant.setContentAssistProcessor(new
 			 * LuaCompletionProcessor(),IDocument.DEFAULT_CONTENT_TYPE);
 			 */
-			ILuaContentAssistExtension ext = (ILuaContentAssistExtension) extIte.next();
+			ILuaContentAssistExtension ext = (ILuaContentAssistExtension) extIte
+					.next();
 			ext.contribute(editor, assistant);
 		}
 
 		assistant.setAutoActivationDelay(400);
-		assistant.setProposalPopupOrientation(ContentAssistant.CONTEXT_INFO_BELOW);
-		assistant.setContextInformationPopupOrientation(ContentAssistant.CONTEXT_INFO_BELOW);
-		assistant.setContextInformationPopupBackground(colorManager.getColor(new RGB(255, 255, 255)));
-		assistant.setProposalSelectorBackground(colorManager.getColor(new RGB(255, 255, 255)));
+		assistant
+				.setProposalPopupOrientation(ContentAssistant.CONTEXT_INFO_BELOW);
+		assistant
+				.setContextInformationPopupOrientation(ContentAssistant.CONTEXT_INFO_BELOW);
+		assistant.setContextInformationPopupBackground(colorManager
+				.getColor(new RGB(255, 255, 255)));
+		assistant.setProposalSelectorBackground(colorManager.getColor(new RGB(
+				255, 255, 255)));
 		assistant.enableAutoActivation(true);
 
 		return assistant;
@@ -133,21 +133,21 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration
 	/**
 	 * get the presentation reconcilier from the extensions
 	 */
-	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer)
-	{
+	public IPresentationReconciler getPresentationReconciler(
+			ISourceViewer sourceViewer) {
 
 		PresentationReconciler reconciler = new PresentationReconciler();
 		List extensions = LDTUIPlugin.getDefault().getReconcilierExtension();
 		Iterator extIte = extensions.iterator();
 		reconciler.install(sourceViewer);
-		while (extIte.hasNext())
-		{
+		while (extIte.hasNext()) {
 			/*
 			 * DefaultDamagerRepairer dr = new DefaultDamagerRepairer(scanner);
 			 * reconciler.setDamager(dr, "__lua_multiline_comment");
 			 * reconciler.setRepairer(dr, "__lua_multiline_comment");
 			 */
-			ILuaReconcilierExtension ext = (ILuaReconcilierExtension) extIte.next();
+			ILuaReconcilierExtension ext = (ILuaReconcilierExtension) extIte
+					.next();
 			ext.contribute(colorManager, reconciler, sourceViewer);
 		}
 		return reconciler;
@@ -156,17 +156,17 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration
 	/**
 	 * Source Reconcilier to the folding feature
 	 */
-	public IReconciler getReconciler(ISourceViewer sourceViewer)
-	{
-		LuaFoldingReconcilingStrategy strategy = new LuaFoldingReconcilingStrategy();
-		strategy.setEditor((LuaEditor) editor);
+	public IReconciler getReconciler(ISourceViewer sourceViewer) {
+		if (strategy == null) {
+			strategy = new LuaFoldingReconcilingStrategy();
+			strategy.setEditor((LuaEditor) editor);
+		}
 
 		MonoReconciler reconciler = new MonoReconciler(strategy, false);
 		/*
 		 * reconciler.setReconcilingStrategy(strategy,
 		 * IDocument.DEFAULT_CONTENT_TYPE);
 		 */
-
 		return reconciler;
 	}
 
@@ -176,54 +176,60 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration
 	 * 
 	 * @author guilherme
 	 */
-	class LuaFoldingReconcilingStrategy implements IReconcilingStrategy, IReconcilingStrategyExtension
-	{
+	class LuaFoldingReconcilingStrategy implements IReconcilingStrategy,
+			IReconcilingStrategyExtension {
 		private LuaEditor reditor;
+
 		private IDocument doc;
+
 		private ArrayList fPositions = new ArrayList();
+
 		private int fOffset;
+
 		private int fRangeEnd;
+
 		private int cNextPos;
 
-		public void setDocument(IDocument document)
-		{
+		public void setDocument(IDocument document) {
 			this.doc = document;
 		}
 
-		public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion)
-		{
+		public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
 			initialReconcile();
 		}
 
-		public void reconcile(IRegion partition)
-		{
+		public void reconcile(IRegion partition) {
 			initialReconcile();
-//try
-//{
-//	System.out.println(doc.get(partition.getOffset(), partition.getLength()));
-//}
-//catch (BadLocationException e)
-//{
-//	// TODO Auto-generated catch block
-//	e.printStackTrace();
-//}
+			// try
+			// {
+			// System.out.println(doc.get(partition.getOffset(),
+			// partition.getLength()));
+			// }
+			// catch (BadLocationException e)
+			// {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
 		}
 
-		public void setProgressMonitor(IProgressMonitor monitor)
-		{
+		public void setProgressMonitor(IProgressMonitor monitor) {
 			// TODO No progress.
 
 		}
 
-		public void initialReconcile()
-		{
-			fOffset = 0;
-			fRangeEnd = doc.getLength();
-			calculatePositions();
+		public void initialReconcile() {
+			try {
+				fOffset = 0;
+				fRangeEnd = doc.getLength();
+				calculatePositions();
+
+			} catch (Exception e) {
+				// Do nothing..
+				return;
+			}
 		}
 
-		protected void calculatePositions()
-		{
+		protected void calculatePositions() {
 			if (reditor.isDirty())
 				return;
 
@@ -231,49 +237,43 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration
 			cNextPos = fOffset;
 			// String contType;
 			// ITypedRegion region;
-			try
-			{
+			try {
 				findNextFunction(cNextPos);
-			}
-			catch (BadLocationException e)
-			{
+			} catch (BadLocationException e) {
 				e.printStackTrace();
-			}
-			catch (IOException e)
-			{
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
 			Display.getDefault().asyncExec(new Runnable() {
-				public void run()
-				{
+				public void run() {
 					reditor.updateFoldingStructure(fPositions);
 				}
 
 			});
 		}
 
-		private void findNextFunction(int nextPos) throws BadLocationException, IOException
-		{
+		private void findNextFunction(int nextPos) throws BadLocationException,
+				IOException {
 			cNextPos = nextPos;
 			// int funcInit = -1;
 
 			Stack stk = new Stack();
-			//boolean onMultStr = false;
+			// boolean onMultStr = false;
 			int onMultStr = 0;
 			boolean elseIf = false;
 
-			while (cNextPos < fRangeEnd)
-			{
+			while (cNextPos < fRangeEnd) {
 				ITypedRegion region = doc.getPartition(cNextPos);
 				String contType = region.getType();
-  			 if (contType.equals("__lua_multiline_comment"))
-				{
+				if (contType.equals("__lua_multiline_comment")) {
 					int breakCount = 0;
-					if (region.getOffset() + region.getLength() + 1 < doc.getLength())
-					{
-						char lineb1 = doc.getChar(region.getOffset() + region.getLength());
-						char lineb2 = doc.getChar(region.getOffset() + region.getLength() + 1);
+					if (region.getOffset() + region.getLength() + 1 < doc
+							.getLength()) {
+						char lineb1 = doc.getChar(region.getOffset()
+								+ region.getLength());
+						char lineb2 = doc.getChar(region.getOffset()
+								+ region.getLength() + 1);
 
 						if (lineb1 == '\r' && lineb2 == '\n')
 							// Windows
@@ -282,65 +282,54 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration
 							breakCount = 1;
 					}
 
-					emitPosition(region.getOffset(), region.getLength() + breakCount);
+					emitPosition(region.getOffset(), region.getLength()
+							+ breakCount);
 					cNextPos += region.getLength() + 2;
-				}else
-				{					
+				} else {
 					cNextPos += region.getLength() + 2;
 				}
-  			 
+
 			}
-		
-		
+
 			Scanner scanner = new Scanner(new StringReader(doc.get()));
 			Symbol symbol = scanner.yylex();
-			
-			if (symbol.sym == sym.EOF)
-			{
+
+			if (symbol.sym == sym.EOF) {
 				cNextPos += 2;
 				return;
 			}
-			
-			while (symbol.sym != sym.EOF)
-			{
+
+			while (symbol.sym != sym.EOF) {
 				IRegion lineRegion = doc.getLineInformation(symbol.left);
-				if (onMultStr == 0)
-				{
-					if (symbol.sym == sym.DO || symbol.sym == sym.FUNCTION)
-					{
-						stk.push(new Object[] {lineRegion, symbol});
-					}
-					else if (symbol.sym == sym.THEN)
-					{
+				if (onMultStr == 0) {
+					if (symbol.sym == sym.DO || symbol.sym == sym.FUNCTION) {
+						stk.push(new Object[] { lineRegion, symbol });
+					} else if (symbol.sym == sym.THEN) {
 						if (elseIf)
 							elseIf = false;
 						else
-							stk.push(new Object[] {lineRegion, symbol});
-					}
-					else if (symbol.sym == sym.ELSEIF)
-					{
+							stk.push(new Object[] { lineRegion, symbol });
+					} else if (symbol.sym == sym.ELSEIF) {
 						elseIf = true;
-					}
-					else if (symbol.sym == sym.END)
-					{
+					} else if (symbol.sym == sym.END) {
 						if (stk.empty())
 							return;
-						
+
 						Object[] stkContent = (Object[]) stk.pop();
 						IRegion lReg = (IRegion) stkContent[0];
 
-						if (((Symbol) stkContent[1]).sym != sym.FUNCTION ||
-							 lReg.getOffset() == lineRegion.getOffset())
-						{
+						if (((Symbol) stkContent[1]).sym != sym.FUNCTION
+								|| lReg.getOffset() == lineRegion.getOffset()) {
 							symbol = scanner.yylex();
 							continue;
 						}
-						
+
 						int breakCount = 0;
-						if (lineRegion.getOffset() + 3 + 1 < doc.getLength())
-						{
-							char lineb1 = doc.getChar(lineRegion.getOffset() + 3);
-							char lineb2 = doc.getChar(lineRegion.getOffset() + 3 + 1);
+						if (lineRegion.getOffset() + 3 + 1 < doc.getLength()) {
+							char lineb1 = doc
+									.getChar(lineRegion.getOffset() + 3);
+							char lineb2 = doc
+									.getChar(lineRegion.getOffset() + 3 + 1);
 
 							if (lineb1 == '\r' && lineb2 == '\n')
 								// Windows
@@ -348,40 +337,38 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration
 							else if (lineb1 == '\r' || lineb1 == '\n')
 								breakCount = 1;
 						}
-						//Dont ask me to explain this right now..
-						emitPosition(lReg.getOffset()-1, lineRegion.getOffset() + lineRegion.getLength()
-								- lReg.getOffset() + breakCount);
-						
-					}
-					else if (symbol.sym == sym.DBLBRACK)
-					{
+						// Dont ask me to explain this right now..
+						emitPosition(lReg.getOffset() - 1, lineRegion
+								.getOffset()
+								+ lineRegion.getLength()
+								- lReg.getOffset()
+								+ breakCount);
+
+					} else if (symbol.sym == sym.DBLBRACK) {
 						onMultStr++;
 					}
-				}
-				else if (symbol.sym == sym.DBRBRACK)
-				{
+				} else if (symbol.sym == sym.DBRBRACK) {
 					onMultStr--;
-				}
-				else if (symbol.sym == sym.DBLBRACK)
+				} else if (symbol.sym == sym.DBLBRACK)
 					onMultStr++;
 
 				symbol = scanner.yylex();
 			}
-	
-		
 
 		}
 
-		protected void emitPosition(int startOffset, int length)
-		{
+		protected void emitPosition(int startOffset, int length) {
 			fPositions.add(new Position(startOffset, length));
 		}
 
-		public void setEditor(LuaEditor editor)
-		{
+		public void setEditor(LuaEditor editor) {
 			this.reditor = editor;
 		}
 
+	}
+
+	public LuaFoldingReconcilingStrategy getFoldingStrategy() {
+		return strategy;
 	}
 
 }

@@ -30,6 +30,12 @@ public class LuaFileWizardAction extends Action implements IWorkbenchWindowActio
     /** Called when the action is executed. */
     public void run(IAction action) {
         LuaFileWizard wizard= new LuaFileWizard();
+        if(window == null)
+        {
+        	//XXX for a unknown reason.. wen we call the action from de popup
+        	// the window field is null
+        	window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        }
         Shell shell =
           PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
         ISelection selection = null;
@@ -39,7 +45,6 @@ public class LuaFileWizardAction extends Action implements IWorkbenchWindowActio
         	if(selection != null) break;
         }        
         
-        //IStructuredSelection selection = (IStructuredSelection)window.getSelectionService().getSelection("org.eclipse.jdt.ui.ProjectsView");
         if(selection == null)
         	selection = new StructuredSelection();
         

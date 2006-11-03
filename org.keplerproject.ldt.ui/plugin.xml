@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
+<?eclipse version="3.2"?>
 <plugin>
    <extension-point id="ScannerRulesExtension" name="ScannerRulesExtension" schema="schema/ScannerRules.exsd">
    </extension-point>
@@ -89,6 +89,39 @@
     </action>
   </actionSet>
 </extension>
+
+<extension
+         point="org.eclipse.ui.popupMenus">
+       
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IProject"
+            nameFilter="*"
+            id="org.keplerproject.ldt.core.contribution1">
+         <menu
+         id="org.keplerproject.ldt.ui.luaMenu"
+         label="Lua Actions"
+         path="group.new">
+      <separator name="group1"/>
+      </menu>
+         <action
+               class="org.keplerproject.ldt.core.project.ToggleNatureAction"
+               enablesFor="+"
+               icon="icons/project.gif"
+               id="org.keplerproject.ldt.core.addRemoveNatureAction"
+               label="Add/Remove Lua Nature"
+               menubarPath="org.keplerproject.ldt.ui.luaMenu/group1">
+         </action>
+        <action id="org.keplerproject.ldt.ui.actions.LuaFileWizardAction"
+          icon="icons/file.gif"
+          enablesFor="+"
+          tooltip="Starts the New Lua File Wizard."
+          label="New Lua File"
+          class="org.keplerproject.ldt.ui.actions.LuaFileWizardAction"
+          menubarPath="org.keplerproject.ldt.ui.luaMenu/group1">
+         </action>
+      </objectContribution>
+   </extension>
 
 
 
