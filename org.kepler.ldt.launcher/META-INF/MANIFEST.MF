@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.core.runtime,
 Eclipse-LazyStart: true
 Bundle-ClassPath: LDTLaunching.jar
 Export-Package: org.kepler.ldt.laucher,
- org.keplerproject.ldt.internal.launching,
- org.keplerproject.ldt.internal.launching.ui,
- org.keplerproject.ldt.internal.launching.ui.preferences,
+ org.keplerproject.ldt.internal.launching;x-internal:=true,
+ org.keplerproject.ldt.internal.launching.ui;x-internal:=true,
+ org.keplerproject.ldt.internal.launching.ui.preferences;x-internal:=true,
  org.keplerproject.ldt.laucher.utils
