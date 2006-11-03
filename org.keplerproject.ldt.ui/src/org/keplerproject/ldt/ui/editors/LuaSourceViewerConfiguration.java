@@ -267,111 +267,7 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration
 			{
 				ITypedRegion region = doc.getPartition(cNextPos);
 				String contType = region.getType();
-				IRegion lineRegion = doc.getLineInformationOfOffset(cNextPos);
-				String line = doc.get(lineRegion.getOffset(), lineRegion.getLength());
-
-				if (contType.equals(IDocument.DEFAULT_CONTENT_TYPE))
-				{
-					Scanner scanner = new Scanner(new StringReader(line));
-					Symbol symbol = scanner.yylex();
-					
-					if (symbol.sym == sym.EOF)
-					{
-						cNextPos += 2;
-						continue;
-					}
-					
-					//do
-					while (symbol.sym != sym.EOF)
-					{
-						//if (!onMultStr)
-						if (onMultStr == 0)
-						{
-							if (symbol.sym == sym.DO || symbol.sym == sym.FUNCTION)
-							{
-								stk.push(new Object[] {lineRegion, symbol});
-							}
-							else if (symbol.sym == sym.THEN)
-							{
-								if (elseIf)
-									elseIf = false;
-								else
-									stk.push(new Object[] {lineRegion, symbol});
-							}
-							else if (symbol.sym == sym.ELSEIF)
-							{
-								elseIf = true;
-							}
-							else if (symbol.sym == sym.END)
-							{
-								if (stk.empty())
-									return;
-								
-								Object[] stkContent = (Object[]) stk.pop();
-								IRegion lReg = (IRegion) stkContent[0];
-
-								if (((Symbol) stkContent[1]).sym != sym.FUNCTION ||
-									 lReg.getOffset() == lineRegion.getOffset())
-								{
-									symbol = scanner.yylex();
-									continue;
-								}
-								
-								int breakCount = 0;
-								if (lineRegion.getOffset() + 3 + 1 < doc.getLength())
-								{
-									char lineb1 = doc.getChar(lineRegion.getOffset() + 3);
-									char lineb2 = doc.getChar(lineRegion.getOffset() + 3 + 1);
-
-									if (lineb1 == '\r' && lineb2 == '\n')
-										// Windows
-										breakCount = 2;
-									else if (lineb1 == '\r' || lineb1 == '\n')
-										breakCount = 1;
-								}
-								emitPosition(lReg.getOffset(), lineRegion.getOffset() + lineRegion.getLength()
-										- lReg.getOffset() + breakCount);
-							}
-							else if (symbol.sym == sym.DBLBRACK)
-							{
-								onMultStr++;
-								//onMultStr = true;
-								//stk.push(lineRegion);
-							}
-						}
-						else if (symbol.sym == sym.DBRBRACK)
-						{
-							//onMultStr = false;
-							onMultStr--;
-
-							/*IRegion lReg = (IRegion) stk.pop();
-							if (lReg.getOffset() == lineRegion.getOffset())
-								continue;
-
-							int breakCount = 0;
-							if (lineRegion.getOffset() + 3 + 1 < doc.getLength())
-							{
-								char lineb1 = doc.getChar(lineRegion.getOffset() + 3);
-								char lineb2 = doc.getChar(lineRegion.getOffset() + 3 + 1);
-
-								if (lineb1 == '\r' && lineb2 == '\n')
-									// Windows
-									breakCount = 2;
-								else if (lineb1 == '\r' || lineb1 == '\n')
-									breakCount = 1;
-							}
-							emitPosition(lReg.getOffset(), lineRegion.getOffset() + lineRegion.getLength() - lReg.getOffset()
-									+ breakCount);*/
-						}
-						else if (symbol.sym == sym.DBLBRACK)
-							onMultStr++;
-
-						symbol = scanner.yylex();
-					}
-					
-					cNextPos += lineRegion.getLength() + 2;
-				}
-				else if (contType.equals("__lua_multiline_comment"))
+  			 if (contType.equals("__lua_multiline_comment"))
 				{
 					int breakCount = 0;
 					if (region.getOffset() + region.getLength() + 1 < doc.getLength())
@@ -388,8 +284,91 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration
 
 					emitPosition(region.getOffset(), region.getLength() + breakCount);
 					cNextPos += region.getLength() + 2;
+				}else
+				{					
+					cNextPos += region.getLength() + 2;
 				}
+  			 
 			}
+		
+		
+			Scanner scanner = new Scanner(new StringReader(doc.get()));
+			Symbol symbol = scanner.yylex();
+			
+			if (symbol.sym == sym.EOF)
+			{
+				cNextPos += 2;
+				return;
+			}
+			
+			while (symbol.sym != sym.EOF)
+			{
+				IRegion lineRegion = doc.getLineInformation(symbol.left);
+				if (onMultStr == 0)
+				{
+					if (symbol.sym == sym.DO || symbol.sym == sym.FUNCTION)
+					{
+						stk.push(new Object[] {lineRegion, symbol});
+					}
+					else if (symbol.sym == sym.THEN)
+					{
+						if (elseIf)
+							elseIf = false;
+						else
+							stk.push(new Object[] {lineRegion, symbol});
+					}
+					else if (symbol.sym == sym.ELSEIF)
+					{
+						elseIf = true;
+					}
+					else if (symbol.sym == sym.END)
+					{
+						if (stk.empty())
+							return;
+						
+						Object[] stkContent = (Object[]) stk.pop();
+						IRegion lReg = (IRegion) stkContent[0];
+
+						if (((Symbol) stkContent[1]).sym != sym.FUNCTION ||
+							 lReg.getOffset() == lineRegion.getOffset())
+						{
+							symbol = scanner.yylex();
+							continue;
+						}
+						
+						int breakCount = 0;
+						if (lineRegion.getOffset() + 3 + 1 < doc.getLength())
+						{
+							char lineb1 = doc.getChar(lineRegion.getOffset() + 3);
+							char lineb2 = doc.getChar(lineRegion.getOffset() + 3 + 1);
+
+							if (lineb1 == '\r' && lineb2 == '\n')
+								// Windows
+								breakCount = 2;
+							else if (lineb1 == '\r' || lineb1 == '\n')
+								breakCount = 1;
+						}
+						//Dont ask me to explain this right now..
+						emitPosition(lReg.getOffset()-1, lineRegion.getOffset() + lineRegion.getLength()
+								- lReg.getOffset() + breakCount);
+						
+					}
+					else if (symbol.sym == sym.DBLBRACK)
+					{
+						onMultStr++;
+					}
+				}
+				else if (symbol.sym == sym.DBRBRACK)
+				{
+					onMultStr--;
+				}
+				else if (symbol.sym == sym.DBLBRACK)
+					onMultStr++;
+
+				symbol = scanner.yylex();
+			}
+	
+		
 
 		}
 
