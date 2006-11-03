@@ -48,14 +48,16 @@ import org.keplerproject.ldt.ui.editors.lex.sym;
  * @author Thiago Ponte
  * 
  */
-public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
+public class LuaSourceViewerConfiguration extends SourceViewerConfiguration
+{
 	private LuaDoubleClickStrategy doubleClickStrategy;
 
 	private LuaColorManager colorManager;
 
 	private IEditorPart editor;
-  
-	public LuaSourceViewerConfiguration(LuaColorManager colorManager) {
+
+	public LuaSourceViewerConfiguration(LuaColorManager colorManager)
+	{
 		this.colorManager = colorManager;
 	}
 
@@ -63,14 +65,15 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	 * get the configuredContent Types from the Extensions
 	 * 
 	 */
-	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
+	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer)
+	{
 		List stringContentTypes = new ArrayList();
 
 		List extensions = LDTUIPlugin.getDefault().getContentTypeExtension();
 		Iterator extIte = extensions.iterator();
-		while (extIte.hasNext()) {
-			ILuaContentTypeExtension ext = (ILuaContentTypeExtension) extIte
-					.next();
+		while (extIte.hasNext())
+		{
+			ILuaContentTypeExtension ext = (ILuaContentTypeExtension) extIte.next();
 			stringContentTypes.addAll(Arrays.asList(ext.getContentTypes()));
 		}
 		String[] resultContents = new String[stringContentTypes.size()];
@@ -78,19 +81,21 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 		return resultContents;
 	}
 
-	public void setColorManager(LuaColorManager colorManager) {
+	public void setColorManager(LuaColorManager colorManager)
+	{
 		this.colorManager = colorManager;
 	}
 
-	public void setEditor(IEditorPart editor) {
+	public void setEditor(IEditorPart editor)
+	{
 		this.editor = editor;
 	}
 
 	/**
 	 * This method return a simple DoubleClickStrategy. Just word selection.
 	 */
-	public ITextDoubleClickStrategy getDoubleClickStrategy(
-			ISourceViewer sourceViewer, String contentType) {
+	public ITextDoubleClickStrategy getDoubleClickStrategy(ISourceViewer sourceViewer, String contentType)
+	{
 		if (doubleClickStrategy == null)
 			doubleClickStrategy = new LuaDoubleClickStrategy();
 		return doubleClickStrategy;
@@ -99,30 +104,27 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	/**
 	 * get the Content Assist to the sourceviewer contributed by the extensions
 	 */
-	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
+	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer)
+	{
 		ContentAssistant assistant = new ContentAssistant();
 
 		List extensions = LDTUIPlugin.getDefault().getAssistExtension();
 		Iterator extIte = extensions.iterator();
-		while (extIte.hasNext()) {
+		while (extIte.hasNext())
+		{
 			/*
 			 * assistant.setContentAssistProcessor(new
 			 * LuaCompletionProcessor(),IDocument.DEFAULT_CONTENT_TYPE);
 			 */
-			ILuaContentAssistExtension ext = (ILuaContentAssistExtension) extIte
-					.next();
+			ILuaContentAssistExtension ext = (ILuaContentAssistExtension) extIte.next();
 			ext.contribute(editor, assistant);
 		}
 
 		assistant.setAutoActivationDelay(400);
-		assistant
-				.setProposalPopupOrientation(ContentAssistant.CONTEXT_INFO_BELOW);
-		assistant
-				.setContextInformationPopupOrientation(ContentAssistant.CONTEXT_INFO_BELOW);
-		assistant.setContextInformationPopupBackground(colorManager
-				.getColor(new RGB(255, 255, 255)));
-		assistant.setProposalSelectorBackground(colorManager.getColor(new RGB(
-				255, 255, 255)));
+		assistant.setProposalPopupOrientation(ContentAssistant.CONTEXT_INFO_BELOW);
+		assistant.setContextInformationPopupOrientation(ContentAssistant.CONTEXT_INFO_BELOW);
+		assistant.setContextInformationPopupBackground(colorManager.getColor(new RGB(255, 255, 255)));
+		assistant.setProposalSelectorBackground(colorManager.getColor(new RGB(255, 255, 255)));
 		assistant.enableAutoActivation(true);
 
 		return assistant;
@@ -131,21 +133,21 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	/**
 	 * get the presentation reconcilier from the extensions
 	 */
-	public IPresentationReconciler getPresentationReconciler(
-			ISourceViewer sourceViewer) {
+	public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer)
+	{
 
 		PresentationReconciler reconciler = new PresentationReconciler();
 		List extensions = LDTUIPlugin.getDefault().getReconcilierExtension();
 		Iterator extIte = extensions.iterator();
 		reconciler.install(sourceViewer);
-		while (extIte.hasNext()) {
+		while (extIte.hasNext())
+		{
 			/*
 			 * DefaultDamagerRepairer dr = new DefaultDamagerRepairer(scanner);
 			 * reconciler.setDamager(dr, "__lua_multiline_comment");
 			 * reconciler.setRepairer(dr, "__lua_multiline_comment");
 			 */
-			ILuaReconcilierExtension ext = (ILuaReconcilierExtension) extIte
-					.next();
+			ILuaReconcilierExtension ext = (ILuaReconcilierExtension) extIte.next();
 			ext.contribute(colorManager, reconciler, sourceViewer);
 		}
 		return reconciler;
@@ -154,7 +156,8 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	/**
 	 * Source Reconcilier to the folding feature
 	 */
-	public IReconciler getReconciler(ISourceViewer sourceViewer) {
+	public IReconciler getReconciler(ISourceViewer sourceViewer)
+	{
 		LuaFoldingReconcilingStrategy strategy = new LuaFoldingReconcilingStrategy();
 		strategy.setEditor((LuaEditor) editor);
 
@@ -173,192 +176,216 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	 * 
 	 * @author guilherme
 	 */
-	class LuaFoldingReconcilingStrategy implements IReconcilingStrategy,
-			IReconcilingStrategyExtension {
+	class LuaFoldingReconcilingStrategy implements IReconcilingStrategy, IReconcilingStrategyExtension
+	{
 		private LuaEditor reditor;
-
 		private IDocument doc;
-
 		private ArrayList fPositions = new ArrayList();
-
 		private int fOffset;
-
 		private int fRangeEnd;
-
 		private int cNextPos;
-		
-		public void setDocument(IDocument document) {
+
+		public void setDocument(IDocument document)
+		{
 			this.doc = document;
 		}
 
-		public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion) {
+		public void reconcile(DirtyRegion dirtyRegion, IRegion subRegion)
+		{
 			initialReconcile();
 		}
 
-		public void reconcile(IRegion partition) {
+		public void reconcile(IRegion partition)
+		{
 			initialReconcile();
-
+//try
+//{
+//	System.out.println(doc.get(partition.getOffset(), partition.getLength()));
+//}
+//catch (BadLocationException e)
+//{
+//	// TODO Auto-generated catch block
+//	e.printStackTrace();
+//}
 		}
 
-		public void setProgressMonitor(IProgressMonitor monitor) {
+		public void setProgressMonitor(IProgressMonitor monitor)
+		{
 			// TODO No progress.
 
 		}
 
-		public void initialReconcile() {
+		public void initialReconcile()
+		{
 			fOffset = 0;
 			fRangeEnd = doc.getLength();
 			calculatePositions();
-
 		}
 
-		protected void calculatePositions() {
-			
-			if (reditor.isDirty()) return;
-			
+		protected void calculatePositions()
+		{
+			if (reditor.isDirty())
+				return;
+
 			fPositions.clear();
 			cNextPos = fOffset;
 			// String contType;
 			// ITypedRegion region;
-			try {
+			try
+			{
 				findNextFunction(cNextPos);
-			} catch (BadLocationException e) {
+			}
+			catch (BadLocationException e)
+			{
 				e.printStackTrace();
 			}
-      catch (IOException e)
-      {
-        e.printStackTrace();
-      }
-			
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+
 			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
+				public void run()
+				{
 					reditor.updateFoldingStructure(fPositions);
 				}
 
 			});
 		}
 
-		private void findNextFunction(int nextPos) throws BadLocationException, IOException 
-    {
+		private void findNextFunction(int nextPos) throws BadLocationException, IOException
+		{
 			cNextPos = nextPos;
-			//int funcInit = -1;
-      
-      Stack stk = new Stack();
-      boolean onMultStr = false;
-      boolean elseIf = false;
+			// int funcInit = -1;
 
-			while (cNextPos < fRangeEnd) 
-      {
+			Stack stk = new Stack();
+			//boolean onMultStr = false;
+			int onMultStr = 0;
+			boolean elseIf = false;
+
+			while (cNextPos < fRangeEnd)
+			{
 				ITypedRegion region = doc.getPartition(cNextPos);
 				String contType = region.getType();
 				IRegion lineRegion = doc.getLineInformationOfOffset(cNextPos);
 				String line = doc.get(lineRegion.getOffset(), lineRegion.getLength());
-        
-				if (contType.equals(IDocument.DEFAULT_CONTENT_TYPE)) 
-        {
-          Scanner scanner = new Scanner(new StringReader(line));
-          Symbol symbol;
 
-          do
-          {
-            symbol = scanner.yylex();
-            
-            if (!onMultStr)
-            {
-              if (symbol.sym == sym.DO || symbol.sym == sym.FUNCTION)
-              {
-                stk.push(lineRegion);
-              }
-              else if (symbol.sym == sym.THEN)
-              {
-                if (elseIf)
-                  elseIf = false;
-                else
-                  stk.push(lineRegion);
-              }
-              else if (symbol.sym == sym.ELSEIF)
-              {
-                elseIf = true;
-              }
-              //else if (word.equals("end"))
-              else if (symbol.sym == sym.END)
-              {
-                IRegion lReg = (IRegion) stk.pop();
-                if (lReg.getOffset() == lineRegion.getOffset())
-                  continue;
-                
-                int breakCount = 0;
-                if(lineRegion.getOffset()+ 3 + 1 < doc.getLength())
-                {
-                  char lineb1 = doc.getChar(lineRegion.getOffset()+3 );
-                  char lineb2 = doc.getChar(lineRegion.getOffset()+ 3 + 1 );
-                  
-                  if( lineb1 == '\r' && lineb2 == '\n')
-                    //Windows
-                    breakCount = 2;
-                  else if(lineb1 == '\r' || lineb1 == '\n')
-                    breakCount = 1;
-                }
-                emitPosition(lReg.getOffset(), lineRegion.getOffset()
-                    + lineRegion.getLength() - lReg.getOffset() + breakCount);
-              }
-              //else if (word.equals("\""))
-              //else if (symbol.sym == sym.STRING_LITERAL || symbol.sym == sym.CHARACTER_LITERAL)
-              //{
-                
-                //while(tk.hasMoreTokens() && !tk.nextToken().equals("\""));
-              //}
-              //else if (word.equals("[["))
-              else if (symbol.sym == sym.DBLBRACK)
-              {
-                onMultStr = true;
-                stk.push(lineRegion);
-              }
-            }
-            //else if (word.equals("]]"))
-            else if (symbol.sym == sym.DBRBRACK)
-            {
-              onMultStr = false;
-              
-              IRegion lReg = (IRegion) stk.pop();
-              if (lReg.getOffset() == lineRegion.getOffset())
-                continue;
-              
-              int breakCount = 0;
-              if(lineRegion.getOffset()+ 3 + 1 < doc.getLength())
-              {
-                char lineb1 = doc.getChar(lineRegion.getOffset()+3 );
-                char lineb2 = doc.getChar(lineRegion.getOffset()+ 3 + 1 );
-                
-                if( lineb1 == '\r' && lineb2 == '\n')
-                  //Windows
-                  breakCount = 2;
-                else if(lineb1 == '\r' || lineb1 == '\n')
-                  breakCount = 1;
-              }
-              emitPosition(lReg.getOffset(), lineRegion.getOffset()
-                  + lineRegion.getLength() - lReg.getOffset() + breakCount);
-            }
-          }
-          while(symbol.sym != sym.EOF);
-          
-          cNextPos += lineRegion.getLength() + 2;
-				} 
-        else if (contType.equals("__lua_multiline_comment")) 
-        {
-					int breakCount = 0;
-					if(region.getOffset()+region.getLength()+ 1 < doc.getLength())
-          {
-  					char lineb1 = doc.getChar(region.getOffset()+region.getLength() );
-  					char lineb2 = doc.getChar(region.getOffset()+region.getLength() + 1 );
-  					
-  					if( lineb1 == '\r' && lineb2 == '\n')
-  						//Windows
-  						breakCount = 2;
-  					else if(lineb1 == '\r' || lineb1 == '\n')
-  						breakCount = 1;
+				if (contType.equals(IDocument.DEFAULT_CONTENT_TYPE))
+				{
+					Scanner scanner = new Scanner(new StringReader(line));
+					Symbol symbol = scanner.yylex();
+					
+					if (symbol.sym == sym.EOF)
+					{
+						cNextPos += 2;
+						continue;
 					}
 					
+					//do
+					while (symbol.sym != sym.EOF)
+					{
+						//if (!onMultStr)
+						if (onMultStr == 0)
+						{
+							if (symbol.sym == sym.DO || symbol.sym == sym.FUNCTION)
+							{
+								stk.push(new Object[] {lineRegion, symbol});
+							}
+							else if (symbol.sym == sym.THEN)
+							{
+								if (elseIf)
+									elseIf = false;
+								else
+									stk.push(new Object[] {lineRegion, symbol});
+							}
+							else if (symbol.sym == sym.ELSEIF)
+							{
+								elseIf = true;
+							}
+							else if (symbol.sym == sym.END)
+							{
+								if (stk.empty())
+									return;
+								
+								Object[] stkContent = (Object[]) stk.pop();
+								IRegion lReg = (IRegion) stkContent[0];
+
+								if (((Symbol) stkContent[1]).sym != sym.FUNCTION ||
+									 lReg.getOffset() == lineRegion.getOffset())
+								{
+									symbol = scanner.yylex();
+									continue;
+								}
+								
+								int breakCount = 0;
+								if (lineRegion.getOffset() + 3 + 1 < doc.getLength())
+								{
+									char lineb1 = doc.getChar(lineRegion.getOffset() + 3);
+									char lineb2 = doc.getChar(lineRegion.getOffset() + 3 + 1);
+
+									if (lineb1 == '\r' && lineb2 == '\n')
+										// Windows
+										breakCount = 2;
+									else if (lineb1 == '\r' || lineb1 == '\n')
+										breakCount = 1;
+								}
+								emitPosition(lReg.getOffset(), lineRegion.getOffset() + lineRegion.getLength()
+										- lReg.getOffset() + breakCount);
+							}
+							else if (symbol.sym == sym.DBLBRACK)
+							{
+								onMultStr++;
+								//onMultStr = true;
+								//stk.push(lineRegion);
+							}
+						}
+						else if (symbol.sym == sym.DBRBRACK)
+						{
+							//onMultStr = false;
+							onMultStr--;
+
+							/*IRegion lReg = (IRegion) stk.pop();
+							if (lReg.getOffset() == lineRegion.getOffset())
+								continue;
+
+							int breakCount = 0;
+							if (lineRegion.getOffset() + 3 + 1 < doc.getLength())
+							{
+								char lineb1 = doc.getChar(lineRegion.getOffset() + 3);
+								char lineb2 = doc.getChar(lineRegion.getOffset() + 3 + 1);
+
+								if (lineb1 == '\r' && lineb2 == '\n')
+									// Windows
+									breakCount = 2;
+								else if (lineb1 == '\r' || lineb1 == '\n')
+									breakCount = 1;
+							}
+							emitPosition(lReg.getOffset(), lineRegion.getOffset() + lineRegion.getLength() - lReg.getOffset()
+									+ breakCount);*/
+						}
+						else if (symbol.sym == sym.DBLBRACK)
+							onMultStr++;
+
+						symbol = scanner.yylex();
+					}
+					
+					cNextPos += lineRegion.getLength() + 2;
+				}
+				else if (contType.equals("__lua_multiline_comment"))
+				{
+					int breakCount = 0;
+					if (region.getOffset() + region.getLength() + 1 < doc.getLength())
+					{
+						char lineb1 = doc.getChar(region.getOffset() + region.getLength());
+						char lineb2 = doc.getChar(region.getOffset() + region.getLength() + 1);
+
+						if (lineb1 == '\r' && lineb2 == '\n')
+							// Windows
+							breakCount = 2;
+						else if (lineb1 == '\r' || lineb1 == '\n')
+							breakCount = 1;
+					}
+
 					emitPosition(region.getOffset(), region.getLength() + breakCount);
 					cNextPos += region.getLength() + 2;
 				}
@@ -366,11 +393,13 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 
 		}
 
-		protected void emitPosition(int startOffset, int length) {
+		protected void emitPosition(int startOffset, int length)
+		{
 			fPositions.add(new Position(startOffset, length));
 		}
 
-		public void setEditor(LuaEditor editor) {
+		public void setEditor(LuaEditor editor)
+		{
 			this.reditor = editor;
 		}
 
