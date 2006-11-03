@@ -8,12 +8,15 @@ Bundle-ClassPath: luajava-1.0.jar,
 Bundle-Activator: org.keplerproject.ldt.core.LuaCorePlugin
 Bundle-Vendor: Kepler Project
 Bundle-Localization: plugin
-Export-Package: org.keplerproject.ldt.core,
+Export-Package: META-INF,
+ org.keplerproject.ldt.core,
  org.keplerproject.ldt.core.project,
+ org.keplerproject.ldt.core.compiler,
  org.keplerproject.luajava
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.ui,
  org.eclipse.ui.editors,
- org.eclipse.debug.ui
+ org.eclipse.debug.ui,
+ org.eclipse.ui.ide
 Eclipse-LazyStart: true

@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
-<plugin>
-     <!--<extension
+<?eclipse version="3.2"?>
+<plugin 
+   id="org.keplerproject.ldt.core"
+   name="LDT Core Plug-in"
+   version="1.0.0"
+   provider-name="Kepler Project">
+   <runtime>
+      <library name="luajava-1.0.jar">
+         <export name="org.keplerproject.luajava.*"/>
+      </library>
+      <library name="LuaCore.jar">
+         <export name="org.keplerproject.ldt.core.*"/>
+         <export name="org.keplerproject.ldt.core.project.*"/>
+         <export name="org.keplerproject.ldt.core.compiler.*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.debug.ui"/>
+   </requires>
+
+     <extension
          id="luaProjectBuilder"
          name="Lua Project Builder"
          point="org.eclipse.core.resources.builders">
@@ -12,7 +34,7 @@
                class="org.keplerproject.ldt.core.project.LuaProjectBuilder">
          </run>
       </builder>
-   </extension>-->
+   </extension>
    <extension
          id="luaProjectNature"
          name="Lua Project Nature"
@@ -26,23 +48,7 @@
             id="org.keplerproject.ldt.core.luaProjectBuilder">
       </builder>
    </extension>
-  <!-- <extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            adaptable="true"
-            objectClass="org.eclipse.core.resources.IProject"
-            nameFilter="*"
-            id="org.keplerproject.ldt.core.contribution1">
-         <action
-               class="org.keplerproject.ldt.core.project.ToggleNatureAction"
-               enablesFor="+"
-               icon="icons/project.gif"
-               id="org.keplerproject.ldt.core.addRemoveNatureAction"
-               label="Add/Remove Lua Nature"
-               menubarPath="additions">
-         </action>
-      </objectContribution>
-   </extension>-->
+   
    
 
 </plugin>

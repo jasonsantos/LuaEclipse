@@ -29,6 +29,9 @@ import org.xml.sax.XMLReader;
 public class LuaProject
     implements IProjectNature, LuaElement
 {
+	   protected IProject project;
+	    protected List loadPathEntries;
+	    protected boolean scratched;
 
     public LuaProject()
     {
@@ -219,7 +222,5 @@ public class LuaProject
         return project;
     }
 
-    protected IProject project;
-    protected List loadPathEntries;
-    protected boolean scratched;
+ 
 }
