@@ -53,4 +53,5 @@ public interface sym
   int DBLBRACK = 48;
   int DBRBRACK = 49;
   int MLCOMMENT = 50;
+  int MULTILINE_STRING = 51;
 }
