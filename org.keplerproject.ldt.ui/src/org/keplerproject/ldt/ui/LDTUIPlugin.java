@@ -288,16 +288,5 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 	public static IWorkspace getWorkspace() {
 		return ResourcesPlugin.getWorkspace();
 	}
-	/**
-	 * Temporary method
-	 * TODO centralize the lua State??? or not??
-	 * @return
-	 *//*
-	public LuaState getLuaState() {
-		if(luastate == null)
-			this.luastate = LuaStateFactory.newLuaState();
-					
-		return this.luastate;
-	}*/
 
 }
