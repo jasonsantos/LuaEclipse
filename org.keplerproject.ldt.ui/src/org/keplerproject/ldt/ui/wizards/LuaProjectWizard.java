@@ -94,8 +94,11 @@ public class LuaProjectWizard extends Wizard implements INewWizard {
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.prjCreationPage = new WizardNewProjectCreationPage("luaProjectCreationPage");
-		prjCreationPage.setTitle("Lua Project Creation Wizard");
-		prjCreationPage.setDescription("Creates a new Lua Project");
+		//prjCreationPage.setTitle("Lua Project Creation Wizard");
+		//prjCreationPage.setDescription("Creates a new Lua Project");
+		setWindowTitle("New Lua Project Wizard");
+		setDefaultPageImageDescriptor(LDTUIPlugin.getImageDescriptor("icons/luapwiz.gif"));
+		prjCreationPage.setWizard(this);
 		this.workbench = workbench;
 		this.selection = selection;
 	}

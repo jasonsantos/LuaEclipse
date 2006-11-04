@@ -28,6 +28,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
+import org.keplerproject.ldt.ui.LDTUIPlugin;
 
 /**
  * This is a sample new wizard. Its role is to create a new file 
@@ -163,6 +164,6 @@ public class LuaFileWizard extends Wizard implements INewWizard {
 		  this.workbench = workbench;
 	      this.selection = selection;
 	      setWindowTitle("New Lua File Wizard");
-	      //setDefaultPageImageDescriptor(ReadmeImages.README_WIZARD_BANNER);
+	      setDefaultPageImageDescriptor(LDTUIPlugin.getImageDescriptor("icons/luafwiz.gif"));
 	}
 }
