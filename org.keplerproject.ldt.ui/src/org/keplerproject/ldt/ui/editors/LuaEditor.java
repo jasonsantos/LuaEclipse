@@ -70,7 +70,7 @@ public class LuaEditor extends TextEditor {
 	 */
 	protected IResourceChangeListener createResourceChangeListener(
 			LuaEditor editor) {
-		return new LuaChangeListener();
+		return new LuaChangeListener(editor);
 	}
 
 	/**

@@ -23,10 +23,10 @@ public class LuaChangeListener
     implements IResourceChangeListener
 {
 
-   
-	public LuaChangeListener()
+   LuaEditor editor;
+	public LuaChangeListener(LuaEditor editor)
     { 
-    	
+    	this.editor = editor;
     }
     public void resourceChanged(IResourceChangeEvent event)
     {
