@@ -87,14 +87,26 @@ it is necessary that Java SDK is installed to run Eclipse.</p>
 	<ul>
 		<li>Download the latest version of LuaEclipse at <a href="http://www.luaforge.net">LuaForge</a>.
 		To install Eclipse, just decompress the zip file in the root folder of Eclipse, for example: 
-		"/usr/local/eclipse". After that start Eclipse and the installation is complete. In some systems
-		it's necessary to start eclipse with the "-clean" command line argument.<br />
+		&quot;/usr/local/eclipse&quot;. After that start Eclipse and the installation is complete. In some systems
+		it's necessary to start eclipse with the &quot;-clean&quot; command line argument.<br />
 		To check if the installation was correct, go to the menu option Help->About Eclipse SKD and select
 		the Plug-ins Details option and check if LuaEclipse is installed correctly. Look the the picture bellow:<br />
 		<br />
 		<img src="../images/verify.png" /></li>
 	</ul>
 	</li>
+	<li>Eclipse Software Updates
+	<ul>
+		<li>On the top menu, go to option Help-&gt;Find and Install, choose option
+		&quot;Search for new features to install&quot; and click on &quot;Next&quot;.</li>
+		<li>Click on &quot;Add Remote Site&quot;, in field URL type <a
+			href="http://luaeclipse.luaforge.net/site.xml">http://luaeclipse.luaforge.net/site.xml</a>.
+		</li>
+		<li>Choose only LuaEclipse and click on &quot;Finish&quot;. Then follow the installing steps <img
+			src="../images/install1.png" /></li>
+	</ul>
+	</li>
+
 </ul>
 
 
@@ -103,39 +115,31 @@ it is necessary that Java SDK is installed to run Eclipse.</p>
 
 <h2><a name="project"></a>First Lua Project</h2>
 
-<p></p>
-<p></p>
-<p></p>
-<h2><a name="file"></a>Editing a Lua File</h2>
-
-<p></p>
-<pre class="example">
-
-</pre>
-
-<p></p>
-
-<pre class="example">
-</pre>
-
-<h2><a name="preferences"></a>Prefer&ecirc;ncias e interpretadores</h2>
-
-<p>Um ambiente &eacute; criado chamando a fun&ccedil;&atilde;o de
-inicializa&ccedil;&atilde;o do driver que est&aacute; armazenada na
-tabela <code>luasql</code> com o mesmo nome do driver (odbc, postgres
-etc). Por exemplo,</p>
+<p>To create a new Lua Project, click on menu option
+File-&gt;New-&gt;New Lua Project.</p>
+<p><img src="../images/newproject.png" /></p>
+<p>To include a new Lua script, select the Lua project wanted, 
+then click with the right button and select the option
+Lua Actions-&gt;New Lua File</p>
+<p><img src="../images/newfile.png" /></p>
+<p>Now just start coding. ;)</p>
 
 
+<h2><a name="preferences"></a>Preferences and interpreters</h2>
 
-<p>tentar&aacute; criar um ambiente usando o driver ODBC. A
-&uacute;nica exce&ccedil;&atilde;o &eacute; o driver JDBC, que precisa
-saber que driver interno utilizar. Logo, quando se cria um ambiente,
-deve-se passar o nome da classe do driver como primeiro par&acirc;metro
-para a fun&ccedil;&atilde;o <code>luasql.jdbc</code>. Por exemplo:</p>
+<p>Now the only preference option on Lua is the configuration of Lua
+interpreters to execute scripts. To set a interpreter go to 
+Windows-&gt;preferences... and then the Lua-&gt;Installed Interpreters 
+category, as in the following picture.</p>
+<p><img src="../images/preferences.png" /></p>
 
-
-
-
+<p>In this windows it is possible to add, edit or remove an interpreter.
+The configuration of an interpreter is basically the name that identifies
+it and the path to its Lua executable. On the first column of the interpreter
+list, there is an option to select one of them as the default interpreter
+to execute scripts. This option is used on the script execution configuration.
+After the necessary configurations are made, click on &quot;Ok&quot; and
+it will be saved.
 
 <h2><a name="run"></a>Executando um projeto Lua</h2>
 
@@ -145,61 +149,7 @@ Uma conex&atilde;o &eacute; criada chamando o m&eacute;todo <code><a
 	href="#env_connect">environment:connect</a></code>.</p>
 
 
-<!--
-<h2><a name="extension"></a>Pontos de extens&atild;o</h2>
-
-<p>Um cursor cont&eacute;m m&eacute;todos para recuperar dados resultantes de um comando executado.
-Um cursor &eacute; criado por meio de uma fun&ccedil;&atilde;o
-<code><a href="#conn_execute">connection:execute</a></code>.
-Veja tamb&eacute;m: <a href="#postgres_extensions">PostgreSQL</a>
-e <a href="#oracle_extensions">Oracle</a>.</p>
-
-<h4>M&eacute;todos</h4>
-
-<dl class="reference">
-    <dt><a name="cur_close"></a><strong><code>cur:close()</code></strong></dt>
-    <dd>Fecha esse cursor.<br/>
-        Retorna: <code>true</code>, em caso de sucesso; <code>false</code>, quando o cursor
-        j&aacute; est&aacute; fechado.
-    </dd>
-
-    <dt><a name="cur_fetch"></a><strong><code>cur:fetch([table[,modestring]])</code></strong></dt>
-    <dd>Recupera o pr&oacute;ximo registro do resultado.<br/>
-        Se <code>fetch</code> &eacute; chamado sem par&acirc;metros, os resultados
-        consistem em uma lista de valores. Se <code>fetch</code> &eacute;
-        chamado com uma tabela, os resultados s&atilde;o copiados para a tabela e a tabela
-        &eacute; retornada. Neste caso, pode ser usado um
-        par&acirc;metro opcional de modo (<code>modestring</code>): uma seq&uuml;&ecirc;ncia
-        de caracteres indicando como deve ser constru&iacute;da a tabela de resultados. 
-        A seq&uuml;&ecirc;ncia de caracteres do modo pode conter:
-        <dl>
-            <dt><strong>"n"</strong></dt><dd>a tabela resultante ter&aacute; &iacute;ndices num&eacute;ricos (padr&atilde;o)</dd>
-            <dt><strong>"a"</strong></dt><dd>a tabela resultante ter&aacute; &iacute;ndices alfanum&eacute;ricos</dd>
-        </dl>
-        <br/>
-        Os <em>&iacute;ndices num&eacute;ricos</em> representam as posi&ccedil;&otilde;es dos
-        campos no comando SELECT; os <em>&iacute;ndices alfanum&eacute;ricos</em> representam
-        os nomes dos campos.<br/>
-        A tabela opcional (<code>table</code>) ser&aacute; usada para armazenar o pr&oacute;ximo
-        registro. Isso permite o uso de uma &uacute;nica tabela para v&aacute;rias chamadas, o que
-        pode melhorar o desempenho geral.<br/>
-        N&atilde;o existe garantia sobre os tipos dos resultados: eles podem ou n&atilde;o ser convertidos pelo driver
-        para os tipos Lua adequados. Na implementa&ccedil;&atilde;o atual, os drivers PostgreSQL e MySQL
-        retornam todos os valores como strings, enquanto os drivers ODBC e Oracle convertem esses valores
-        em tipos Lua.<br/>
-        Retorna: dados, como descrito acima, ou <code>nil</code> se n&atilde;o existem mais registros.
-        Note que esse m&eacute;todo pode retornar <code>nil</code> como um resultado v&aacute;lido.
-    </dd>
-
-    <dt><a name="cur_colnames"></a><strong><code>cur:getcolnames()</code></strong></dt>
-    <dd>Retorna: uma tabela com os nomes das colunas.
-    </dd>
-
-    <dt><a name="cur_coltypes"></a><strong><code>cur:getcoltypes()</code></strong></dt>
-    <dd>Retorna: uma tabela com os tipos das colunas.
-    </dd>
-</dl>
---></div>
+</div>
 <!-- id="content" --></div>
 <!-- id="main" -->
 
