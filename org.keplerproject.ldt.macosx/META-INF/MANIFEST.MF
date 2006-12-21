@@ -8,4 +8,4 @@ Fragment-Host: org.keplerproject.ldt.core;bundle-version="1.0.0"
 Bundle-Localization: fragment
 Eclipse-LazyStart: true
 Eclipse-ExtensibleAPI: true
-Eclipse-PlatformFilter: (& (| (osgi.os=macosx) (osgi.os=linux) ) (osgi.arch=x86))
+Eclipse-PlatformFilter: (& (| (osgi.os=macosx) (osgi.os=linux) ))
