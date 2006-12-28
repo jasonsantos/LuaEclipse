@@ -141,14 +141,20 @@ to execute scripts. This option is used on the script execution configuration.
 After the necessary configurations are made, click on &quot;Ok&quot; and
 it will be saved.
 
-<h2><a name="run"></a>Executando um projeto Lua</h2>
+<h2><a name="run"></a>Running a Lua file</h2>
 
-<p>Uma conex&atilde;o cont&eacute;m atributos e par&acirc;metros
-espec&iacute;ficos de uma &uacute;nica conex&atilde;o de base de dados.
-Uma conex&atilde;o &eacute; criada chamando o m&eacute;todo <code><a
-	href="#env_connect">environment:connect</a></code>.</p>
+<p>LuaEclipse uses the Eclipse Platform Lauchers to run Lua scripts. To run a lua file, select the menu option
+Run-&gt;Run...<br />
+Create a new "Lua Standalone Application" launch configuration .</p>
+<p><img src="../images/runfile.png" /></p>
 
-
+<p>The File Tab: select the Lua project and file to be executed.</p>
+<p>The Arguments Tab:configure the working directory, interpreter arguments and program arguments.</p>
+<p><img src="../images/tabArgs.png" /></p>
+<p> At Environment Tab: select or add a Lua interpreter that will run th script.
+At Variables field, add th environment variables needed for your script.</p>
+<p><img src="../images/environment.png" /></p>
+<p> Press Run and view the script output at the "Console View".</p>
 </div>
 <!-- id="content" --></div>
 <!-- id="main" -->
