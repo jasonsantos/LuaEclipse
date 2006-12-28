@@ -2,9 +2,11 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-    <title>LuaSQL: Conectividade de banco de dados para a linguagem de programa&ccedil;&atilde;o Lua</title>
-    <link rel="stylesheet" href="http://www.keplerproject.org/doc.css" type="text/css"/>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>LuaEclipse: Um ambiente de desenvolvimento integrado para
+a linguagem de programa&ccedil;&atilde;o Lua</title>
+<link rel="stylesheet" href="http://www.keplerproject.org/doc.css"
+	type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
 <body>
@@ -12,106 +14,73 @@
 <div id="container">
 	
 <div id="product">
-	<div id="product_logo"><a href="http://www.keplerproject.org">
-		<img alt="LuaSQL logo" src="luasql.png"/>
-	</a></div>
-	<div id="product_name"><big><strong>LuaSQL</strong></big></div>
-	<div id="product_description">Conectividade de banco de dados para a linguagem de programa&ccedil;&atilde;o Lua</div>
-</div> <!-- id="product" -->
+<div id="product_logo"><a href="http://www.keplerproject.org/luaeclipse/">
+<img alt="LuaEclipse logo" src="../images/luaeclipse_128.gif" /> </a></div>
+<div id="product_name"><big><strong>LuaEclipse</strong></big></div>
+<div id="product_description">Um ambiente de desenvolvimento
+integrado para a linguagem de programa&ccedil;&atilde;o Lua</div>
+</div><!-- id="product" -->
 
 <div id="main">
-	
+
 <div id="navigation">
-<h1>LuaSQL</h1>
+<h1>LuaEclipse</h1>
+<ul>
+	<li><a href="index.html">Home</a>
 	<ul>
-		<li><a href="index.html">Home</a>
-			<ul>
-				<li><a href="index.html#overview">Vis&atilde;o Geral</a></li>
-				<li><a href="index.html#status">Status</a></li>
-				<li><a href="index.html#download">Download</a></li>
-				<li><a href="index.html#credits">Cr&eacute;ditos</a></li>
-				<li><a href="index.html#contact">Contato</a></li>
-			</ul>
-		</li>
-		<li><a href="manual.html">Manual</a>
-			<ul>
-				<li><a href="manual.html#introduction">Introdu&ccedil;&atilde;o</a></li>
-				<li><a href="manual.html#compiling">Compilando</a></li>
-				<li><a href="manual.html#installation">Instala&ccedil;&atilde;o</a></li>
-				<li><a href="manual.html#errors">Tratamento de erros</a></li>
-				<li><a href="manual.html#drivers">Drivers</a></li>
-				<li><a href="manual.html#environment_object">Ambiente</a></li>
-				<li><a href="manual.html#connection_object">Conex&atilde;o</a></li>
-				<li><a href="manual.html#cursor_object">Cursor</a></li>
-				<li><a href="manual.html#postgres_extensions">PostgreSQL</a></li>
-				<li><a href="manual.html#mysql_extensions">MySQL</a></li>
-				<li><a href="manual.html#oracle_extensions">Oracle</a></li>
-			</ul>
-		</li>
-		<li><a href="examples.html">Exemplos</a></li>
-		<li><strong>Hist&oacute;rico</strong></li>
-        <li><a href="http://luaforge.net/projects/luasql/">Projeto</a>
-            <ul>
-                <li><a href="http://luaforge.net/tracker/?group_id=12">Bug Tracker</a></li>
-                <li><a href="http://luaforge.net/scm/?group_id=12">CVS</a></li>
-            </ul>
-        </li>
-		<li><a href="license.html">Licen&ccedil;a</a></li>
+		<li><a href="index.html#overview">Vis&atilde;o Geral</a></li>
+		<li><a href="index.html#status">Status</a></li>
+		<li><a href="index.html#download">Download</a></li>
+		<li><a href="index.html#credits">Cr&eacute;ditos</a></li>
+		<li><a href="index.html#contact">Contato</a></li>
 	</ul>
-</div> <!-- id="navigation" -->
+	</li>
+	<li><strong>Manual</strong>
+	<ul>
+		<li><a href="manual.html#introduction">Introdu&ccedil;&atilde;o</a></li>
+		<li><a href="manual.html#installation">Instala&ccedil;&atilde;o</a></li>
+		<li><a href="manual.html#project">Primeiro Projeto Lua</a></li>
+		<li><a href="manual.html#preferences">Prefer&ecirc;ncias e
+		interpretadores</a></li>
+		<li><a href="manual.html#run">Executando um arquivo Lua</a></li>
+	</ul>
+	</li>
+	<li><a href="examples.html">Screenshots</a></li>
+	<li>Hist&oacute;rico</li>
+	<li><a href="http://luaforge.net/projects/luaeclipse/">Projeto</a>
+	<ul>
+		<li><a href="http://luaforge.net/tracker/?group_id=9">Bug
+		Tracker</a></li>
+		<li><a href="http://luaforge.net/scm/?group_id=9">CVS</a></li>
+	</ul>
+	</li>
+	<li><a href="license.html">Licen&ccedil;a</a></li>
+</ul>
+</div>
+ <!-- id="navigation" -->
 
 <div id="content">
 
 <h2><a name="history"></a>Hist&oacute;ria</h2>
 
 <dl class="history">
-    <dt><strong>2.0.2</strong> [26/06/2006]</dt>
-    <dd>M&eacute;todo <a href="manual.html#mysql_extensions">numrows</a> acrescentado ao driver MySQL.<br />
-    Adicionado um arquivo <code>config</code> para o <code>makefile</code>.<br />
-    Adicionada configura&ccedil;&atilde;o do driver LinuxODBC.<br />
-    Corrigiu um bug no driver SQLite (bug encontrado por Mike Petersen).<br />
-    Corrigiu bugs nos drivers JDBC, OCI8 e ADO.<br />
-    Testes melhorados.<br />
-    Documenta&ccedil;&atilde;o melhorada.<br />
+    <dt><strong>1.0.0</strong> [29/12/2006]</dt>
+    <dd>Versão oficial para Windows, Mac OSX, Linux. Syntax Hightlight, Code completion, Execu&ccedil;&atilde;o de scripts, function code Folding, etc... 
+ <br/>    Pontos de extens&atilde;o para adi&ccedil;&atilde;o de novas funcionalidades.
     </dd>
-    
-    <dt><strong>2.0.1</strong> [02/06/2005]</dt>
-    <dd>Corrigiu alguns erros relativos ao driver ODBC.</dd>
-    
-    <dt><strong>2.0.0</strong> [22/03/2005]</dt>
-    <dd>Novo driver ADO e corrigiu alguns erros relativos ao driver ODBC.</dd>
-    
-    <dt><strong>2.0 beta 3</strong> [23/12/2004]</dt>
-    <dd>Corrigiu apenas alguns pequenos erros.</dd>
-  
-    <dt><strong>2.0 beta 2</strong> [26/11/2004]</dt>
-    <dd>Corrigiu alguns erros e introduziu os novos drivers SQLite and JDBC.
-    Utiliza a 
-    <a href="http://www.keplerproject.org/compat/">proposta de pacotes</a>
-    para Lua 5.1. Veja mais detalhes em
-    <a href="manual.html#installation">Instala&ccedil;&atilde;o</a>.
-    </dd>
-    
-    <dt><strong>2.0 beta</strong> [10/12/2003]</dt>
 </dl>
-
-
-<p>
-A vers&atilde;o 2.0 apresenta algumas modifica&ccedil;&otilde;es no design e aprimoramentos
-na implementa&ccedil;&atilde;o em rela&ccedil;&atilde;o &agrave; vers&atilde;o 1.0:
-</p>
-<ul>
-  <li>Novo m&eacute;todo de <code>fetch</code>: mais eficiente e mais flex&iacute;vel;</li>
-  <li>Novo m&eacute;todo de <code>setautocommit</code>;</li>
-  <li>Compat&iacute;vel com Lua 5.0 e 5.1;</li>
-  <li>Carreg&aacute;vel dinamicamente ou estaticamente;</li>
-  <li>Novos drivers para bancos de dados Oracle e MySQL.</li>
-</ul>
-
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 </div> <!-- id="content" -->
 
 </div> <!-- id="main" -->
