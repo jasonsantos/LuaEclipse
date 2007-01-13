@@ -28,7 +28,7 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
- * $Id$
+ * @version <code>$Id$</code>
  */
 public class LauncherPlugin extends AbstractUIPlugin {
 

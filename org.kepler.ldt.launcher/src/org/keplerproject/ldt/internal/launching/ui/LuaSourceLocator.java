@@ -38,7 +38,7 @@ import org.keplerproject.ldt.internal.launching.LuaLaunchConfigurationAttribute;
 /**
  * 
  * @author guilherme
- * @version $id$
+ * @version $Id$
  */
 public class LuaSourceLocator implements IPersistableSourceLocator,
 		ISourcePresentation, LuaLaunchConfigurationAttribute {

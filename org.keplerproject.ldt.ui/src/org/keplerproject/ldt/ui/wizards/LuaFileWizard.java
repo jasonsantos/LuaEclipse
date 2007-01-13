@@ -1,3 +1,25 @@
+/*
+* Copyright (C) 2003-2007 Kepler Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining
+* a copy of this software and associated documentation files (the
+* "Software"), to deal in the Software without restriction, including
+* without limitation the rights to use, copy, modify, merge, publish,
+* distribute, sublicense, and/or sell copies of the Software, and to
+* permit persons to whom the Software is furnished to do so, subject to
+* the following conditions:
+*
+* The above copyright notice and this permission notice shall be
+* included in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
 package org.keplerproject.ldt.ui.wizards;
 
 import java.io.ByteArrayInputStream;
@@ -31,16 +53,10 @@ import org.eclipse.ui.ide.IDE;
 import org.keplerproject.ldt.ui.LDTUIPlugin;
 
 /**
- * This is a sample new wizard. Its role is to create a new file 
- * resource in the provided container. If the container resource
- * (a folder or a project) is selected in the workspace 
- * when the wizard is opened, it will accept it as the target
- * container. The wizard creates one file with the extension
- * "lua". If a sample multi-page editor (also available
- * as a template) is registered for the same extension, it will
- * be able to open it.
+ * 
+ * @author guilherme
+ * @version $Id$
  */
-
 public class LuaFileWizard extends Wizard implements INewWizard {
 	private WizardNewFileCreationPage page;
 	private IStructuredSelection selection;
