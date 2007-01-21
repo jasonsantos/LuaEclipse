@@ -71,7 +71,7 @@ public class LuaFoldingReconcilingStrategy implements IReconcilingStrategy,
 	}
 
 	public void reconcile(IRegion partition) {
-		initialReconcile();
+				initialReconcile();
 		
 	}
 
@@ -147,9 +147,9 @@ public class LuaFoldingReconcilingStrategy implements IReconcilingStrategy,
 
 				emitPosition(region.getOffset(), region.getLength()
 						+ breakCount);
-				cNextPos += region.getLength() + 2;
+				cNextPos += region.getLength() + breakCount;
 			} else {
-				cNextPos += region.getLength() + 2;
+				cNextPos += region.getLength();
 			}
 
 		}
