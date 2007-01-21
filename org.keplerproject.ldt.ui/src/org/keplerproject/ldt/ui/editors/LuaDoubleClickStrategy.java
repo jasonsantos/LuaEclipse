@@ -28,72 +28,21 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextViewer;
 /**
- * Simple Double click Strategy. Selects the word. :) not to much usefull.
+ * Simple Double click Strategy. Selects the word.
  * @author guilherme
  * @version $Id$
  */
 public class LuaDoubleClickStrategy implements ITextDoubleClickStrategy {
 	protected ITextViewer fText;
 
+	public LuaDoubleClickStrategy() {
+	}
 	public void doubleClicked(ITextViewer part) {
 		int pos = part.getSelectedRange().x;
-
 		if (pos < 0)
 			return;
-
 		fText = part;
-
-		if (!selectComment(pos)) {
-			selectWord(pos);
-		}
-	}
-	protected boolean selectComment(int caretPos) {
-		IDocument doc = fText.getDocument();
-		int startPos, endPos;
-
-		try {
-			int pos = caretPos;
-			char c = ' ';
-
-			while (pos >= 0) {
-				c = doc.getChar(pos);
-				if (c == '\\') {
-					pos -= 2;
-					continue;
-				}
-				if (c == Character.LINE_SEPARATOR || c == '\"')
-					break;
-				--pos;
-			}
-
-			if (c != '\"')
-				return false;
-
-			startPos = pos;
-
-			pos = caretPos;
-			int length = doc.getLength();
-			c = ' ';
-
-			while (pos < length) {
-				c = doc.getChar(pos);
-				if (c == Character.LINE_SEPARATOR || c == '\"')
-					break;
-				++pos;
-			}
-			if (c != '\"')
-				return false;
-
-			endPos = pos;
-
-			int offset = startPos + 1;
-			int len = endPos - offset;
-			fText.setSelectedRange(offset, len);
-			return true;
-		} catch (BadLocationException x) {
-		}
-
-		return false;
+		selectWord(pos);
 	}
 	protected boolean selectWord(int caretPos) {
 
