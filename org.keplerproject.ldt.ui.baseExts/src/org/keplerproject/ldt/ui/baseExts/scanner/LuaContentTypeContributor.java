@@ -35,7 +35,7 @@ public class LuaContentTypeContributor implements ILuaContentTypeExtension {
 
 		return new String[] { ILuaPartitions.LUA_MULTI_LINE_COMMENT,
 				ILuaPartitions.LUA_STRING, ILuaPartitions.LUA_WORDS,
-				ILuaPartitions.LUA_SINGLE_LINE_COMMENT, ILuaPartitions.LUA_CODE };
+				ILuaPartitions.LUA_CODE };
 
 	}
 

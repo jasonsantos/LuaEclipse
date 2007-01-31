@@ -55,9 +55,8 @@ public class PartitionerScannerExtension implements IScannerRuleExtension ,ILuaS
 		this.fTokens = new IToken[] { 
 				new Token(ILuaPartitions.LUA_MULTI_LINE_COMMENT),
 				new Token(ILuaPartitions.LUA_STRING),
-				new Token(ILuaPartitions.LUA_WORDS),
-				new Token(ILuaPartitions.LUA_CODE),
-				new Token(ILuaPartitions.LUA_SINGLE_LINE_COMMENT)};
+				//new Token(ILuaPartitions.LUA_WORDS),
+				new Token(ILuaPartitions.LUA_CODE)};
 		
 		List rules = new ArrayList();
 		//Add rule for multi line comments.
@@ -69,7 +68,7 @@ public class PartitionerScannerExtension implements IScannerRuleExtension ,ILuaS
 		rules.add(new MultiLineRule("[[", "]]", fTokens[1], '\\'));		
 
 		// Add word rule for keywords and constants.
-		LuaWordRule wr = new LuaWordRule(new LuaWordDetector(), fTokens[3]);
+		LuaWordRule wr = new LuaWordRule(new LuaWordDetector(), fTokens[2]);
 		for (int i = 0; i < reservedwords.length; i++)
 			wr.addWord(reservedwords[i], fTokens[2]);
 		for (int i = 0; i < constants.length; i++)
@@ -82,8 +81,8 @@ public class PartitionerScannerExtension implements IScannerRuleExtension ,ILuaS
 				new LuaWhitespaceDetector());
 		rules.add(whiteRule);*/
 		
-		//single line comment part
-		rules.add(new EndOfLineRule("--",fTokens[4]));
+		/*//single line comment part
+		rules.add(new EndOfLineRule("--",fTokens[2]));*/
 		
 		
 		this.fRules = new IPredicateRule[rules.size()];
