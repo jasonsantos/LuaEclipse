@@ -56,18 +56,24 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 		
 		//Lua word reconciliers
 		DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getCodeScanner());
-		reconciler.setDamager(dr, ILuaPartitions.LUA_WORDS);
-		reconciler.setRepairer(dr, ILuaPartitions.LUA_WORDS);
+		reconciler.setDamager(dr, ILuaPartitions.LUA_CODE);
+		reconciler.setRepairer(dr, ILuaPartitions.LUA_CODE);
 		
 		dr.setDocument(viewer.getDocument());
 		//Lua string reconciliers
-	    dr = new DefaultDamagerRepairer(getStringCodeScanner());
-		reconciler.setDamager(dr, ILuaPartitions.LUA_STRING);
-		reconciler.setRepairer(dr, ILuaPartitions.LUA_STRING);
-		
-		dr.setDocument(viewer.getDocument());
+	   /* dr = new DefaultDamagerRepairer(getStringCodeScanner());*/
+	    NonRuleBasedDamagerRepairer ndr1 = new NonRuleBasedDamagerRepairer(
+				new TextAttribute(colorManager
+						.getColor(ILuaColorConstants.LUA_STRING)));
+		reconciler.setDamager(ndr1, ILuaPartitions.LUA_STRING);
+		reconciler.setRepairer(ndr1, ILuaPartitions.LUA_STRING);
+	
+		ndr1.setDocument(viewer.getDocument());
 		// Lua single line comment reconcilier
 		dr = new DefaultDamagerRepairer(getSimpleCommentCodeScanner());
+		/*NonRuleBasedDamagerRepairer ndr2 = new NonRuleBasedDamagerRepairer(
+				new TextAttribute(colorManager
+						.getColor(ILuaColorConstants.LUA_SINGLE_LINE_COMMENT)));*/
 		reconciler.setDamager(dr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);
 		reconciler.setRepairer(dr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);
 		
@@ -83,8 +89,8 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 		reconciler.setDamager(ndr, ILuaPartitions.LUA_MULTI_LINE_COMMENT);
 		reconciler.setRepairer(ndr, ILuaPartitions.LUA_MULTI_LINE_COMMENT);
 
-		reconciler.setDamager(ndr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);
-		reconciler.setRepairer(ndr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);
+		/*reconciler.setDamager(ndr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);
+		reconciler.setRepairer(ndr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);*/
 
 		/*
 		 * ndr = new NonRuleBasedDamagerRepairer(new TextAttribute(colorManager
