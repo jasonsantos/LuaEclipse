@@ -3,7 +3,7 @@
 <plugin
    id="org.keplerproject.ldt.ui.baseExts"
    name="BaseExts Plug-in"
-   version="1.0.0"
+   version="1.0.1"
    provider-name="Kepler Project"
    class="org.keplerproject.ldt.ui.baseExts.BaseExtsPlugin">
 
@@ -17,8 +17,8 @@
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.keplerproject.ldt.core" version="1.0.0" export="false"/>
-      <import plugin="org.keplerproject.ldt.ui" version="1.0.0" export="true"/>
+      <import plugin="org.keplerproject.ldt.core" version="1.0.0"/>
+      <import plugin="org.keplerproject.ldt.ui" version="1.0.1" export="true"/>
       
    </requires>
    <extension
