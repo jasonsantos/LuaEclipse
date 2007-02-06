@@ -30,18 +30,12 @@ import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.Token;
 
 /**
- * Lua Multiline comment rule.
+ * Lua Multiline String rule.
  * @author guilherme
  * @version $Id$
  *
  */
-public class LuaMultilineCommentrule extends MultiLineRule {
-
-	/** The pattern's nesting start sequence */
-	protected char[] fNestingStartSequence;
-
-	/** The counting of nested patterns * */
-	private int fNestingCount;
+public class LuaMultilineStringrule extends MultiLineRule {
 
 	/**
 	 * @param startSequence
@@ -50,50 +44,40 @@ public class LuaMultilineCommentrule extends MultiLineRule {
 	 * @param escapeCharacter
 	 * @param breaksOnEOL
 	 */
-	public LuaMultilineCommentrule(IToken token, char escapeCharacter,
+	public LuaMultilineStringrule(IToken token, char escapeCharacter,
 			boolean breaksOnEOL) {
-		super("--[[", "]]", token, escapeCharacter, breaksOnEOL);
-		String nestingStartSequence = "[[";
-		fNestingStartSequence = nestingStartSequence.toCharArray();
-		fNestingCount = 0;
+		
+		super("[[", "]]", token, escapeCharacter, breaksOnEOL);
+		
+		
 	}
 
-	public LuaMultilineCommentrule(IToken token, char escapeCharacter,
+	public LuaMultilineStringrule(IToken token, char escapeCharacter,
 			boolean breaksOnEOL, boolean breaksOnEOF) {
 		this(token, escapeCharacter, breaksOnEOL);
 	}
 
-	public LuaMultilineCommentrule(IToken token) {
+	public LuaMultilineStringrule(IToken token) {
 		this(token, (char) 0, false);
 	}
 
 	protected IToken doEvaluate(ICharacterScanner scanner, boolean resume) {
-		// TODO Bacalha s�rio.. tem que testar mais
 		if (resume) {
-			/*
-			 * if (endSequenceDetected(scanner)) { return fToken; }
-			 */
 			scanner.unread();
 			int c = scanner.read();
-			int d = 0, e = 0, f = 0;
-			while (c != fStartSequence[0] || f != fStartSequence[1]
-					|| e != fStartSequence[2] || d != fStartSequence[3]) {
+			int f = 0;
+			while (c != fStartSequence[0] || f != fStartSequence[1]) {
 				scanner.unread();
 				scanner.unread();
-				d = e;
-				e = f;
 				f = c;
 				c = scanner.read();
 			}
 			scanner.unread();
-			scanner.unread();
 			c = scanner.read();
 			if (c == fStartSequence[0]) {
 				if (sequenceDetected(scanner, fStartSequence, false)) {
-					fNestingCount = 1;
 
 					if (endSequenceDetected(scanner)) {
-						scanner.read();
 						return fToken;
 					}
 				}
@@ -104,7 +88,6 @@ public class LuaMultilineCommentrule extends MultiLineRule {
 			int c = scanner.read();
 			if (c == fStartSequence[0]) {
 				if (sequenceDetected(scanner, fStartSequence, false)) {
-					fNestingCount = 1;
 
 					if (endSequenceDetected(scanner)) {
 						return fToken;
@@ -117,7 +100,7 @@ public class LuaMultilineCommentrule extends MultiLineRule {
 		return Token.UNDEFINED;
 	}
 
-	protected boolean endSequenceDetected(ICharacterScanner scanner) {
+	/*protected boolean endSequenceDetected(ICharacterScanner scanner) {
 		int c;
 		char[][] delimiters = scanner.getLegalLineDelimiters();
 
@@ -151,6 +134,6 @@ public class LuaMultilineCommentrule extends MultiLineRule {
 			return true;
 		scanner.unread();
 		return false;
-	}
+	}*/
 
 }

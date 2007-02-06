@@ -26,15 +26,13 @@ package org.keplerproject.ldt.ui.baseExts.scanner;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jface.text.rules.EndOfLineRule;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.IToken;
-import org.eclipse.jface.text.rules.MultiLineRule;
-import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 import org.keplerproject.ldt.ui.editors.ext.IScannerRuleExtension;
 import org.keplerproject.ldt.ui.text.rules.LuaMultilineCommentrule;
-import org.keplerproject.ldt.ui.text.rules.LuaWordRule;
+import org.keplerproject.ldt.ui.text.rules.LuaMultilineStringrule;
 /**
  *  Base partitioner extension point implementation
  *  
@@ -43,7 +41,7 @@ import org.keplerproject.ldt.ui.text.rules.LuaWordRule;
  * 
  */
 public class PartitionerScannerExtension implements IScannerRuleExtension ,ILuaSyntax{
-	private IToken[] fTokens;
+	private IToken[] fTokens = new IToken[]{};
 
 	private IPredicateRule[] fRules;
 
@@ -52,39 +50,17 @@ public class PartitionerScannerExtension implements IScannerRuleExtension ,ILuaS
 	 *
 	 */
 	public PartitionerScannerExtension() {
-		this.fTokens = new IToken[] { 
+		this.fTokens = new IToken[] { new Token(ILuaPartitions.LUA_STRING),
 				new Token(ILuaPartitions.LUA_MULTI_LINE_COMMENT),
-				new Token(ILuaPartitions.LUA_STRING),
-				//new Token(ILuaPartitions.LUA_WORDS),
-				new Token(ILuaPartitions.LUA_CODE)};
+				new Token(IDocument.DEFAULT_CONTENT_TYPE)};
 		
 		List rules = new ArrayList();
 		//Add rule for multi line comments.
-		rules.add(new LuaMultilineCommentrule(fTokens[0]));
+		rules.add(new LuaMultilineCommentrule(fTokens[1]));
 		
 		// String Rules
-		rules.add(new SingleLineRule("\"", "\"", fTokens[1], '\\'));
-		rules.add(new SingleLineRule("'", "'", fTokens[1], '\\'));
-		rules.add(new MultiLineRule("[[", "]]", fTokens[1], '\\'));		
+		rules.add(new LuaMultilineStringrule( fTokens[0], '\\',false));		
 
-		// Add word rule for keywords and constants.
-		LuaWordRule wr = new LuaWordRule(new LuaWordDetector(), fTokens[2]);
-		for (int i = 0; i < reservedwords.length; i++)
-			wr.addWord(reservedwords[i], fTokens[2]);
-		for (int i = 0; i < constants.length; i++)
-			wr.addWord(constants[i], fTokens[2]);
-		for (int i = 0; i < otherpredicates.length; i++)
-			wr.addWord(otherpredicates[i], fTokens[2]);
-		rules.add(wr);
-		
-	/*	LuaWhitespaceRule whiteRule = new LuaWhitespaceRule(
-				new LuaWhitespaceDetector());
-		rules.add(whiteRule);*/
-		
-		/*//single line comment part
-		rules.add(new EndOfLineRule("--",fTokens[2]));*/
-		
-		
 		this.fRules = new IPredicateRule[rules.size()];
 		rules.toArray(fRules);
 	}

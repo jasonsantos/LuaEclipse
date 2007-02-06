@@ -22,6 +22,7 @@
 */
 package org.keplerproject.ldt.ui.baseExts.scanner;
 
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
@@ -29,7 +30,6 @@ import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.ITokenScanner;
-import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -38,7 +38,6 @@ import org.keplerproject.ldt.ui.editors.LuaBaseScanner;
 import org.keplerproject.ldt.ui.editors.LuaColorManager;
 import org.keplerproject.ldt.ui.editors.NonRuleBasedDamagerRepairer;
 import org.keplerproject.ldt.ui.editors.ext.ILuaReconcilierExtension;
-import org.keplerproject.ldt.ui.text.rules.LuaWhitespaceRule;
 import org.keplerproject.ldt.ui.text.rules.LuaWordRule;
 /**
  * 
@@ -56,50 +55,23 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 		
 		//Lua word reconciliers
 		DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getCodeScanner());
-		reconciler.setDamager(dr, ILuaPartitions.LUA_CODE);
-		reconciler.setRepairer(dr, ILuaPartitions.LUA_CODE);
+		reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
+		reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 		
 		dr.setDocument(viewer.getDocument());
 		//Lua string reconciliers
-	   /* dr = new DefaultDamagerRepairer(getStringCodeScanner());*/
-	    NonRuleBasedDamagerRepairer ndr1 = new NonRuleBasedDamagerRepairer(
-				new TextAttribute(colorManager
-						.getColor(ILuaColorConstants.LUA_STRING)));
-		reconciler.setDamager(ndr1, ILuaPartitions.LUA_STRING);
-		reconciler.setRepairer(ndr1, ILuaPartitions.LUA_STRING);
-	
-		ndr1.setDocument(viewer.getDocument());
-		// Lua single line comment reconcilier
-		dr = new DefaultDamagerRepairer(getSimpleCommentCodeScanner());
-		/*NonRuleBasedDamagerRepairer ndr2 = new NonRuleBasedDamagerRepairer(
-				new TextAttribute(colorManager
-						.getColor(ILuaColorConstants.LUA_SINGLE_LINE_COMMENT)));*/
-		reconciler.setDamager(dr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);
-		reconciler.setRepairer(dr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);
+	    //dr = new DefaultDamagerRepairer(getStringCodeScanner());
+		NonRuleBasedDamagerRepairer ndr = new NonRuleBasedDamagerRepairer(new TextAttribute(fColorManager
+				.getColor(ILuaColorConstants.LUA_STRING)));
 		
-		dr.setDocument(viewer.getDocument());
-		
-		// Multiline comment
-		
-		NonRuleBasedDamagerRepairer ndr = new NonRuleBasedDamagerRepairer(
-				new TextAttribute(colorManager
-						.getColor(ILuaColorConstants.LUA_MULTI_LINE_COMMENT)));
+		reconciler.setDamager(ndr,ILuaPartitions.LUA_STRING);
+		reconciler.setRepairer(ndr, ILuaPartitions.LUA_STRING);
 		ndr.setDocument(viewer.getDocument());
-
-		reconciler.setDamager(ndr, ILuaPartitions.LUA_MULTI_LINE_COMMENT);
+		ndr = new NonRuleBasedDamagerRepairer(new TextAttribute(fColorManager
+				.getColor(ILuaColorConstants.LUA_MULTI_LINE_COMMENT)));
+		reconciler.setDamager(ndr,ILuaPartitions.LUA_MULTI_LINE_COMMENT);
 		reconciler.setRepairer(ndr, ILuaPartitions.LUA_MULTI_LINE_COMMENT);
-
-		/*reconciler.setDamager(ndr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);
-		reconciler.setRepairer(ndr, ILuaPartitions.LUA_SINGLE_LINE_COMMENT);*/
-
-		/*
-		 * ndr = new NonRuleBasedDamagerRepairer(new TextAttribute(colorManager
-		 * .getColor(ILuaColorConstants.LUA_STRING)));
-		 * ndr.setDocument(viewer.getDocument());
-		 * dr.setDocument(viewer.getDocument()); reconciler.setDamager(ndr,
-		 * ILuaPartitions.LUA_STRING); reconciler.setRepairer(ndr,
-		 * ILuaPartitions.LUA_STRING);
-		 */
+		ndr.setDocument(viewer.getDocument());
 	}
 
 	/**
@@ -118,9 +90,11 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 				SWT.BOLD | SWT.ITALIC));
 		IToken other = new Token(new TextAttribute(this.fColorManager
 				.getColor(ILuaColorConstants.LUA_DEFAULT), null, SWT.NONE));
-		// Add generic whitespace rule.
-		LuaWhitespaceRule whiteRule = new LuaWhitespaceRule(
-				new LuaWhitespaceDetector());
+		IToken string = new Token(new TextAttribute(fColorManager
+				.getColor(ILuaColorConstants.LUA_STRING)));
+		IToken scomment = new Token(new TextAttribute(fColorManager
+				.getColor(ILuaColorConstants.LUA_SINGLE_LINE_COMMENT)));
+
 
 		// Add word rule for keywords and constants.
 		LuaWordRule wordRule = new LuaWordRule(new LuaWordDetector(), other);
@@ -135,55 +109,12 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 
 		scanner.setPredicateRules(new IPredicateRule[] {
 			    predRule,
-				wordRule, whiteRule });
-
-		return scanner;
-	}
-	/** 
-	 * returns the string code scanner..  has the rules to 
-	 * highlight strings
-	 * @return
-	 */
-	private ITokenScanner getStringCodeScanner() {
-		LuaBaseScanner scanner = new LuaBaseScanner();
-
-		IToken string = new Token(new TextAttribute(fColorManager
-				.getColor(ILuaColorConstants.LUA_STRING)));
-		// Add generic whitespace rule.
-		LuaWhitespaceRule whiteRule = new LuaWhitespaceRule(
-				new LuaWhitespaceDetector());
-
-		// Add word rule for keywords and constants.
-	
-		scanner.setPredicateRules(new IPredicateRule[] {
-				
+				wordRule,
 				new SingleLineRule("\"", "\"", string, '\\'),
 				new SingleLineRule("'", "'", string, '\\'),
-				new MultiLineRule("[[", "]]", string, '\\'),
-				whiteRule });
+				new EndOfLineRule("--", scomment)});
 
 		return scanner;
 	}
-	/**
-	 * Return the scanner to single line comments
-	 * @return
-	 */
-	private ITokenScanner getSimpleCommentCodeScanner() {
-		LuaBaseScanner scanner = new LuaBaseScanner();
 
-		IToken scommnet = new Token(new TextAttribute(fColorManager
-				.getColor(ILuaColorConstants.LUA_SINGLE_LINE_COMMENT)));
-		// Add generic whitespace rule.
-		LuaWhitespaceRule whiteRule = new LuaWhitespaceRule(
-				new LuaWhitespaceDetector());
-
-		// Add word rule for keywords and constants.
-	
-		scanner.setPredicateRules(new IPredicateRule[] {
-				new EndOfLineRule("--", scommnet),
-				whiteRule });
-
-		return scanner;
-	}
-	
 }
