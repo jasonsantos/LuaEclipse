@@ -48,7 +48,7 @@ public class LuaCorePlugin extends Plugin {
 
 	// The shared instance.
 	private static LuaCorePlugin plugin;
-	private ImageRegistry imgReg = new ImageRegistry();
+	private ImageRegistry imgReg;
 
 	/**
 	 * The constructor.
@@ -62,6 +62,7 @@ public class LuaCorePlugin extends Plugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		imgReg = new ImageRegistry();
 		initializeImageRegistry(imgReg);
 	}
 	
@@ -106,6 +107,7 @@ public class LuaCorePlugin extends Plugin {
 
 			image = LuaCorePlugin.getImageDescriptor("icons/" + images[i]
 					+ ".gif");
+			
 			reg.put(images[i],(ImageDescriptor) image);
 		}
 
