@@ -13,6 +13,7 @@
    <element name="extension">
       <complexType>
          <sequence>
+            <element ref="partitioner"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -44,6 +45,13 @@
    <element name="partitioner">
       <complexType>
          <attribute name="contributor" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="editor-ref" type="string">
             <annotation>
                <documentation>
                   

@@ -1,25 +1,25 @@
 /*
-* Copyright (C) 2003-2007 Kepler Project.
-*
-* Permission is hereby granted, free of charge, to any person obtaining
-* a copy of this software and associated documentation files (the
-* "Software"), to deal in the Software without restriction, including
-* without limitation the rights to use, copy, modify, merge, publish,
-* distribute, sublicense, and/or sell copies of the Software, and to
-* permit persons to whom the Software is furnished to do so, subject to
-* the following conditions:
-*
-* The above copyright notice and this permission notice shall be
-* included in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ * Copyright (C) 2003-2007 Kepler Project.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 
 package org.keplerproject.ldt.ui;
 
@@ -87,7 +87,7 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 
 	private ResourceBundle resourceBundle;
 
-	//private LuaState luastate;
+	// private LuaState luastate;
 
 	/**
 	 * The constructor.
@@ -143,11 +143,9 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 	 * 
 	 * @return true if the extensions was completely loaded;
 	 */
-	public boolean initializeSourceViewerExtension() {
+	public boolean initializeAssistExtension(String editorId) {
 		// Initialize the extension lists
 		this.assistExtensions = new ArrayList();
-		this.reconcilierExtensions = new ArrayList();
-		this.contentExtensions = new ArrayList();
 
 		// Fetch the Plug-in Registry for the extensions
 		IExtensionPoint p = Platform.getExtensionRegistry().getExtensionPoint(
@@ -159,26 +157,19 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 					.getConfigurationElements();
 			for (int i = 0; i < elements.length; i++) {
 				IConfigurationElement next = elements[i];
-				// Reconcilier contributor
-				if (RECONCILIER_TAG.equals(next.getName())) {
-					try {
-						ILuaReconcilierExtension ext = (ILuaReconcilierExtension) next
-								.createExecutableExtension("contributor");
-						reconcilierExtensions.add(ext);
-					} catch (CoreException e) {
-						// TODO LOG THIS AND HANDLE EXCEPTION
-						System.out
-								.println("Problems opening Extension Reconcilier point ");
-						e.printStackTrace();
-						continue;
-					}
-				}
 				// Code Assist Contributor
-				else if (ASSIST_TAG.equals(next.getName())) {
+				if (ASSIST_TAG.equals(next.getName())) {
 					try {
-						ILuaContentAssistExtension ext = (ILuaContentAssistExtension) next
-								.createExecutableExtension("contributor");
-						assistExtensions.add(ext);
+						String nextEditId = next.getAttribute("editor-ref");
+						// Add the contributor if the id matchs or no id
+						// especified
+						if ((nextEditId == null || nextEditId.equals(""))
+								|| nextEditId.equals(editorId)) {
+
+							ILuaContentAssistExtension ext = (ILuaContentAssistExtension) next
+									.createExecutableExtension("contributor");
+							assistExtensions.add(ext);
+						}
 					} catch (CoreException e) {
 						// TODO LOG THIS AND HANDLE EXCEPTION
 						System.out
@@ -186,21 +177,6 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 						e.printStackTrace();
 						continue;
 					}
-				}
-				// ContentType Contributor
-				else if (CONTENT_TAG.equals(next.getName())) {
-					try {
-						ILuaContentTypeExtension ext = (ILuaContentTypeExtension) next
-								.createExecutableExtension("contributor");
-						contentExtensions.add(ext);
-					} catch (CoreException e) {
-						// TODO LOG THIS AND HANDLE EXCEPTION
-						System.out
-								.println("Problems opening Extension ContentType point ");
-						e.printStackTrace();
-						continue;
-					}
-
 				} else
 					continue;
 			}
@@ -212,9 +188,12 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 	 * This method recomputes all Partitioner Scanner extensions of the ui
 	 * plugin and prepare the plugins to be used.
 	 * 
+	 * @param editorId
+	 * 
 	 * @return true if the extensions was completely initialized
 	 */
-	public boolean initializeScannerExtension() {
+	public boolean initializeScannerExtension(String editorId) {
+
 		// init the extension collection
 		scannerExtensions = new ArrayList();
 		// Fetch the plug-in regitry
@@ -230,11 +209,16 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 				// Add the Partitioner contributor.
 				if (PARTITIONER_TAG.equals(next.getName())) {
 					try {
-						IScannerRuleExtension ext = (IScannerRuleExtension) next
-								.createExecutableExtension("contributor");
-						scannerExtensions.add(ext);
+						String nextEditId = next.getAttribute("editor-ref");
+						// Add the contributor if the id matchs or no id
+						// especified
+						if ((nextEditId == null || nextEditId.equals(""))
+								|| nextEditId.equals(editorId)) {
+							IScannerRuleExtension ext = (IScannerRuleExtension) next
+									.createExecutableExtension("contributor");
+							scannerExtensions.add(ext);
+						}
 					} catch (CoreException e) {
-						// TODO LOG THIS AND HANDLE EXCEPTION
 						System.out
 								.println("Problems opening Extension Rule Partitioner Scanner point ");
 						e.printStackTrace();
@@ -253,13 +237,11 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 	 * 
 	 * @return
 	 */
-	public List getScannerRulesExtension() {
-		if (scannerExtensions != null)
-			return scannerExtensions;
-		else {
-			initializeScannerExtension();
-			return scannerExtensions;
-		}
+	public synchronized List getScannerRulesExtension(String editorId) {
+
+		initializeScannerExtension(editorId);
+		return scannerExtensions;
+
 	}
 
 	/**
@@ -267,13 +249,49 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 	 * 
 	 * @return
 	 */
-	public List getReconcilierExtension() {
-		if (reconcilierExtensions != null)
-			return reconcilierExtensions;
-		else {
-			initializeSourceViewerExtension();
-			return reconcilierExtensions;
+	public synchronized List getReconcilierExtension(String editorId) {
+		initializeReconcilierExtension(editorId);
+		return this.reconcilierExtensions;
+	}
+
+	private boolean initializeReconcilierExtension(String editorId) {
+		this.reconcilierExtensions = new ArrayList();
+
+		// Fetch the Plug-in Registry for the extensions
+		IExtensionPoint p = Platform.getExtensionRegistry().getExtensionPoint(
+				SOURCE_CONFIG_POINT);
+		IExtension[] extensions = p.getExtensions();
+		// Separete the specific contributors.
+		for (int x = 0; x < extensions.length; x++) {
+			IConfigurationElement[] elements = extensions[x]
+					.getConfigurationElements();
+			for (int i = 0; i < elements.length; i++) {
+				IConfigurationElement next = elements[i];
+				// Reconcilier contributor
+				if (RECONCILIER_TAG.equals(next.getName())) {
+					try {
+						String nextEditId = next.getAttribute("editor-ref");
+						// Add the contributor if the id matchs or no id
+						// especified
+						if ((nextEditId == null || nextEditId.equals(""))
+								|| nextEditId.equals(editorId)) {
+							ILuaReconcilierExtension ext = (ILuaReconcilierExtension) next
+									.createExecutableExtension("contributor");
+							reconcilierExtensions.add(ext);
+						}
+					} catch (CoreException e) {
+						// TODO LOG THIS AND HANDLE EXCEPTION
+						System.out
+								.println("Problems opening Extension Reconcilier point ");
+						e.printStackTrace();
+						continue;
+					}
+				} else
+					continue;
+			}
 		}
+		return true;
+
 	}
 
 	/**
@@ -281,13 +299,50 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 	 * 
 	 * @return
 	 */
-	public List getContentTypeExtension() {
-		if (contentExtensions != null)
-			return contentExtensions;
-		else {
-			initializeSourceViewerExtension();
-			return contentExtensions;
+	public synchronized List getContentTypeExtension(String editorId) {
+		initializeContentTypeExtension(editorId);
+		return contentExtensions;
+	}
+
+	private boolean initializeContentTypeExtension(String editorId) {
+		this.contentExtensions = new ArrayList();
+		// Fetch the Plug-in Registry for the extensions
+		IExtensionPoint p = Platform.getExtensionRegistry().getExtensionPoint(
+				SOURCE_CONFIG_POINT);
+		IExtension[] extensions = p.getExtensions();
+		// Separete the specific contributors.
+		for (int x = 0; x < extensions.length; x++) {
+			IConfigurationElement[] elements = extensions[x]
+					.getConfigurationElements();
+			for (int i = 0; i < elements.length; i++) {
+				IConfigurationElement next = elements[i];
+
+				// ContentType Contributor
+				if (CONTENT_TAG.equals(next.getName())) {
+					try {
+						String nextEditId = next.getAttribute("editor-ref");
+						// Add the contributor if the id matchs or no id
+						// especified
+						if ((nextEditId == null || nextEditId.equals(""))
+								|| nextEditId.equals(editorId)) {
+							ILuaContentTypeExtension ext = (ILuaContentTypeExtension) next
+									.createExecutableExtension("contributor");
+							contentExtensions.add(ext);
+						}
+					} catch (CoreException e) {
+						// TODO LOG THIS AND HANDLE EXCEPTION
+						System.out
+								.println("Problems opening Extension ContentType point ");
+						e.printStackTrace();
+						continue;
+					}
+
+				} else
+					continue;
+			}
 		}
+		return true;
+
 	}
 
 	/**
@@ -295,13 +350,9 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 	 * 
 	 * @return
 	 */
-	public List getAssistExtension() {
-		if (assistExtensions != null)
-			return assistExtensions;
-		else {
-			initializeSourceViewerExtension();
-			return assistExtensions;
-		}
+	public synchronized List getAssistExtension(String editorId) {
+		initializeAssistExtension(editorId);
+		return assistExtensions;
 	}
 
 	public static IWorkspace getWorkspace() {

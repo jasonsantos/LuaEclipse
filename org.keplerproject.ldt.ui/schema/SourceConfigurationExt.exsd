@@ -13,6 +13,9 @@
    <element name="extension">
       <complexType>
          <sequence>
+            <element ref="contentTypes"/>
+            <element ref="reconcilier"/>
+            <element ref="assist"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -50,6 +53,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="editor-ref" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
@@ -62,12 +72,26 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="editor-ref" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
    <element name="assist">
       <complexType>
          <attribute name="contributor" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="editor-ref" type="string">
             <annotation>
                <documentation>
                   

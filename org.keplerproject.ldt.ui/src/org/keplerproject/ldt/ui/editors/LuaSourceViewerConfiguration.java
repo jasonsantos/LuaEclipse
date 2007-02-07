@@ -58,7 +58,7 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 
 	private LuaColorManager colorManager;
 
-	private IEditorPart editor;
+	private LuaEditor editor;
 
 	private LuaFoldingReconcilingStrategy strategy;
 
@@ -72,8 +72,9 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	 */
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		List stringContentTypes = new ArrayList();
-
-		List extensions = LDTUIPlugin.getDefault().getContentTypeExtension();
+		String editorId = this.editor.getInstanceId();
+		
+		List extensions = LDTUIPlugin.getDefault().getContentTypeExtension(editorId);
 		Iterator extIte = extensions.iterator();
 		while (extIte.hasNext()) {
 			ILuaContentTypeExtension ext = (ILuaContentTypeExtension) extIte
@@ -90,7 +91,12 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	}
 
 	public void setEditor(IEditorPart editor) {
-		this.editor = editor;
+		if (editor instanceof LuaEditor) {
+			this.editor = (LuaEditor) editor;
+			
+		}else
+			throw new IllegalArgumentException("The editor part must be a LuaEditor");
+		
 	}
 
 	/**
@@ -108,8 +114,8 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	 */
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		ContentAssistant assistant = new ContentAssistant();
-
-		List extensions = LDTUIPlugin.getDefault().getAssistExtension();
+		String editorId = this.editor.getInstanceId();
+		List extensions = LDTUIPlugin.getDefault().getAssistExtension(editorId);
 		Iterator extIte = extensions.iterator();
 		while (extIte.hasNext()) {
 			/*
@@ -140,9 +146,9 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	 */
 	public IPresentationReconciler getPresentationReconciler(
 			ISourceViewer sourceViewer) {
-
+		String editorId = this.editor.getInstanceId();
 		PresentationReconciler reconciler = new PresentationReconciler();
-		List extensions = LDTUIPlugin.getDefault().getReconcilierExtension();
+		List extensions = LDTUIPlugin.getDefault().getReconcilierExtension(editorId);
 		Iterator extIte = extensions.iterator();
 		reconciler.install(sourceViewer);
 		while (extIte.hasNext()) {
@@ -164,7 +170,7 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	public IReconciler getReconciler(ISourceViewer sourceViewer) {
 		if (strategy == null) {
 			strategy = new LuaFoldingReconcilingStrategy();
-			strategy.setEditor((LuaEditor) editor);
+			strategy.setEditor(editor);
 		}
 
 		MonoReconciler reconciler = new MonoReconciler(strategy, false);

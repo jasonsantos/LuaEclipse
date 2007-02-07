@@ -1,39 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
-<plugin
-   id="org.keplerproject.ldt.ui.baseExts"
-   name="BaseExts Plug-in"
-   version="1.0.1"
-   provider-name="Kepler Project"
-   class="org.keplerproject.ldt.ui.baseExts.BaseExtsPlugin">
+<plugin>
 
-   <runtime>
-      <library name="baseExts.jar">
-         <export name="*"/>
-      </library>
-   </runtime>  
-
-   <requires>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.keplerproject.ldt.core" version="1.0.0"/>
-      <import plugin="org.keplerproject.ldt.ui" version="1.0.1" export="true"/>
-      
-   </requires>
-   <extension
+     <extension
          id="org.keplerproject.ldt.ui.baseExts.ScannerRulesExtension"
          name="Lua Base PartitionerScanner"
-         point="org.keplerproject.ldt.ui.ScannerRulesExtension"> 
-         <partitioner contributor="org.keplerproject.ldt.ui.baseExts.scanner.PartitionerScannerExtension"/>
+         point="org.keplerproject.ldt.ui.ScannerRulesExtension">         
+         <partitioner contributor="org.keplerproject.ldt.ui.baseExts.scanner.PartitionerScannerExtension"
+                  editor-ref="org.keplerproject.ldt.ui.editors.LuaEditor"/>
    </extension>
    <extension
          id="org.keplerproject.ldt.ui.baseExts.SourceConfigExt"
          name="Lua SourceConfigurations Extension"
          point="org.keplerproject.ldt.ui.SourceConfigurationExtension">
-         <content     contributor="org.keplerproject.ldt.ui.baseExts.scanner.LuaContentTypeContributor"/>
-         <reconcilier contributor="org.keplerproject.ldt.ui.baseExts.scanner.LuaReconcilierContributor"/>
-         <assist      contributor="org.keplerproject.ldt.ui.baseExts.completion.LuaContentAssistContributorExtension"/>
+         <content contributor="org.keplerproject.ldt.ui.baseExts.scanner.LuaContentTypeContributor"
+			         editor-ref="org.keplerproject.ldt.ui.editors.LuaEditor"/>
+         <reconcilier contributor="org.keplerproject.ldt.ui.baseExts.scanner.LuaReconcilierContributor"
+                  editor-ref="org.keplerproject.ldt.ui.editors.LuaEditor"/>
+         <assist      contributor="org.keplerproject.ldt.ui.baseExts.completion.LuaContentAssistContributorExtension"
+                  editor-ref="org.keplerproject.ldt.ui.editors.LuaEditor"/>
          
    </extension>
 

@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: BaseExts Plug-in
+Bundle-SymbolicName: org.keplerproject.ldt.ui.baseExts; singleton:=true
+Bundle-Version: 1.0.1
+Bundle-ClassPath: baseExts.jar
+Bundle-Activator: org.keplerproject.ldt.ui.baseExts.BaseExtsPlugin
+Bundle-Vendor: Kepler Project
+Bundle-Localization: plugin
+Export-Package: org.keplerproject.ldt.ui.baseExts,
+ org.keplerproject.ldt.ui.baseExts.completion,
+ org.keplerproject.ldt.ui.baseExts.scanner,
+ org.keplerproject.ldt.ui.text.rules
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.jface.text,
+ org.keplerproject.ldt.core;bundle-version="[1.0.0,2.0.0)",
+ org.keplerproject.ldt.ui;bundle-version="[1.0.1,2.0.0)";visibility:=reexport
+Eclipse-LazyStart: true

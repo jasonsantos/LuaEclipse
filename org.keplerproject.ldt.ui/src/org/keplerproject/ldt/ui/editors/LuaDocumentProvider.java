@@ -49,6 +49,10 @@ import org.keplerproject.ldt.ui.editors.ext.IScannerRuleExtension;
  */
 public class LuaDocumentProvider extends FileDocumentProvider {
 
+	private String editorId;
+	public LuaDocumentProvider(String editorId) {
+		this.editorId = editorId;
+	}
 	/**
 	 * @see FileDocumentProvider.createDocument
 	 */
@@ -59,7 +63,7 @@ public class LuaDocumentProvider extends FileDocumentProvider {
 			// instantiate the scanner to the partitioner
 			LuaBaseScanner lscanner = new LuaBaseScanner();
 			List contentTypes = new ArrayList();
-			List extensionLists = LDTUIPlugin.getDefault().getScannerRulesExtension();
+			List extensionLists = LDTUIPlugin.getDefault().getScannerRulesExtension(editorId);
 			
 			// Load all Scanner extensions
 			IScannerRuleExtension[] ruleExt =  new IScannerRuleExtension[extensionLists.size()];
