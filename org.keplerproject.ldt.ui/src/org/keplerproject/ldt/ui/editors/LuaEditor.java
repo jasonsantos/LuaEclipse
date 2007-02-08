@@ -230,7 +230,10 @@ public class LuaEditor extends TextEditor {
 
 		for (int i = 0; i < positions.size(); i++) {
 			ProjectionAnnotation annotation = new ProjectionAnnotation();
-
+			// TODO To fix this..  we need to check if the new annotations
+			//are already defined..  if defined..  do not put at the remove annotation
+			// and neither at the new annotation.
+			// Change the data structures to make it easy.
 			newAnnotations.put(annotation, positions.get(i));
 
 			annotations[i] = annotation;
