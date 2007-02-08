@@ -175,7 +175,7 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 
 		MonoReconciler reconciler = new MonoReconciler(strategy, false);
 		//XXX we can this in brazil as BACALHAU.. 'saltfish'
-		reconciler.setDelay(5000);
+		//reconciler.setDelay(5000);
 		//reconciler.setIsIncrementalReconciler(true);
 		/*
 		 * reconciler.setReconcilingStrategy(strategy,

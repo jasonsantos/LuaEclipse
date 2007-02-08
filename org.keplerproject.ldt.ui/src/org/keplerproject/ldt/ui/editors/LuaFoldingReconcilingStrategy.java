@@ -24,7 +24,9 @@ package org.keplerproject.ldt.ui.editors;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Stack;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -36,6 +38,7 @@ import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.reconciler.DirtyRegion;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension;
+import org.eclipse.jface.text.source.projection.ProjectionAnnotation;
 import org.eclipse.swt.widgets.Display;
 import org.keplerproject.ldt.ui.editors.lex.Scanner;
 import org.keplerproject.ldt.ui.editors.lex.Symbol;
@@ -54,7 +57,8 @@ public class LuaFoldingReconcilingStrategy implements IReconcilingStrategy,
 
 	private IDocument doc;
 
-	private ArrayList fPositions = new ArrayList();
+	//private ArrayList fPositions = new ArrayList();
+	private Map currentAnnotations = new HashMap();
 
 	private int fOffset;
 
@@ -91,15 +95,21 @@ public class LuaFoldingReconcilingStrategy implements IReconcilingStrategy,
 			return;
 		}
 	}
+	
+	private Map deleteAnnotations;
+	private Map newAnnotations;
 
 	protected void calculatePositions() {
-		if (reditor.isDirty())
-			return;
+//		if (reditor.isDirty())
+//			return;
 
-		fPositions.clear();
+		//fPositions.clear();
+		deleteAnnotations  = currentAnnotations;
+		currentAnnotations = new HashMap();
+		newAnnotations     = new HashMap();
+		
 		cNextPos = fOffset;
-		// String contType;
-		// ITypedRegion region;
+
 		try {
 			findNextFunction(cNextPos);
 		} catch (BadLocationException e) {
@@ -110,7 +120,8 @@ public class LuaFoldingReconcilingStrategy implements IReconcilingStrategy,
 
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
-				reditor.updateFoldingStructure(fPositions);
+				//reditor.updateFoldingStructure(fPositions);
+				reditor.updateFoldingStructure(newAnnotations, deleteAnnotations);
 			}
 
 		});
@@ -221,8 +232,27 @@ public class LuaFoldingReconcilingStrategy implements IReconcilingStrategy,
 
 	}
 
-	protected void emitPosition(int startOffset, int length) {
-		fPositions.add(new Position(startOffset, length));
+	protected void emitPosition(int startOffset, int length) 
+	{
+		Iterator it = deleteAnnotations.keySet().iterator();
+		
+		while (it.hasNext())
+		{
+			Object key = it.next();
+			Position curPos = (Position) deleteAnnotations.get(key);
+			if (curPos.length == length && curPos.offset == startOffset)
+			{
+				currentAnnotations.put(key, deleteAnnotations.remove(key));
+				return;
+			}
+		}
+		
+		ProjectionAnnotation newAnn = new ProjectionAnnotation();
+		Position pos = new Position(startOffset, length);
+		
+		newAnnotations.put(newAnn, pos);
+		currentAnnotations.put(newAnn, pos);
+		//fPositions.add(new Position(startOffset, length));
 	}
 
 	public void setEditor(LuaEditor editor) {

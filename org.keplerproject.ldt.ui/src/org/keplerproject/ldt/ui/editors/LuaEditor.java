@@ -23,15 +23,13 @@
 
 package org.keplerproject.ldt.ui.editors;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
-import org.eclipse.jface.text.source.projection.ProjectionAnnotation;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
@@ -214,34 +212,18 @@ public class LuaEditor extends TextEditor {
 		return viewer;
 	}
 
-	private Annotation[] oldAnnotations;
-
+	
 	/**
 	 * Folding update Structure
 	 * 
 	 * @param positions
 	 */
-	public void updateFoldingStructure(ArrayList positions) {
-		Annotation[] annotations = new Annotation[positions.size()];
-
-		// this will hold the new annotations along
-		// with their corresponding positions
-		HashMap newAnnotations = new HashMap();
-
-		for (int i = 0; i < positions.size(); i++) {
-			ProjectionAnnotation annotation = new ProjectionAnnotation();
-			// TODO To fix this..  we need to check if the new annotations
-			//are already defined..  if defined..  do not put at the remove annotation
-			// and neither at the new annotation.
-			// Change the data structures to make it easy.
-			newAnnotations.put(annotation, positions.get(i));
-
-			annotations[i] = annotation;
-		}
-
-		annotationModel.modifyAnnotations(oldAnnotations, newAnnotations, null);
-
-		oldAnnotations = annotations;
+	public void updateFoldingStructure(Map newAnnotations, Map deleteAnnotations)
+	{
+		Annotation[] old = new Annotation[deleteAnnotations.size()];
+		deleteAnnotations.keySet().toArray(old);
+		
+		annotationModel.modifyAnnotations(old, newAnnotations, null);
 	}
 
 	public LuaSourceViewerConfiguration getLuaSourceViewer() {
