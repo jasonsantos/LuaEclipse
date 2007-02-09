@@ -35,7 +35,7 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.swt.graphics.Image;
-import org.keplerproject.ldt.core.LuaCorePlugin;
+import org.keplerproject.ldt.ui.baseExts.BaseExtsPlugin;
 import org.keplerproject.ldt.ui.baseExts.scanner.ILuaSyntax;
 import org.keplerproject.ldt.ui.baseExts.scanner.LuaVariableDetector;
 import org.keplerproject.luajava.LuaState;
@@ -92,7 +92,7 @@ public class LuaCompletionProcessor implements IContentAssistProcessor,
 					Image image = null;
 					String strLuaType = L.typeName(L.type(-1));
 					// load function.gif, table.gif or string.gif
-					image = LuaCorePlugin.getDefault().getImageRegistry().get(
+					image = BaseExtsPlugin.getDefault().getImageRegistry().get(
 							strLuaType);
 					
 					//To functions, use de ().

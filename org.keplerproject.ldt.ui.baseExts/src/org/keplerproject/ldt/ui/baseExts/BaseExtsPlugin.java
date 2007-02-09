@@ -22,7 +22,9 @@
 */
 package org.keplerproject.ldt.ui.baseExts;
 
-import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -30,11 +32,12 @@ import org.osgi.framework.BundleContext;
  * @author guilherme
  * @version $Id$
  */
-public class BaseExtsPlugin extends Plugin {
+public class BaseExtsPlugin extends AbstractUIPlugin {
 
 	//The shared instance.
 	private static BaseExtsPlugin plugin;
 	//private LuaState luastate;
+	private ImageRegistry imgReg;
 	
 	/**
 	 * The constructor.
@@ -63,5 +66,46 @@ public class BaseExtsPlugin extends Plugin {
 	 */
 	public static BaseExtsPlugin getDefault() {
 		return plugin;
+	}
+	
+	/**
+	 * Returns an image descriptor for the image file at the given plug-in
+	 * relative path.
+	 * 
+	 * @param path
+	 *            the path
+	 * @return the image descriptor
+	 */
+	public static ImageDescriptor getImageDescriptor(String path) {
+		return AbstractUIPlugin.imageDescriptorFromPlugin("org.keplerproject.ldt.ui.baseExts", path);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeImageRegistry(org.eclipse.jface.resource.ImageRegistry)
+	 */
+	protected void initializeImageRegistry(ImageRegistry reg) {
+		String[] images = { "function", "table", "string", "userdata" };
+
+		for (int i = 0; i < images.length; i++) {
+			ImageDescriptor image = null;
+
+			image = BaseExtsPlugin.getImageDescriptor("icons/" + images[i]
+					+ ".gif");
+			
+			reg.put(images[i],(ImageDescriptor) image);
+		}
+
+		
+	}
+	
+	public ImageRegistry getImageRegistry() {
+		if(imgReg == null)
+		{
+			imgReg = new ImageRegistry();
+			initializeImageRegistry(imgReg);
+		}
+		return imgReg;
 	}
 }
