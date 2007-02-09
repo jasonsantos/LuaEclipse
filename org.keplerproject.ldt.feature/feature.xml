@@ -81,7 +81,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          id="org.keplerproject.ldt.core"
          download-size="113"
          install-size="113"
-         version="1.0.0"/>
+         version="1.0.1"/>
 
    <plugin
          id="org.keplerproject.ldt.ui"
