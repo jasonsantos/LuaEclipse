@@ -60,7 +60,6 @@ import org.keplerproject.ldt.ui.LDTUIPlugin;
 public class LuaFileWizard extends Wizard implements INewWizard {
 	private WizardNewFileCreationPage page;
 	private IStructuredSelection selection;
-	private IWorkbench workbench;
 
 	/**
 	 * Constructor for LuaFileWizard.
@@ -77,6 +76,8 @@ public class LuaFileWizard extends Wizard implements INewWizard {
 
 	public void addPages() {
 		page = new WizardNewFileCreationPage("Lua File",selection);
+		//#614 issue :D lets make the life simple..
+		page.setFileName(".lua");
 		addPage(page);
 	}
 
@@ -177,7 +178,6 @@ public class LuaFileWizard extends Wizard implements INewWizard {
 	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		  this.workbench = workbench;
 	      this.selection = selection;
 	      setWindowTitle("New Lua File Wizard");
 	      setDefaultPageImageDescriptor(LDTUIPlugin.getImageDescriptor("icons/luafwiz.gif"));
