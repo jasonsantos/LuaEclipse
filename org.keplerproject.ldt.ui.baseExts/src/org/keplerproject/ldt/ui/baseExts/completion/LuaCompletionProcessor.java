@@ -143,8 +143,7 @@ public class LuaCompletionProcessor implements IContentAssistProcessor,
 	}
 
 	public char[] getCompletionProposalAutoActivationCharacters() {
-		char result[] = new char[1];
-		result[0] = '.';
+		char result[] = new char[]{'.', ':'};
 		return result;
 	}
 

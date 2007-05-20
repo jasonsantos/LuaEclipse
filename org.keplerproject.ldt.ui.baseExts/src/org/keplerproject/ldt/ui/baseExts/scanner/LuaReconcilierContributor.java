@@ -58,7 +58,7 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 		reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
 		reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 		
-		dr.setDocument(viewer.getDocument());
+		//dr.setDocument(viewer.getDocument());
 		//Lua string reconciliers
 	    //dr = new DefaultDamagerRepairer(getStringCodeScanner());
 		NonRuleBasedDamagerRepairer ndr = new NonRuleBasedDamagerRepairer(new TextAttribute(fColorManager
@@ -66,12 +66,12 @@ public class LuaReconcilierContributor implements ILuaReconcilierExtension,
 		
 		reconciler.setDamager(ndr,ILuaPartitions.LUA_STRING);
 		reconciler.setRepairer(ndr, ILuaPartitions.LUA_STRING);
-		ndr.setDocument(viewer.getDocument());
+		//ndr.setDocument(viewer.getDocument());
 		ndr = new NonRuleBasedDamagerRepairer(new TextAttribute(fColorManager
 				.getColor(ILuaColorConstants.LUA_MULTI_LINE_COMMENT)));
 		reconciler.setDamager(ndr,ILuaPartitions.LUA_MULTI_LINE_COMMENT);
 		reconciler.setRepairer(ndr, ILuaPartitions.LUA_MULTI_LINE_COMMENT);
-		ndr.setDocument(viewer.getDocument());
+		//ndr.setDocument(viewer.getDocument());
 	}
 
 	/**
