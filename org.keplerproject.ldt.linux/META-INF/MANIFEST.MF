@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Linux LDT  Fragment
 Bundle-SymbolicName: org.keplerproject.ldt.linux; singleton:=true
-Bundle-Version: 1.0.1
+Bundle-Version: 1.1.0
 Bundle-Vendor: Kepler Project
-Fragment-Host: org.keplerproject.ldt.core;bundle-version="1.0.0"
+Fragment-Host: org.keplerproject.ldt.core;bundle-version="1.1.0"
 Bundle-Localization: fragment
 Eclipse-LazyStart: true
 Eclipse-ExtensibleAPI: true

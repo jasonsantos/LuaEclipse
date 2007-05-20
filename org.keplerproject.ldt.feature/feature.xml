@@ -2,7 +2,7 @@
 <feature
       id="org.keplerproject.ldt.feature"
       label="Lua Development Tool"
-      version="1.0.1"
+      version="1.1.0"
       provider-name="Kepler Project "
       colocation-affinity="org.keplerproject.ldt.feature">
 
@@ -81,7 +81,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          id="org.keplerproject.ldt.core"
          download-size="113"
          install-size="113"
-         version="1.0.1"/>
+         version="1.1.0"/>
 
    <plugin
          id="org.keplerproject.ldt.ui"
@@ -106,7 +106,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          os="linux,macosx,win32"
          download-size="75"
          install-size="75"
-         version="1.0.1"
+         version="1.1.0"
          fragment="true"/>
 
    <plugin
@@ -114,15 +114,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          os="linux,macosx,win32"
          download-size="75"
          install-size="75"
-         version="1.0.1"
-         fragment="true"/>
-
-   <plugin
-         id="org.keplerproject.ldt.macosx"
-         os="linux,macosx,win32"
-         download-size="75"
-         install-size="75"
-         version="1.0.1"
+         version="1.1.0"
          fragment="true"/>
 
 </feature>

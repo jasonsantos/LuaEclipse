@@ -58,7 +58,7 @@ public class LuaCompletionProcessor implements IContentAssistProcessor,
 	public LuaCompletionProcessor() {
 		proposalList = new ArrayList();
 		L = (LuaStateFactory.newLuaState());
-		L.openBasicLibraries();
+		L.openLibs();
 	}
 
 	public ICompletionProposal[] computeCompletionProposals(
@@ -68,7 +68,7 @@ public class LuaCompletionProcessor implements IContentAssistProcessor,
 				documentOffset);
 		try {
 			if (wordPart.getVariable() != null)
-				L.doString("return " + wordPart.getVariable());
+				L.LdoString("return " + wordPart.getVariable());
 			else
 				L.getGlobal("_G");
 		} catch (Throwable e) {

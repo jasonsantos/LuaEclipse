@@ -51,7 +51,7 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 
 	public LuaResourceDeltaVisitor() {
 		L = LuaStateFactory.newLuaState();
-		L.openBasicLibraries();
+		L.openLibs();
 		return;
 	}
 
@@ -78,8 +78,8 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 		LuaAlert alert = new LuaAlert(L, res);
 		try {
 			alert.register("java_error");
-			L.doString(_ALERT_FUNCTION);
-			L.doString(code);
+			L.LdoString(_ALERT_FUNCTION);
+			L.LdoString(code);
 		} catch (LuaException luaexception) {
 		}
 	}
