@@ -3,6 +3,6 @@
    <description url="http://luaeclipse.luaforge.net/update-site">
       Lua IDE based on the Eclipse Platform.
    </description>
-   <feature url="features/org.keplerproject.ldt.feature_1.0.1.jar" id="org.keplerproject.ldt.feature" version="1.0.1"/>
+   <feature url="features/org.keplerproject.ldt.feature_1.1.0.jar" id="org.keplerproject.ldt.feature" version="1.1.0"/>
    <feature url="features/org.keplerproject.ldt.feature_1.0.0.jar" id="org.keplerproject.ldt.feature" version="1.0.0"/>
 </site>
