@@ -93,7 +93,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          id="org.keplerproject.ldt.ui.baseExts"
          download-size="81"
          install-size="81"
-         version="1.0.1"/>
+         version="1.1.0"/>
 
    <plugin
          id="org.keplerproject.ldt.launcher"
