@@ -87,7 +87,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          id="org.keplerproject.ldt.ui"
          download-size="117"
          install-size="117"
-         version="1.0.1"/>
+         version="1.1.0"/>
 
    <plugin
          id="org.keplerproject.ldt.ui.baseExts"
@@ -99,7 +99,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          id="org.keplerproject.ldt.launcher"
          download-size="48"
          install-size="48"
-         version="1.0.0"/>
+         version="1.1.0"/>
 
    <plugin
          id="org.keplerproject.ldt.linux"
