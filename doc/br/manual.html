@@ -76,26 +76,23 @@ integrado para a linguagem de programa&ccedil;&atilde;o Lua</div>
 
 <h2><a name="introduction"></a>Introdu&ccedil;&atilde;o</h2>
 <p>O LuaEclipse &eacute; uma cole&ccedil;&atilde;o de plug-ins para
-a plataforma Eclipse. Esta ferramenta se prop&otilde;em a facilitar o
+a plataforma Eclipse. Esta ferramenta se prop&otilde;e a facilitar o
 desenvolvimento de aplica&ccedil;&otilde;es que utilizem a linguagem
-Lua. Em um primeiro momento de forma <i>standalone</i>, e em seguida de
-forma integrada com uma variedade de outras linguagens.</p>
+Lua - quer seja usada como linguagem principal, de modo  <i>standalone</i>, quer seja utilizada como linguagem de extens&atilde;o.</p>
 <p>Os plug-ins s&atilde;o extens&iacute;veis e podem ser utilizados
-como base para outras ferramentas. A pesar desta possibilidade, esta
-se&ccedil;&atilde;o resume-se em um manual de utiliza&ccedil;&atilde;o
+como base para outras ferramentas. Esta
+se&ccedil;&atilde;o,  entretanto, resume-se em um manual de utiliza&ccedil;&atilde;o
 do software e n&atilde;o de extens&atilde;o do mesmo.</p>
 
 <p>LuaEclipse &eacute; um software livre e usa a mesma <a
-	href="license.html">licen&ccedil;a</a> do Lua 5.0.</p>
+	href="license.html">licen&ccedil;a</a> do Lua 5.1.</p>
 
 <h2><a name="installation"></a>Instala&ccedil;&atilde;o</h2>
 <p>O processo de instala&ccedil;&atilde;o do plug-in &eacute; muito
 simples, mas necessita de alguns pr&eacute;-requisitos. O primeiro deles
-&eacute; que o usu&aacute;rio j&aacute; possui instalada a vers&atilde;o
-3.2 da plataforma Eclipse. O Eclipse pode ser baixado no endere&ccedil;o
-<a href="http://www.eclipse.org">www.eclipse.org</a>. Consequentemente
-ser&aacute; necess&aacute;rio a instala&ccedil;&atilde;o pr&eacute;via
-do SDK de Java para executar o Eclipse.</p>
+&eacute; que o usu&aacute;rio j&aacute; deve ter instalada a vers&atilde;o
+3.2 ou superior da plataforma Eclipse. O Eclipse pode ser baixado no endere&ccedil;o
+<a href="http://www.eclipse.org">www.eclipse.org</a>. A instala&ccedil;&atilde;o do Eclipse, por sua vez, exigir&aacute; uma instala&ccedil;&atilde;o pr&eacute;via do  Java SDK.</p>
 
 <p>Existem duas formas de instalar o LuaEclipse.</p>
 
@@ -105,7 +102,7 @@ do SDK de Java para executar o Eclipse.</p>
 	<ul>
 		<li>Na barra de menu superior, na op&ccedil;&atilde;o
 		Help-&gt;Software Updates-&gt;Find And Install, \ marque a op&ccedil;&atilde;o
-		"Search for new features to install" e clique em "Next".</li>
+		&quot;Search for new features to install&quot; e clique em "Next".</li>
 		<li>Clique em "Add Remote Site", no campo URL insira <a
 			href="http://luaeclipse.luaforge.net/update-site/site.xml">http://luaeclipse.luaforge.net/update-site/site.xml</a>.
 		</li>
@@ -150,8 +147,8 @@ op&ccedil;&atilde;o Lua Actions-&gt;New Lua File</p>
 
 
 <h2><a name="preferences"></a>Prefer&ecirc;ncias e interpretadores</h2>
-<p>A &uacute;nica op&ccedil;&atilde;o atualmente de
-prefer&ecirc;ncia &eacute; a configura&ccedil;&atilde;o de
+<p>Scripts em linguagem Lua precisam de um interpretador ou de um programa hospedeiro que possa execut&aacute;-los. <br />No momento, a &uacute;nica op&ccedil;&atilde;o disponível em
+prefer&ecirc;ncias &eacute; a configura&ccedil;&atilde;o de
 interpretadores Lua para a execu&ccedil;&atilde;o de scripts. Para fazer
 tal configura&ccedil;&atilde;o, selecione a op&ccedil;&atilde;o de menu
 Window-&gt;preferences... e em seguida selecione a categoria Lua-&gt;
@@ -159,7 +156,7 @@ Installed Interpreters, como na figura abaixo.</p>
 <p><img alt="LuaElipse" src="img/preferences.png" /></p>
 
 <p>Nesta janela, &eacute; poss&iacute;vel adicionar um novo
-interpretador clicando na op&ccedil;&atilde;o &quot;Add&quot;, editar um
+interpretador clicando na op&ccedil;&atilde;o &quot;Add&quot;; é possível modificar os dados sobre um 
 interpretador selecionado na op&ccedil;&atilde;o &quot;Edit&quot; e remove-lo na
 op&ccedil;&atilde;o &quot;Remove&quot;. A configura&ccedil;&atilde;o de um
 interpretador &eacute; basicamente um nome que o identifica e o caminho
@@ -171,6 +168,7 @@ configura&ccedil;&atilde;o de nova execu&ccedil;&atilde;o que veremos
 mais adiante. Feitas as configura&ccedil;&otilde;es necess&aacute;rias,
 clique no bot&atilde;o &quot;OK&quot; e toda configura&ccedil;&atilde;o
 ser&aacute; armazenada.</p>
+<p>Voc&ecirc; deve configurar o bin&aacute;rio do aplicativo hospedeiro como um interpretador caso seu projeto utilize Lua como linguagem de extens&atilde;o, ou n&atilde;o ser&aacute; capaz de execut&aacute;-lo adequadamente. </p>
 
 
 

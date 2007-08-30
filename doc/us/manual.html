@@ -75,19 +75,18 @@ environment for the Lua programming language</div>
 
 <h2><a name="introduction"></a>Introduction</h2>
 <p>LuaEclipse is a collection of plugins for the Eclipse platform.
-This tools goal is to facilitate the development of programs using
-Lua, first as a <i>standalone</i> program, and then integrated with
-other languages.</p>
+It's goal is to facilitate the development of programs using
+Lua, either as a <i>standalone</i> language or as an extension language.</p>
 <p>The plugins are extensible and can be used as base for other tools,
 but this section is a manual on using the software, not extending it.
 </p>
 
 <p>LuaEclipse is a free software and uses the same <a
-	href="license.html">license</a> as Lua 5.0.</p>
+	href="license.html">license</a> as Lua 5.1.</p>
 
 <h2><a name="installation"></a>Installation</h2>
 <p>The installation proccess is very simple, but needs some pre-requisites.
-The first one is that the user has already installed the 3.2.* version of
+The first one is that the user muas have already installed the 3.2.* or later version of
 the Eclipse platform. Eclipse can be downloaded at 
 <a href="http://www.eclipse.org">www.eclipse.org</a>. As a consequence,
 it is necessary that Java SDK is installed to run Eclipse.</p>
@@ -140,7 +139,8 @@ Lua Actions-&gt;New Lua File</p>
 
 <h2><a name="preferences"></a>Preferences and interpreters</h2>
 
-<p>Now the only preference option on Lua is the configuration of Lua
+<p>Lua scripts need an interpreter or a host program in order to be able to run. 
+Now the only preference option on LuaEclipse is the configuration of Lua
 interpreters to execute scripts. To set a interpreter go to 
 Windows-&gt;preferences... and then the Lua-&gt;Installed Interpreters 
 category, as in the following picture.</p>
@@ -152,7 +152,8 @@ it and the path to its Lua executable. On the first column of the interpreter
 list, there is an option to select one of them as the default interpreter
 to execute scripts. This option is used on the script execution configuration.
 After the necessary configurations are made, click on &quot;Ok&quot; and
-it will be saved.
+it will be saved.</p>
+<p>You must configure your host application binary as an interpreter if your project uses Lua as an extension language; otherwise, you will not be able to run it properly.</p>  
 
 <h2><a name="run"></a>Running a Lua file</h2>
 
