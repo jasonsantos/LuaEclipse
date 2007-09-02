@@ -1,0 +1,297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>LuaEclipse: An integrated development environment for the
+Lua programming language</title>
+<link rel="stylesheet" href="http://www.keplerproject.org/doc.css"
+	type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv='Content-Language' content='en' />
+<meta name='MSSmartTagsPreventParsing' content='true' />
+<meta http-equiv='Content-Style-Type' content='text/css' />
+<link rel='stylesheet'
+	href='http://www.keplerproject.org/pmwiki-1.0.5/pub/css/stdlayout.css'
+	type='text/css' />
+
+<link rel='stylesheet'
+	href='http://www.keplerproject.org/pmwiki-1.0.5/pub/skins/keplerlean/lean.css'
+	type='text/css' />
+<link rel='icon' href='http://www.keplerproject.org/favicon.ico'
+	type='image/ico' />
+<link rel='SHORTCUT ICON'
+	href='http://www.keplerproject.org/favicon.ico' />
+<!--HeaderText-->
+<meta name='robots' content='index,follow' />
+</head>
+
+<body>
+
+<div id="container">
+
+<div id="product">
+<div id="product_logo"><a href="http://www.keplerproject.org">
+<img alt="LuaEclipse logo" src="img/luaeclipse_128.gif" /> </a></div>
+<div id="product_name"><big><strong>LuaEclipse</strong></big></div>
+<div id="product_description">An integrated development
+environment for the Lua programming language</div>
+<div id="wikicmds">English | <a href='../br/index.html'>Portugu&ecirc;s</a>
+</div>
+</div>
+
+<div id="main">
+
+<div id="navigation">
+<h1>LuaEclipse</h1>
+<ul>
+	<li><a href="index.html">Home</a>
+	<ul>
+		<li><a href="index.html#overview">Overview</a></li>
+		<li><a href="index.html#status">Status</a></li>
+		<li><a href="index.html#download">Download</a></li>
+		<li><a href="index.html#credits">Credits</a></li>
+		<li><a href="index.html#contact">Contact</a></li>
+	</ul>
+	</li>
+	<li><a href="manual.html">Manual</a>
+	<ul>
+		<li><a href="manual.html#introduction">Introduction</a></li>
+		<li><a href="manual.html#installation">Instalation</a></li>
+		<li><a href="manual.html#project">First Lua project</a></li>
+		<li><a href="manual.html#preferences">Preferences and
+		interpreters</a></li>
+		<li><a href="manual.html#run">Running a Lua file</a></li>
+		<!--<li><a href="manual.html#extension">Pontos de extens&atilde;o</a></li>-->
+	</ul>
+	</li>
+	<li><a href="screenshots.html">Screenshots</a></li>
+	<li><a href="history.html">History</a></li>
+	<li><a href="http://luaforge.net/projects/luaeclipse/">Project</a>
+	<ul>
+		<li><a href="http://luaforge.net/tracker/?group_id=9">Bug
+		Tracker</a></li>
+		<li><a href="http://luaforge.net/scm/?group_id=9">CVS</a></li>
+	</ul>
+	</li>
+	<li><strong>License</strong></li>
+</ul>
+</div>
+<!-- id="navigation" -->
+
+<div id="content">
+
+<h1>Release Checklist</h1>
+
+<div class='content'>
+<p>This document has been adapted from the Module Release Checklist written by Andre Carregal for the <a href="http://www.keplerproject.org">Kepler Project</a></p>
+
+<p>This checklist describes the release process of LuaEclipse</p>
+
+<p>Once a release cycle is announced in the LuaEclipse Developers list, most of the
+tasks are supposed to be executed by developers with CVS commit access.
+But if you want to help with the checklist, tasks that can be executed
+by anyone with CVS read access are marked with a "(anyone)" tag. Just
+make sure you use the module CVS HEAD and report any issues in the
+LuaEclipse Developers list.</p>
+
+<ol>
+	<li>Check merges on the module release branch and the trunk
+	(project developers)</li>
+	<li>Check pending bug reports and feature requests (anyone)</li>
+	<li>Prepare distribution 
+	<ol>
+		<li>Publish the Preview Documentation (project developers)
+		<ul>
+			<li>Check previous version status</li>
+			<li>transfer contents to luaforge ftp site</li>
+		</ul>
+		</li>
+		<li>Publish the Preview Update-site (project developers)
+		<ul>
+			<li>Check previous version status</li>
+			<li>transfer contents to luaforge ftp site</li>
+		</ul>
+		</li>
+		<li>Announce the Preview version (project developers)
+		<ul>
+			<li>Announce on developers list</li>
+			<li>Establish date for full release</li>
+		</ul>
+		</li>
+		<li>Check plug-in dependencies (anyone)</li>
+		<li>Check LuaJava (anyone)</li>
+		<ol>
+			<li>LuaJava version (see that we are using the latest version)</li>
+			<li>LuaJava binaries (see that shared libraries are present - and actually work - for all supported platforms)</li>
+		</ol>
+		<li>Check the Java source of all plug-ins (anyone)
+		<ol>
+			<li>Header comments (see that copyright, permission and disclaimers are in all sourcefiles)</li>
+			<li>JavaDoc comments (see that all Java classes have JavaDoc comments)</li>
+			<li>CVS tagline (see that all Java classes have the $Id$ CVS tag present as @version)</li>
+		</ol>
+		</li>
+		<li>Check plug-in settings (anyone)
+		<ol>
+			<li>Plug-in manifest files (see that the plug-in version, name and vendor are correct)</li>
+			<li>Plug-in dependencies (see that all plug-in dependencies are met, check runtime classpaths and version numbers)</li>
+			<li>Plug-in build properties (see that all files needed by the plug-in are included in build)</li>
+		</ol>
+		</li>
+		<li>Check feature and update-site settings (anyone)
+		<ol>
+			<li>Feature manifest (see that feature version, name and vendor are correct; check license, copyright and description)</li>
+			<li>Update site information (see that update site name and URL are correct on both projects: feature and update-site)</li>
+			<li>Feature dependencies (see that all plug-ins are present on feature, with correct versions )</li>
+		</ol>
+		</li>
+		<li>Check the documentation (anyone)
+		<ol>
+			<li>Version</li>
+			<li>License</li>
+			<li>What's new
+			<ul>
+				<li>Check with CVS history if nothing has been forgotten. You can get a full listing of deltas for the working
+				version using <a href="http://www.red-bean.com/cvs2cl/">cvs2cl</a>
+				-t.</li>
+			</ul>
+			</li>
+			<li>Release date</li>
+			<li>References to [=LuaJava=] and its version</li>
+			<li>Images (PNG, GIF)</li>
+			<li>Lua compatibility</li>
+			<li>Eclipse compatibility</li>
+			<li>Platform compatibility</li>
+			<li>Dependencies on other plug-ins</li>
+			<li>Applicability of screenshots</li>
+			<li>Documentation Links
+			<ul>
+				<li>Links to previous versions(?).</li>
+				<li>Download from LuaForge(<code>http://luaforge.net/projects/luaeclipse/files</code>)</li>
+				<li>Links to LuaEclipse Home (including the logos)</li>
+				<li>Links to the mailing list on the Contact Us section
+				(on index.html) and on the left menu</li>
+				<li>Links to the Lua Site</li>
+				<li>Links to the license page</li>
+				<li>Link to the project LuaForge sections on the left menu:
+				<ul>
+					<li>Project home</li>
+					<li>Bug Tracker</li>
+					<li>CVS</li>
+				</ul>
+				</li>
+			</ul>
+			</li>
+			<li>Validate XHTML and links. This can be done locally or
+			remotely. If done remotely the files should be copied to a
+			''preview'' directory on (<code>http://www.keplerproject.org/projectname/preview</code>).
+			A simple link checker can be found at <a
+				href="http://validator.w3.org/checklink">http://validator.w3.org/checklink</a></li>
+			<li>README (?)
+				<ul>
+					<li>Reference to the project home page</li>
+					<li>Version number</li>
+					<li>Description of the directories and files</li>
+				</ul>
+			</li>
+			<li>Test the examples in the documentation</li>
+		</ol>
+		</li>
+		<li>Execute the unit tests (anyone)</li>
+	  </ol>
+	</li>
+	<li>CVS details (project developers)
+	<ul>
+		<li>Branch using <code>rel_[0-9]_[0-9]_x</code></li>
+		<li>Tag using <code>v[0-9]_[0-9]_[0-9]_[alpha|beta][2-9]</code></li>
+	</ul>
+	</li>
+	<li>Generate the tar.gz and zip archives (using the Distribution Format)
+	(project developers)
+	<ul>
+		<li>Standard distribution format <code>luaeclipse-X.Y[.Z].zip</code></li>
+		<li>Source files tarball <code>luaeclipse-src-X.Y[.Z].tar.gz</code></li>
+	</ul>
+	</li>
+	<li>Test the tgz and zip archives. (anyone)
+	<ul>
+		<li>Check included files</li>
+		<li>Check the install/build process.</li>
+	</ul>
+	</li>
+	<li>LuaForge project details (project admin)
+	<ul>
+		<li>Bug Tracker
+		<ul>
+			<li>Categories (API, Documentation, Other)</li>
+			<li>Groups (Version numbers)</li>
+		</ul>
+		</li>
+		<li>Feature Requests
+		<ul>
+			<li>Categories (API, Documentation, Other)</li>
+			<li>Groups ("Next Release")</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+	<li>Upload to LuaForge (project developers)
+	<ul>
+		<li>Create the release <code>LuaEclipse-X.Y[.Z]</code></li>
+		<li>Release and Change notes (the line breaks have to be manually
+		positioned)</li>
+		<li>Source tar.gz files</li>
+		<li>Binary zip files</li>
+	</ul>
+	</li>
+	
+	<li>Upload to LuaForge ftp site (<code>ftp.luaforge.net</code>)
+	(project developers)
+		<ul>
+			<li>Publish the Final Documentation (project developers)
+			<ul>
+				<li>Documentation</li>
+				<li>Logo and images</li>
+			</ul>
+			</li>
+			<li>Publish the Final Update-site (project developers)</li>
+		</ul>
+	</li>
+	<li>Test the Final Update-site. (anyone)
+	<ul>
+		<li>Test on supported platforms</li>
+		<li>Test on supported Eclipse versions</li>
+	</ul>
+	</li>
+
+	<li>Update LuaForge project page (project admin)
+	<ul>
+		<li>Public Info</li>
+		<li>Trove version and scope</li>
+	</ul>
+	</li>
+	<li>Announce the Release on the Developers list (project admin)</li>
+	<li>Announce the Release on the Kepler list (project admin)</li>
+	<li>Announce on the Release on LuaForge as a news post (project
+	admin)
+	<ul>
+		<li>LuaForge Home Approval (LuaForge admin)</li>
+	</ul>
+	</li>
+	<li>Announce the Release on the Lua list (project admin)</li>
+</ol>
+
+</div>
+<!-- id="content" --></div>
+<!-- id="main" -->
+
+<div id="about">
+<p><a href="http://validator.w3.org/check?uri=referer"><img
+	src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!"
+	height="31" width="88" /></a></p>
+<p><small> $Id$ </small></p>
+</div>
+<!-- id="about" --></div>
+<!-- id="container" -->
+</body>
+</html>
