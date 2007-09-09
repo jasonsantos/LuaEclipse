@@ -22,36 +22,47 @@
 */
 package org.keplerproject.ldt.core.compiler;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.keplerproject.luajava.JavaFunction;
-import org.keplerproject.luajava.LuaState;
+
 /**
- * 
- * @author guilherme
+ * Lua error parser
+ *  creates error markers on workspace given lua error messages
+ *  
+ * @author Jason Santos
  * @version $Id$
  */
-public class LuaAlert extends JavaFunction 
+public class LuaAlert 
 {
 
 	private IResource resource;
-    public LuaAlert(LuaState arg0, IResource res)
+    public LuaAlert(IResource res)
     {
-        super(arg0);
         resource = res;
     }
 
-    public int execute()
+    public int reportLuaError(String luaerror)
     {
         try
         {
             IMarker marker = resource.createMarker(IMarker.PROBLEM);            
-            double line = super.L.toNumber(-2);
-            String error = super.L.toString(-1);
-            marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-            marker.setAttribute(IMarker.MESSAGE, error);
-            marker.setAttribute(IMarker.LINE_NUMBER, (int)line);
+            Pattern p = Pattern.compile(".*:(\\d+):(.*)$");
+			
+			Matcher m = p.matcher(luaerror);
+			m.matches();
+			if(m.matches()) {
+				int line = Integer.parseInt(m.group(1));
+				String errorMsg = m.group(2);
+	            marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+	            marker.setAttribute(IMarker.MESSAGE, errorMsg);
+	            marker.setAttribute(IMarker.LINE_NUMBER, (int)line);				
+			} else {
+				 // assert false : "Invalid format for lua error message ";
+			}
             
         }
         catch(CoreException coreexception) { }

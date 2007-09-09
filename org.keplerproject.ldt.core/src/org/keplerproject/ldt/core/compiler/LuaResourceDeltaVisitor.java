@@ -33,20 +33,19 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
-import org.keplerproject.luajava.LuaException;
 import org.keplerproject.luajava.LuaState;
 import org.keplerproject.luajava.LuaStateFactory;
 
+
 /**
  * The Lua Code DeltaVisitor
+ *  remade to fit Lua 5.1 API
  * 
  * @author guilherme
  * @version $Id$
  */
 public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 		IResourceVisitor {
-	private static final String _ALERT_FUNCTION = "_ALERT = function(err) string.gsub(err, ':(%d+):(.*)$', function(l, e) java_error(l, e) end) end";
-
 	protected LuaState L;
 
 	public LuaResourceDeltaVisitor() {
@@ -69,22 +68,25 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 
 	private void compileFile(IResource res, LuaState L) {
 		try {
-			res.deleteMarkers("org.eclipse.core.resources.problemmarker", true,
-					2);
+			res.deleteMarkers("org.eclipse.core.resources.problemmarker", true, 2);
 		} catch (CoreException coreexception) {
-		}
+			
+		}																																																												
 		String code = readFile(res);
-		code = "return function() " + code + "\n end";
-		LuaAlert alert = new LuaAlert(L, res);
-		try {
-			alert.register("java_error");
-			L.LdoString(_ALERT_FUNCTION);
-			L.LdoString(code);
-		} catch (LuaException luaexception) {
+		code = "return function() \n" + code + "\n end";
+		
+		LuaAlert alert = new LuaAlert(res);
+		
+		int result = L.LdoString(code);
+		
+		if( result != 0) {
+            String s = L.toString(-1);
+			alert.reportLuaError(s);
 		}
 	}
 
 	private String readFile(IResource res) {
+		
 		File f = new File(res.getLocation().toOSString());
 		try {
 			FileInputStream fis = new FileInputStream(f);
