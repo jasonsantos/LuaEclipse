@@ -37,9 +37,18 @@
             label="Lua Application"
             icon="icons/run_lua.gif"
             modes="run"
-            class="org.keplerproject.ldt.launching.ui.LuaApplicationShortcut"
-            id="org.keplerproject.ldt.launching.ui.applicationshortcut.lua">
-         
+            class="org.keplerproject.ldt.internal.launching.ui.LuaApplicationShortcut"
+            id="org.keplerproject.ldt.launching.ui.luaShortcut">
+        <contextualLaunch>
+		<enablement>
+		<with variable="selection">
+		<count value="1"/>
+			<iterate>
+			<or><test property="org.eclipse.debug.ui.matchesPattern" value="*.lua"/></or>
+			</iterate>
+		</with>
+		</enablement>
+		</contextualLaunch>
          <perspective id="org.eclipse.jdt.ui.JavaPerspective"/>
          <perspective id="org.eclipse.jdt.ui.JavaHierarchyPerspective"/>
          <perspective id="org.eclipse.jdt.ui.JavaBrowsingPerspective"/>
@@ -63,5 +72,18 @@
             id="org.keplerproject.ldt.launching.ui.preferences.PreferencePageLuaInterpreter">
       </page>
    </extension>
-
+   
+   <extension point="org.eclipse.ui.commands">
+	<command 
+		categoryId="org.eclipse.debug.ui.category.run" 
+		description="Run Lua Script" 
+		id="org.keplerproject.ldt.launching.ui.luaShortcut.run" 
+		name="Rua Lua" />
+	<keyBinding 
+		commandId="org.keplerproject.ldt.launching.ui.luaShortcut.run" 
+		keySequence="M2+M3+X L"  
+		keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration" 
+		contextId="org.eclipse.ui.globalScope"/>   	
+   </extension>
+	
 </plugin>

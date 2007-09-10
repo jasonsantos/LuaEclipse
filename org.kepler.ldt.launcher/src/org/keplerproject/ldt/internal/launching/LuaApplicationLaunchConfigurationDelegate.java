@@ -38,7 +38,7 @@ public class LuaApplicationLaunchConfigurationDelegate
 {
 
 	protected static final InterpreterRunner interpreterRunner = new InterpreterRunner();
-	public static final String TYPE_ID = "luaeclipse.launching.LaunchConfigurationTypeLuaApplication";
+	public static final String TYPE_ID = "org.keplerproject.ldt.launching.LaunchConfigurationTypeLuaApplication";
     public LuaApplicationLaunchConfigurationDelegate()
     {
     }

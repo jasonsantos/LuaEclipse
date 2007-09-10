@@ -76,6 +76,8 @@ public class LuaApplicationShortcut
 
     public void launch(IEditorPart editor, String mode)
     {
+		// make sure the file is saved
+		editor.getEditorSite().getPage().saveEditor(editor,true);
         org.eclipse.ui.IEditorInput input = editor.getEditorInput();
         ISelection selection = new StructuredSelection(input.getAdapter(org.eclipse.core.resources.IFile.class));
         launch(selection, mode);
