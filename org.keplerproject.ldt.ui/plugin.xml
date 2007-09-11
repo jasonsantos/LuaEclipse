@@ -28,7 +28,6 @@
    </extension>
 
    <extension
-         id="org.eclipse.ui.newWizards.luaEclipse"
          name="LuaEclipse Wizards"
          point="org.eclipse.ui.newWizards">
       <category
