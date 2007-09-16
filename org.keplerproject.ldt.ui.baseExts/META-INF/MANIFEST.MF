@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: BaseExts Plug-in
 Bundle-SymbolicName: org.keplerproject.ldt.ui.baseExts; singleton:=true
-Bundle-Version: 1.1.0
+Bundle-Version: 1.1.0.qualifier
 Bundle-ClassPath: baseExts.jar
 Bundle-Activator: org.keplerproject.ldt.ui.baseExts.BaseExtsPlugin
 Bundle-Vendor: Kepler Project

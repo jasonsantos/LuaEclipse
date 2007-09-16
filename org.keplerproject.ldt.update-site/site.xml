@@ -3,6 +3,20 @@
    <description url="http://luaeclipse.luaforge.net/update-site">
       Lua IDE based on the Eclipse Platform.
    </description>
-   <feature url="features/org.keplerproject.ldt.feature_1.1.0.jar" id="org.keplerproject.ldt.feature" version="1.1.0"/>
-   <feature url="features/org.keplerproject.ldt.feature_1.0.0.jar" id="org.keplerproject.ldt.feature" version="1.0.0"/>
+   <feature url="features/org.keplerproject.ldt.feature_1.0.0.jar" id="org.keplerproject.ldt.feature" version="1.0.0">
+      <category name="LuaEclipse 1.0"/>
+   </feature>
+   <feature url="features/org.keplerproject.ldt.feature_1.1.0.200709152253.jar" id="org.keplerproject.ldt.feature" version="1.1.0.200709152253">
+      <category name="LuaEclipse 1.1 Beta2"/>
+   </feature>
+   <category-def name="LuaEclipse 1.0" label="LuaEclipse 1.0">
+      <description>
+         LuaEclipse 1.0 works for Eclipse 3.2 and Lua 5.0
+      </description>
+   </category-def>
+   <category-def name="LuaEclipse 1.1 Beta2" label="LuaEclipse 1.1 Beta2">
+      <description>
+         Preview version of the 1.1 LuaEclipse
+      </description>
+   </category-def>
 </site>

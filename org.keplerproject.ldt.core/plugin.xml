@@ -3,10 +3,10 @@
 <plugin 
    id="org.keplerproject.ldt.core"
    name="LDT Core Plug-in"
-   version="1.0.0"
+   version="1.0.0.qualifier"
    provider-name="Kepler Project">
    <runtime>
-      <library name="luajava-1.0.jar">
+      <library name="luajava-1.1.jar">
          <export name="org.keplerproject.luajava.*"/>
       </library>
       <library name="LuaCore.jar">

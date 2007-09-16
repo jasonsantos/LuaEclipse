@@ -3,7 +3,7 @@ Fragment-Host: org.keplerproject.ldt.core;bundle-version="1.1.0"
 Bundle-ManifestVersion: 2
 Bundle-Name: LDT win32 fragment Plug-in
 Bundle-SymbolicName: org.keplerproject.ldt.win32; singleton:=true
-Bundle-Version: 1.1.0
+Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: Kepler Project
 Bundle-Localization: fragment
 Eclipse-LazyStart: true
