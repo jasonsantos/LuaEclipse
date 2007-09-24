@@ -71,41 +71,48 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
       <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.keplerproject.ldt.core" version="1.1.0" match="greaterOrEqual"/>
+      <import plugin="org.keplerproject.ldt.core" version="1.0.0" match="compatible"/>
+      <import plugin="org.keplerproject.ldt.ui" version="1.0.1" match="compatible"/>
    </requires>
 
    <plugin
          id="org.keplerproject.ldt.core"
          download-size="113"
          install-size="113"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.keplerproject.ldt.ui"
          download-size="117"
          install-size="117"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.keplerproject.ldt.ui.baseExts"
          download-size="81"
          install-size="81"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.keplerproject.ldt.launcher"
          download-size="48"
          install-size="48"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.keplerproject.ldt.linux"
          os="linux,macosx,win32"
          download-size="75"
-         install-size="75"
+         install-size="210"
          version="0.0.0"
          fragment="true"/>
 
@@ -113,7 +120,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          id="org.keplerproject.ldt.win32"
          os="linux,macosx,win32"
          download-size="75"
-         install-size="75"
+         install-size="250"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.keplerproject.ldt.macosx"
+         os="linux,macosx,win32"
+         download-size="86"
+         install-size="250"
          version="0.0.0"
          fragment="true"/>
 
