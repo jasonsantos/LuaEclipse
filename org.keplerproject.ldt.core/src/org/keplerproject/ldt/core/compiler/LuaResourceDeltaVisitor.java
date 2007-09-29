@@ -73,7 +73,7 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 			
 		}																																																												
 		String code = readFile(res);
-		code = "return function(...) " + code + " end";
+		code = "return function(...) " + code + " \nend";
 		
 		LuaAlert alert = new LuaAlert(res);
 		
