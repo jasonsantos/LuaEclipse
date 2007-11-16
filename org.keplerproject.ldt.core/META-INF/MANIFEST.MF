@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LDT Core Plug-in
 Bundle-SymbolicName: org.keplerproject.ldt.core; singleton:=true
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.2.0.qualifier
 Bundle-ClassPath: luajava-1.1.jar,
  LuaCore.jar
 Bundle-Activator: org.keplerproject.ldt.core.LuaCorePlugin
@@ -10,8 +10,9 @@ Bundle-Vendor: Kepler Project
 Bundle-Localization: plugin
 Export-Package: META-INF,
  org.keplerproject.ldt.core,
- org.keplerproject.ldt.core.project,
  org.keplerproject.ldt.core.compiler,
+ org.keplerproject.ldt.core.luadoc,
+ org.keplerproject.ldt.core.project,
  org.keplerproject.luajava
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
