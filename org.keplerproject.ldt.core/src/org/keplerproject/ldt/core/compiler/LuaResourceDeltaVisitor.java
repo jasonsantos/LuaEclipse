@@ -27,12 +27,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Map;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
+import org.keplerproject.ldt.core.ILuaEntry;
+import org.keplerproject.ldt.core.LuaProject;
+import org.keplerproject.ldt.core.luadoc.LuadocGenerator;
 import org.keplerproject.luajava.LuaState;
 import org.keplerproject.luajava.LuaStateFactory;
 
@@ -42,6 +47,7 @@ import org.keplerproject.luajava.LuaStateFactory;
  *  remade to fit Lua 5.1 API
  * 
  * @author guilherme
+ * @author jasonsantos
  * @version $Id$
  */
 public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
@@ -57,7 +63,8 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 	public boolean visit(IResourceDelta delta) throws CoreException {
 		final IResource res = delta.getResource();
 		if ("lua".equalsIgnoreCase(res.getFileExtension())) {
-
+			updateLuadocEntries(res);
+			
 			compileFile(res, L);
 
 			return false;
@@ -73,6 +80,12 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 			
 		}																																																												
 		String code = readFile(res);
+
+		// Comment out the 'shabang' (#!) from the beginning of file if found
+		code = code.replaceAll("^(\\s*)#!", "$1--#!");
+
+		// enclose code in a function to avoid error
+		// -- extra line break before 'end' avoids error when last line of code is a -- comment
 		code = "return function(...) " + code + " \nend";
 		
 		LuaAlert alert = new LuaAlert(res);
@@ -101,14 +114,45 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 		}
 		return null;
 	}
-
+	
 	public boolean visit(final IResource res) throws CoreException {
 
 		if ("lua".equalsIgnoreCase(res.getFileExtension())) {
+			updateLuadocEntries(res);
+			
 			compileFile(res, L);
 			return false;
 		} else {
 			return true;
+		}
+	}
+
+	/** Updates all luadocs entries for a resource. 
+	 * All entries already stored on the project file will be replaced by the new entries found through the execution of luadoc.
+	 * @param res the resource where to run luadoc
+	 */
+	private void updateLuadocEntries(final IResource res) {
+		IProject prj = res.getProject();
+		
+		LuaProject lprj = new LuaProject();
+		lprj.setProject(prj);
+		
+		String resourceFileName = res.getLocation().toOSString();
+		// TODO: create a wrapper class for this map to better illustrate semantics
+		Map<String, ILuaEntry> resourceStoredEntries = lprj.getLuaEntries(resourceFileName); 
+		
+		resourceStoredEntries.clear();
+		
+		LuadocGenerator lg = LuadocGenerator.getInstance();
+		
+		Map<String, ILuaEntry> generatedEntries = lg.generate(resourceFileName);
+		
+		resourceStoredEntries.putAll(generatedEntries);
+		
+		for(String s : generatedEntries.keySet()) {
+			// store every entry into the generator's flat index - "by my hand ish ill done"
+			// TODO: create a way of navigating module dependencies to determine priority for symbols 
+			lg.getLuaEntryIndex().put(s, generatedEntries.get(s));
 		}
 	}
 

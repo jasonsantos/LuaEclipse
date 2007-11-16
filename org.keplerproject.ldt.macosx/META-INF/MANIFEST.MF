@@ -4,7 +4,7 @@ Bundle-Name: Macosx Fragment
 Bundle-SymbolicName: org.keplerproject.ldt.macosx; singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: Kepler Project
-Fragment-Host: org.keplerproject.ldt.core;bundle-version="1.1.0"
+Fragment-Host: org.keplerproject.ldt.core;bundle-version="1.2.0"
 Bundle-Localization: fragment
 Eclipse-LazyStart: true
 Eclipse-ExtensibleAPI: true

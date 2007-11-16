@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
+import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
@@ -185,4 +186,7 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	}
 
 
+	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
+		return new LuaTextHover();
+	}
 }

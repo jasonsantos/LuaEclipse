@@ -76,17 +76,17 @@ public class LuaCorePlugin extends Plugin {
 	}
 
 	public static IProject[] getLuaProjects() {
-		List rubyProjectsList = new ArrayList();
+		List<IProject> luaProjectsList = new ArrayList<IProject>();
 		IProject workspaceProjects[] = ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects();
 		for (int i = 0; i < workspaceProjects.length; i++) {
 			IProject iProject = workspaceProjects[i];
 			if (isLuaProject(iProject))
-				rubyProjectsList.add(iProject);
+				luaProjectsList.add(iProject);
 		}
 
-		IProject rubyProjects[] = new IProject[rubyProjectsList.size()];
-		return (IProject[]) rubyProjectsList.toArray(rubyProjects);
+		IProject luaProjects[] = new IProject[luaProjectsList.size()];
+		return (IProject[]) luaProjectsList.toArray(luaProjects);
 	}
 
 	public static LuaProject getLuaProject(String name) {

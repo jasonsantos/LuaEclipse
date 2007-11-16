@@ -24,8 +24,10 @@ package org.keplerproject.ldt.core;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.SAXParserFactory;
 
@@ -46,17 +48,21 @@ import org.xml.sax.XMLReader;
 /**
  * Lua project Model
  * @author guilherme
+ * @author jasonsantos
  * @version $Id$
  */
 public class LuaProject
     implements IProjectNature, LuaElement
 {
-	   protected IProject project;
-	    protected List loadPathEntries;
-	    protected boolean scratched;
-
-    public LuaProject()
+	protected IProject project;
+	protected List<LoadPathEntry> loadPathEntries;
+	protected boolean scratched;
+	
+	protected Map<String, Map<String, ILuaEntry> > luaEntries;  
+	
+	public LuaProject()
     {
+    	luaEntries = new HashMap<String, Map<String, ILuaEntry> >();
     }
 
     public void configure()
@@ -106,7 +112,7 @@ public class LuaProject
 
     }
 
-    public List getLoadPathEntries()
+    public List<LoadPathEntry> getLoadPathEntries()
     {
         if(loadPathEntries == null)
             loadLoadPathEntries();
@@ -115,10 +121,11 @@ public class LuaProject
 
     public List getReferencedProjects()
     {
-        List referencedProjects = new ArrayList();
+        List<IProject> referencedProjects = new ArrayList<IProject>();
         for(Iterator iterator = getLoadPathEntries().iterator(); iterator.hasNext();)
         {
             LoadPathEntry pathEntry = (LoadPathEntry)iterator.next();
+            
             if(pathEntry.getType() == "project")
                 referencedProjects.add(pathEntry.getProject());
         }
@@ -128,7 +135,7 @@ public class LuaProject
 
     protected void loadLoadPathEntries()
     {
-        loadPathEntries = new ArrayList();
+        loadPathEntries = new ArrayList<LoadPathEntry>();
         IFile loadPathsFile = getLoadPathEntriesFile();
         XMLReader reader = null;
         try
@@ -243,6 +250,21 @@ public class LuaProject
     {
         return project;
     }
+
+    /**
+     * Returns all entries collected from a lua resource.
+     * @param luaFileFullPath the full pathname of the resource
+     * @return a collection of all entries found within that resource
+     */
+    public Map<String, ILuaEntry> getLuaEntries(String luaFileFullPath) {
+    	Map<String, ILuaEntry> m = luaEntries.get(luaFileFullPath);
+    	if(m==null) {
+    		m = new HashMap<String, ILuaEntry>();
+    		luaEntries.put(luaFileFullPath, m);
+    	}
+    	return m;
+    }
+ 
 
  
 }
