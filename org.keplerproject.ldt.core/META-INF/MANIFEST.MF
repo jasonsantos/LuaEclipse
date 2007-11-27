@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: LDT Core Plug-in
 Bundle-SymbolicName: org.keplerproject.ldt.core; singleton:=true
 Bundle-Version: 1.2.0.qualifier
-Bundle-ClassPath: luajava-1.1.jar,
+Bundle-ClassPath: luaeclipse-1.2.jar,
  LuaCore.jar
 Bundle-Activator: org.keplerproject.ldt.core.LuaCorePlugin
 Bundle-Vendor: Kepler Project
