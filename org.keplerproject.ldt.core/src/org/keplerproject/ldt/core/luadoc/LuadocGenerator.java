@@ -164,10 +164,10 @@ public class LuadocGenerator {
 			// TODO: enhance the summary with HTML formatting
 			doc = l.getComment();
 			// TODO: enhance the non-summary value with module information
-			if(doc==null || doc.isEmpty())
+			if(doc==null || doc.length()==0)
 				doc = l.getCode();
 
-			if(doc==null || doc.isEmpty())
+			if(doc==null || doc.length()==0)
 				doc = l.getName();
 		}
 		return doc;
