@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.keplerproject.ldt.core; singleton:=true
 Bundle-Version: 1.2.0.qualifier
 Bundle-ClassPath: LuaCore.jar,
  luajava-1.1.jar,
- jluafilesystem-0.1.jar
+ jluafilesystem-0.2.jar
 Bundle-Activator: org.keplerproject.ldt.core.LuaCorePlugin
 Bundle-Vendor: Kepler Project
 Bundle-Localization: plugin
