@@ -32,7 +32,7 @@ import org.keplerproject.luajava.LuaException;
 import org.keplerproject.luajava.LuaObject;
 import org.keplerproject.luajava.LuaState;
 import org.keplerproject.luajava.LuaStateFactory;
-
+import org.keplerproject.luajava.luafilesystem.JLuaFileSystem;
 
 /**
  * Runs a luadoc engine to generate entries.
@@ -43,11 +43,11 @@ import org.keplerproject.luajava.LuaStateFactory;
 
 public class LuadocGenerator {
 	private static LuadocGenerator singleton;
-	protected Map<String, ILuaEntry > luaEntryIndex;
+	protected Map<String, ILuaEntry> luaEntryIndex;
 
 	public LuadocGenerator() {
 		super();
-    	luaEntryIndex = new HashMap<String, ILuaEntry >();
+		luaEntryIndex = new HashMap<String, ILuaEntry>();
 	}
 
 	public static LuadocGenerator getInstance() {
@@ -59,19 +59,20 @@ public class LuadocGenerator {
 	// register the java functions to create the entries
 	public Map<String, ILuaEntry> generate(String fileName) {
 		final Map<String, ILuaEntry> m = new HashMap<String, ILuaEntry>();
-		
+
 		try {
 			LuaState L = LuaStateFactory.newLuaState();
-			
+
 			L.openLibs();
-			
+			JLuaFileSystem.register(L);
+
 			L.pushJavaFunction(new JavaFunction(L) {
 
 				@Override
 				public int execute() throws LuaException {
-					//String t = getParam(1).toString();
-					LuaObject fileOrModuleName = getParam(2); 
-					
+					// String t = getParam(1).toString();
+					LuaObject fileOrModuleName = getParam(2);
+
 					LuaObject entryName = getParam(3);
 					LuaObject entryType = getParam(4);
 
@@ -79,9 +80,9 @@ public class LuadocGenerator {
 					LuaObject entryDescription = getParam(6);
 					LuaObject entryComment = getParam(7);
 					LuaObject entryCode = getParam(8);
-					
+
 					LuadocEntry e = new LuadocEntry();
-					
+
 					e.setModule(fileOrModuleName.toString());
 					e.setEntryType(entryType.toString());
 					e.setName(entryName.toString());
@@ -89,7 +90,7 @@ public class LuadocGenerator {
 					e.setDescription(entryDescription.toString());
 					e.setComment(entryComment.toString());
 					e.setCode(entryCode.toString());
-					
+
 					m.put(entryName.toString(), e);
 					return 0;
 				}
@@ -98,53 +99,69 @@ public class LuadocGenerator {
 
 			L.setGlobal("addDocumentationEntry");
 
-		  	int result = L.LdoString("require 'lfs' "+ "\n"  
-							+ "  require 'luadoc'" + "\n"
-							+ "local files = {'"
-							+ fileName 
-							+ "'}"+ "\n"
-							+ "local options = require 'luadoc.config'"+ "\n"
-							+ "module ('loopback.doclet', package.seeall)"+ "\n"
-							+ "t = {}"+ "\n"
-							+ "function start(doc)"+ "\n"
-								+ "local fileOrModuleName = ''"+ "\n"
-								+ "r = function(d)"+ "\n"
-									+ "for k, v in pairs(d) do"+ "\n"
-										+ "if type(v)=='table' then"+ "\n"
-											+ "if v.class=='function' then"+ "\n"
-												+ "addDocumentationEntry(" +
-														"fileOrModuleName, " +
-														"v.name, " +
-														"v.class, " +
-														"v.summary," +
-														"v.description," +
-														"table.concat(v.comment, '\\n')," +
-														"table.concat(v.code, '\\n')" +
-													")"+ "\n"
-											+ "elseif v.type == 'file' or v.type == 'module'  then"+ "\n"
-												+ "fileOrModuleName = v.name"+ "\n" 
-											+ "end" + "\n"
-											+ "r(v)"+ "\n"
-										+ "end" + "\n"
-									+ "end" + "\n"
-								+ "end"+ "\n" 
-								+ "r(doc)" 
-							+ "end"+ "\n"
-							+ "options.doclet = 'loopback.doclet'"+ "\n"
-							+ "luadoc.main(files, options)");
+			int result = L.LdoString("require 'lfs' " + "\n"
+					+ "  require 'luadoc'" + "\n" + "local files = {'"
+					+ fileName
+					+ "'}"
+					+ "\n"
+					+ "local options = require 'luadoc.config'"
+					+ "\n"
+					+ "module ('loopback.doclet', package.seeall)"
+					+ "\n"
+					+ "t = {}"
+					+ "\n"
+					+ "function start(doc)"
+					+ "\n"
+					+ "local fileOrModuleName = ''"
+					+ "\n"
+					+ "r = function(d)"
+					+ "\n"
+					+ "for k, v in pairs(d) do"
+					+ "\n"
+					+ "if type(v)=='table' then"
+					+ "\n"
+					+ "if v.class=='function' then"
+					+ "\n"
+					+ "addDocumentationEntry("
+					+ "fileOrModuleName, "
+					+ "v.name, "
+					+ "v.class, "
+					+ "v.summary,"
+					+ "v.description,"
+					+ "table.concat(v.comment, '\\n'),"
+					+ "table.concat(v.code, '\\n')"
+					+ ")"
+					+ "\n"
+					+ "elseif v.type == 'file' or v.type == 'module'  then"
+					+ "\n"
+					+ "fileOrModuleName = v.name"
+					+ "\n"
+					+ "end"
+					+ "\n"
+					+ "r(v)"
+					+ "\n"
+					+ "end"
+					+ "\n"
+					+ "end"
+					+ "\n"
+					+ "end"
+					+ "\n"
+					+ "r(doc)"
+					+ "end"
+					+ "\n"
+					+ "options.doclet = 'loopback.doclet'"
+					+ "\n"
+					+ "luadoc.main(files, options)");
 
-			
-
-			
-			if( result != 0) {
-	            String s = L.toString(-1);
+			if (result != 0) {
+				String s = L.toString(-1);
 				System.out.println(s);
 			}
-			
+
 			L.close();
-			
+
 			return m;
-			
+
 		} catch (LuaException e) {
 		}
 
@@ -152,22 +169,22 @@ public class LuadocGenerator {
 		// load the documentation blocks into the resulting map
 		return null;
 	}
-	
-    public Map<String,ILuaEntry > getLuaEntryIndex() {
-    	return luaEntryIndex;
-    }
+
+	public Map<String, ILuaEntry> getLuaEntryIndex() {
+		return luaEntryIndex;
+	}
 
 	public String getDocumentationText(String token) {
-		LuadocEntry l = (LuadocEntry)getLuaEntryIndex().get(token);
+		LuadocEntry l = (LuadocEntry) getLuaEntryIndex().get(token);
 		String doc = null;
-		if(l!=null) {
+		if (l != null) {
 			// TODO: enhance the summary with HTML formatting
 			doc = l.getComment();
 			// TODO: enhance the non-summary value with module information
-			if(doc==null || doc.length()==0)
+			if (doc == null || doc.length() == 0)
 				doc = l.getCode();
 
-			if(doc==null || doc.length()==0)
+			if (doc == null || doc.length() == 0)
 				doc = l.getName();
 		}
 		return doc;
