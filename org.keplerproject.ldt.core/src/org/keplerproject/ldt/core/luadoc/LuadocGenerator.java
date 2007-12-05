@@ -107,8 +107,8 @@ public class LuadocGenerator {
 					+ fileName
 					+ "'}"
 					+ "\n"
-					+ "require 'luadoc.config'"
-					+ "local options = luadoc.config\n"
+					+ "local options = require 'luadoc.config'"
+					+ "\n"
 					+ "module ('loopback.doclet', package.seeall)"
 					+ "\n"
 					+ "t = {}"
