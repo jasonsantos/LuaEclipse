@@ -103,12 +103,12 @@ public class LuadocGenerator {
 			L.setGlobal("addDocumentationEntry");
 
 			int result = L.LdoString("require 'lfs' " + "\n"
-					+ "  require 'luadoc'" + "\n" + "local files = {'"
+					+ "require 'luadoc' " + "\n" + "local files = {'"
 					+ fileName
 					+ "'}"
 					+ "\n"
-					+ "local options = require 'luadoc.config'"
-					+ "\n"
+					+ "require 'luadoc.config'"
+					+ "local options = luadoc.config\n"
 					+ "module ('loopback.doclet', package.seeall)"
 					+ "\n"
 					+ "t = {}"

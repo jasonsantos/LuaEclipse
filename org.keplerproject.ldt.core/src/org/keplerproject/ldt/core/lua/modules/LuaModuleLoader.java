@@ -36,10 +36,49 @@ import org.keplerproject.luajava.LuaState;
 import org.osgi.framework.Bundle;
 
 /**
- * @author jasonsantos
+ * A Loader for modules installed within LuaEclipse
  * 
+ * @author jasonsantos
+ * @version $Id$
  */
 public class LuaModuleLoader {
+
+	private static URL findfile(LuaState L, String name, String pluginName) {
+		Bundle b = Platform.getBundle(pluginName);
+		name = name.replace('.', '/');
+		String[] moduleLocations = { "lua/5.1/" + name + ".lua",
+				"lua/5.1/" + name + "/init.lua" };
+
+		URL u = null;
+
+		for (String moduleLocation : moduleLocations) {
+			if ((u = b.getResource(moduleLocation)) != null)
+				break;
+		}
+
+		return u;
+	}
+
+	/**
+	 * Loads the contents of an URL
+	 * 
+	 * @param u
+	 *            URL to the file
+	 * @return String with the file contetn
+	 * @throws IOException
+	 */
+	private static String getFileContents(URL u) throws IOException {
+		BufferedReader is = new BufferedReader(new InputStreamReader(u
+				.openStream()));
+		String s = null;
+
+		StringBuilder moduleBody = new StringBuilder();
+		while ((s = is.readLine()) != null) {
+			moduleBody.append(s);
+		}
+
+		return moduleBody.toString();
+	}
 
 	public static int register(LuaState L) {
 		if (L == null)
@@ -47,10 +86,6 @@ public class LuaModuleLoader {
 
 		try {
 
-			L.getGlobal("package");
-			L.getField(-1, "loaders");
-
-			L.pushNumber(1);
 			L.pushJavaFunction(new JavaFunction(L) {
 
 				@Override
@@ -59,40 +94,21 @@ public class LuaModuleLoader {
 					LuaObject objModuleName = getParam(2);
 
 					if (objModuleName != null) {
-						Bundle b = Platform
-								.getBundle("org.keplerproject.ldt.core");
-						String[] moduleLocations = {
-								"lua/5.1/"
-										+ objModuleName.toString().replace('.',
-												'/') + ".lua",
-								"lua/5.1/"
-										+ objModuleName.toString().replace('.',
-												'/') + "/init.lua" };
 
 						try {
-							URL u = null;
-							for (String moduleLocation : moduleLocations) {
-								if ((u = b.getResource(moduleLocation)) != null)
-									break;
-							}
+							URL u = findfile(L, objModuleName.toString(),
+									"org.keplerproject.ldt.core");
 
 							if (u == null)
 								return 0;
 
-							BufferedReader is = new BufferedReader(
-									new InputStreamReader(u.openStream()));
-							String s = null;
+							String body = getFileContents(u);
 
-							StringBuilder moduleBody = new StringBuilder();
-							while ((s = is.readLine()) != null) {
-								moduleBody.append(s);
-							}
-
-							int res = L.LloadString(moduleBody.toString());
+							int res = L.LloadString(body);
 							if (res != 0) {
 								String err = L.toString(-1);
 								System.out.println(err);
-
+								return 1;
 							}
 
 							return 1;
@@ -107,8 +123,17 @@ public class LuaModuleLoader {
 				}
 
 			});
+			L.setGlobal("__JavaResourceModuleLoader");
 
-			L.setTable(-3);
+			L.getGlobal("package");
+			L.getField(-1, "loaders");
+
+			int res = L.LloadString("return __JavaResourceModuleLoader(...)");
+			if (res != 0) {
+				String err = L.toString(-1);
+				System.out.println(err);
+			}
+			L.rawSetI(-2, 4);
 
 		} catch (Exception e) {
 			// do nothing
@@ -116,5 +141,4 @@ public class LuaModuleLoader {
 
 		return 0;
 	}
-
 }
