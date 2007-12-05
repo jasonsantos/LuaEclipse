@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.keplerproject.ldt.core.ILuaEntry;
+import org.keplerproject.ldt.core.lua.modules.LuaModuleLoader;
 import org.keplerproject.luajava.JavaFunction;
 import org.keplerproject.luajava.LuaException;
 import org.keplerproject.luajava.LuaObject;
@@ -64,7 +65,9 @@ public class LuadocGenerator {
 			LuaState L = LuaStateFactory.newLuaState();
 
 			L.openLibs();
+
 			JLuaFileSystem.register(L);
+			LuaModuleLoader.register(L);
 
 			L.pushJavaFunction(new JavaFunction(L) {
 
