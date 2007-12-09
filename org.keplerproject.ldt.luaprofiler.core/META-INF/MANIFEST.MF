@@ -7,5 +7,8 @@ Bundle-Activator: org.keplerproject.ldt.luaprofiler.core.Activator
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.keplerproject.ldt.core
+ org.keplerproject.ldt.core,
+ org.eclipse.debug.core,
+ org.keplerproject.ldt.launcher,
+ org.eclipse.debug.ui
 Eclipse-LazyStart: true

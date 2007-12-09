@@ -10,7 +10,6 @@ public class Messages extends NLS {
 	public static String LuaProfilerAnalyser_StartAnalysisFunction;
 	public static String LuaProfilerAnalyser_GetWordsListFunction;
 
-	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

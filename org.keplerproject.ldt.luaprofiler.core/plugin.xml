@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
+    <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.keplerproject.ldt.luaprofiler.launcher.LuaProfilerLaunchConfigurationDelegate"
+            id="org.keplerproject.ldt.launching.ProfilerLaunchConfigurationTypeLuaApplication"
+            modes="run"
+            name="Lua Profiler"
+            sourceLocatorId="org.keplerproject.ldt.launching.ui.luaSourceLocator">
+         <fileExtension
+               default="true"
+               extension="lua">
+         </fileExtension>
+      </launchConfigurationType>
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.keplerproject.ldt.launching.ProfilerLaunchConfigurationTypeLuaApplication"
+            class="org.keplerproject.ldt.luaprofiler.launcher.ui.LuaProfilerApplicationTabGroup"
+            id="org.keplerproject.ldt.launching.ui.ProfilerLaunchConfigurationTabGroupLuaApplication">
+      </launchConfigurationTabGroup>
+   </extension>
+
 
    <extension
          point="org.eclipse.ui.views">
@@ -28,5 +52,17 @@
          </view>
       </perspectiveExtension>
    </extension>
-
+   
+   <extension point="org.eclipse.ui.commands">
+	<command 
+		categoryId="org.eclipse.debug.ui.category.run" 
+		description="Profile Lua Script" 
+		id="org.keplerproject.ldt.luaprofiler.launcher.ui.luaShortcut.run" 
+		name="Profile Lua" />
+	<keyBinding 
+		commandId="org.keplerproject.ldt.luaprofiler.launcher.ui.luaShortcut.run" 
+		keySequence="M2+M3+P L"  
+		keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration" 
+		contextId="org.eclipse.ui.globalScope"/>   	
+   </extension>
 </plugin>
