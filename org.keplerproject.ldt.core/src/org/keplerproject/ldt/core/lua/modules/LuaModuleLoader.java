@@ -42,6 +42,22 @@ import org.osgi.framework.Bundle;
  * @version $Id$
  */
 public class LuaModuleLoader {
+	private static final Object sentinel = "Sentinel";
+
+	private static String dumpTable(LuaState L) {
+		StringBuilder sb = new StringBuilder();
+		if (L.isTable(-1)) {
+			L.pushNil();
+			while (L.next(-2) != 0) {
+				String sKey = L.type(-2) == LuaState.LUA_TNUMBER ? new Integer(
+						L.toInteger(-2)).toString() : L.toString(-2);
+				String sValue = L.typeName(L.type(-1));
+				sb.append(sKey + " - '" + sValue + "'\n");
+				L.pop(1);
+			}
+		}
+		return sb.toString();
+	}
 
 	private static URL findfile(LuaState L, String name, String pluginName) {
 		Bundle b = Platform.getBundle(pluginName);
@@ -90,29 +106,102 @@ public class LuaModuleLoader {
 
 				@Override
 				public int execute() throws LuaException {
+					LuaObject o;
+					String name = (o = getParam(2)) != null ? o.toString()
+							: null;
+					int i;
+					L.setTop(1); /* _LOADED table will be at index 2 */
+					L.getField(LuaState.LUA_REGISTRYINDEX, "_LOADED");
+					L.getField(2, name);
+					if (L.toBoolean(-1)) { /* is it there? */
+						if (L.toJavaObject(-1) == sentinel) { /* check loops */
+							L
+									.pushString("loop or previous error loading module "
+											+ name);
+							L.error();
+						}
+						return 1; /* package is already loaded */
+					}
+					/* else must load it; iterate over available loaders */
+					L.getGlobal("package");
+					L.getField(-1, "loaders");
 
+					if (!L.isTable(-1)) {
+						L.pushString("'package.loaders' must be a table");
+						L.error();
+					}
+
+					String ss = dumpTable(L);
+
+					L.pushString(""); /* error message accumulator */
+					for (i = 1;; i++) {
+						L.rawGetI(-2, i); /* get a loader */
+						if (L.isNil(-1)) {
+							L.pushString(String.format(
+									"module '%s' not found:%s", name, L
+											.toString(-2)));
+							L.error();
+						}
+						int params = 1;
+						if (L.isUserdata(-1)) {
+							int userData = L.getTop();
+							if (L.getMetaTable(-1) != 0) {
+								L.getField(-1, "__call");
+								L.pushValue(userData);
+								params++;
+							}
+
+						}
+
+						L.pushString(name);
+						L.call(params, 1); /* call it */
+						if (L.isFunction(-1)) /* did it find module? */
+							break; /* module loaded successfully */
+						else if (L.isString(-1)) /*
+						 * loader returned error
+						 * message?
+						 */
+							L.concat(2); /* accumulate it */
+						else
+							L.pop(1);
+					}
+					L.pushJavaObject(sentinel);
+					L.setField(2, name); /* _LOADED[name] = sentinel */
+					L.pushString(name); /* pass name as argument to module */
+					L.call(1, 1); /* run loaded module */
+					if (!L.isNil(-1)) /* non-nil return? */
+						L.setField(2, name); /*
+						 * _LOADED[name] = returned
+						 * value
+						 */
+					L.getField(2, name);
+					if (L.toJavaObject(-1) == sentinel) { /*
+					 * module did not
+					 * set a value?
+					 */
+						L.pushBoolean(true); /* use true as result */
+						L.pushValue(-1); /* extra copy to be returned */
+						L.setField(2, name); /* _LOADED[name] = true */
+					}
+					return 1;
+				}
+
+			});
+			L.setGlobal("require");
+
+			L.pushJavaFunction(new JavaFunction(L) {
+
+				@Override
+				public int execute() throws LuaException {
 					LuaObject objModuleName = getParam(2);
 
 					if (objModuleName != null) {
 
 						try {
-							URL u = findfile(L, objModuleName.toString(),
-									"org.keplerproject.ldt.core");
-
-							if (u == null)
+							if (loadModule(objModuleName) > 0) {
+								return 2;
+							} else
 								return 0;
-
-							String body = getFileContents(u);
-
-							int res = L.LloadString(body);
-							if (res != 0) {
-								String err = L.toString(-1);
-								System.out.println(err);
-								return 1;
-							}
-
-							return 1;
-
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -122,19 +211,41 @@ public class LuaModuleLoader {
 					return 0;
 				}
 
+				/**
+				 * @param objModuleName
+				 * @throws IOException
+				 */
+				private int loadModule(LuaObject objModuleName)
+						throws IOException {
+					URL u = findfile(L, objModuleName.toString(),
+							"org.keplerproject.ldt.core");
+
+					if (u == null)
+						return 0;
+
+					String body = getFileContents(u);
+
+					int res = L.LloadString(body);
+					if (res != 0) {
+						String err = L.toString(-1);
+						System.out.println(err);
+						return 1;
+					}
+
+					L.pushString(objModuleName.toString());
+
+					return 1;
+				}
+
 			});
-			L.setGlobal("__JavaResourceModuleLoader");
 
 			L.getGlobal("package");
 			L.getField(-1, "loaders");
-
-			int res = L.LloadString("return __JavaResourceModuleLoader(...)");
-			if (res != 0) {
-				String err = L.toString(-1);
-				System.out.println(err);
-			}
-			L.rawSetI(-2, 4);
-
+			String ss = dumpTable(L);
+			L.pushNumber(2); // index 2
+			L.pushValue(-4); // function
+			L.setTable(-3); // Sets the Java Package Loader as the second
+			// loader
 		} catch (Exception e) {
 			// do nothing
 		}
