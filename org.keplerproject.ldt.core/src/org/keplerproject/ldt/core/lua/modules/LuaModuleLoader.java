@@ -112,6 +112,7 @@ public class LuaModuleLoader {
 					int i;
 					L.setTop(1); /* _LOADED table will be at index 2 */
 					L.getField(LuaState.LUA_REGISTRYINDEX, "_LOADED");
+					int loadedTable = L.getTop();
 					L.getField(2, name);
 					if (L.toBoolean(-1)) { /* is it there? */
 						if (L.toJavaObject(-1) == sentinel) { /* check loops */
@@ -148,6 +149,8 @@ public class LuaModuleLoader {
 							if (L.getMetaTable(-1) != 0) {
 								L.getField(-1, "__call");
 								L.pushValue(userData);
+								L.remove(userData);
+								L.remove(userData);
 								params++;
 							}
 
@@ -158,27 +161,28 @@ public class LuaModuleLoader {
 						if (L.isFunction(-1)) /* did it find module? */
 							break; /* module loaded successfully */
 						else if (L.isString(-1)) /*
-						 * loader returned error
-						 * message?
-						 */
+													 * loader returned error
+													 * message?
+													 */
 							L.concat(2); /* accumulate it */
 						else
 							L.pop(1);
 					}
-					L.pushJavaObject(sentinel);
-					L.setField(2, name); /* _LOADED[name] = sentinel */
+					// L.pushJavaObject(sentinel);
+					// L.setField(2, name); /* _LOADED[name] = sentinel */
 					L.pushString(name); /* pass name as argument to module */
 					L.call(1, 1); /* run loaded module */
+
 					if (!L.isNil(-1)) /* non-nil return? */
 						L.setField(2, name); /*
-						 * _LOADED[name] = returned
-						 * value
-						 */
+												 * _LOADED[name] = returned
+												 * value
+												 */
 					L.getField(2, name);
 					if (L.toJavaObject(-1) == sentinel) { /*
-					 * module did not
-					 * set a value?
-					 */
+															 * module did not
+															 * set a value?
+															 */
 						L.pushBoolean(true); /* use true as result */
 						L.pushValue(-1); /* extra copy to be returned */
 						L.setField(2, name); /* _LOADED[name] = true */
@@ -199,7 +203,7 @@ public class LuaModuleLoader {
 
 						try {
 							if (loadModule(objModuleName) > 0) {
-								return 2;
+								return 1;
 							} else
 								return 0;
 						} catch (IOException e) {
@@ -217,8 +221,8 @@ public class LuaModuleLoader {
 				 */
 				private int loadModule(LuaObject objModuleName)
 						throws IOException {
-					URL u = findfile(L, objModuleName.toString(),
-							"org.keplerproject.ldt.core");
+					String sFileName = objModuleName.toString();
+					URL u = findfile(L, sFileName, "org.keplerproject.ldt.core");
 
 					if (u == null)
 						return 0;
@@ -227,12 +231,14 @@ public class LuaModuleLoader {
 
 					int res = L.LloadString(body);
 					if (res != 0) {
-						String err = L.toString(-1);
+						String err = "error loading module " + sFileName
+								+ " from resource " + u.getPath() + ":\n\t"
+								+ L.toString(-1);
 						System.out.println(err);
+						L.pushString(err);
+						L.error();
 						return 1;
 					}
-
-					L.pushString(objModuleName.toString());
 
 					return 1;
 				}
