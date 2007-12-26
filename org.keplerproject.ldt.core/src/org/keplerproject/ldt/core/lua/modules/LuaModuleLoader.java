@@ -90,7 +90,7 @@ public class LuaModuleLoader {
 
 		StringBuilder moduleBody = new StringBuilder();
 		while ((s = is.readLine()) != null) {
-			moduleBody.append(s);
+			moduleBody.append(s + "\n");
 		}
 
 		return moduleBody.toString();
@@ -111,9 +111,16 @@ public class LuaModuleLoader {
 							: null;
 					int i;
 					L.setTop(1); /* _LOADED table will be at index 2 */
+
+					/*
+					 * L.getField(LuaState.LUA_GLOBALSINDEX, "package");
+					 * L.getField(2, "loaded");
+					 */
+
 					L.getField(LuaState.LUA_REGISTRYINDEX, "_LOADED");
+
 					int loadedTable = L.getTop();
-					L.getField(2, name);
+					L.getField(loadedTable, name);
 					if (L.toBoolean(-1)) { /* is it there? */
 						if (L.toJavaObject(-1) == sentinel) { /* check loops */
 							L
@@ -132,7 +139,7 @@ public class LuaModuleLoader {
 						L.error();
 					}
 
-					String ss = dumpTable(L);
+					// String ss = dumpTable(L);
 
 					L.pushString(""); /* error message accumulator */
 					for (i = 1;; i++) {
@@ -168,24 +175,26 @@ public class LuaModuleLoader {
 						else
 							L.pop(1);
 					}
-					// L.pushJavaObject(sentinel);
-					// L.setField(2, name); /* _LOADED[name] = sentinel */
+					L.pushJavaObject(sentinel);
+					L.setField(loadedTable, name); /* _LOADED[name] = sentinel */
+
 					L.pushString(name); /* pass name as argument to module */
 					L.call(1, 1); /* run loaded module */
 
 					if (!L.isNil(-1)) /* non-nil return? */
-						L.setField(2, name); /*
-												 * _LOADED[name] = returned
-												 * value
-												 */
-					L.getField(2, name);
+						L.setField(loadedTable, name); /*
+														 * _LOADED[name] =
+														 * returned value
+														 */
+					L.pushValue(loadedTable);
+					L.getField(-1, name);
 					if (L.toJavaObject(-1) == sentinel) { /*
 															 * module did not
 															 * set a value?
 															 */
 						L.pushBoolean(true); /* use true as result */
 						L.pushValue(-1); /* extra copy to be returned */
-						L.setField(2, name); /* _LOADED[name] = true */
+						L.setField(loadedTable, name); /* _LOADED[name] = true */
 					}
 					return 1;
 				}
@@ -247,7 +256,7 @@ public class LuaModuleLoader {
 
 			L.getGlobal("package");
 			L.getField(-1, "loaders");
-			String ss = dumpTable(L);
+			// String ss = dumpTable(L);
 			L.pushNumber(2); // index 2
 			L.pushValue(-4); // function
 			L.setTable(-3); // Sets the Java Package Loader as the second
