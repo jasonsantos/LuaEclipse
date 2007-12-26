@@ -10,5 +10,6 @@ Require-Bundle: org.eclipse.ui,
  org.keplerproject.ldt.core,
  org.eclipse.debug.core,
  org.keplerproject.ldt.launcher,
- org.eclipse.debug.ui
+ org.eclipse.debug.ui,
+ org.eclipse.ui.console
 Eclipse-LazyStart: true

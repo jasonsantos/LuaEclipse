@@ -1,5 +1,7 @@
 package org.keplerproject.ldt.luaprofiler.core.views;
 
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -14,6 +16,7 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -23,7 +26,7 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.keplerproject.ldt.luaprofiler.core.Activator;
-import org.keplerproject.ldt.luaprofiler.core.analasyer.LuaProfilerAnalyser;
+import org.keplerproject.ldt.luaprofiler.core.analasyer.LuaProfilerAnalyserListener;
 import org.keplerproject.luajava.LuaException;
 import org.keplerproject.luajava.LuaObject;
 
@@ -38,7 +41,7 @@ public class LuaProfilerView extends ViewPart {
 			} catch (LuaException e) {
 				e.printStackTrace();
 			}
-			return "oopss sorry";
+			return "oops sorry";
 		}
 
 		public Image getColumnImage(Object obj, int index) {
@@ -57,15 +60,11 @@ public class LuaProfilerView extends ViewPart {
 
 	private static final String[] labelsNames = new String[] { "Node name", "Calls", "Average per call", "Total time", "%Time" };
 	private static final String[] infoNames = new String[] { "func", "calls", "average", "total", "time" };
-	//private LuaProfilerAnalyser analyser;
-	//private String profiler_file;
 
 	/**
 	 * The constructor.
 	 */
 	public LuaProfilerView() {
-		//analyser = new LuaProfilerAnalyser();
-		//this.profiler_file = "/home/guilherme/lua/luaprofiler-2.0/src/analyzer/teste1.out";
 	}
 
 	/**
@@ -86,29 +85,42 @@ public class LuaProfilerView extends ViewPart {
 
 		}
 
-		viewer.setContentProvider(new LuaProfilerContentProvider());
+		LuaProfilerContentProvider.getContentProvider().setListener(new LuaProfilerAnalyserListener() {
+			@Override public void profilerDataChanged(final IProcess process) {
+				Display.getDefault().asyncExec(new Runnable() {
+					@Override public void run() {
+						boolean finish = false;
+						while (!finish) {
+							try {
+								process.getExitValue();
+								finish = true;
+								viewer.refresh();
+								viewer.getControl().setFocus();
+							} catch (DebugException e) {
+								// Oh!! still running
+								try {
+									// wait .5 secs
+									Thread.sleep(500);
+								} catch (InterruptedException e1) {
+								}
+							}
+						}
+						return;
+					}
+				});
+			}
+
+		});
+		viewer.setContentProvider(LuaProfilerContentProvider.getContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
 		viewer.setSorter(new NameSorter());
 		viewer.setInput(getViewSite());
 
 		makeActions();
 		hookContextMenu();
-		// hookDoubleClickAction();
 		contributeToActionBars();
 
-		/* TODO REVER
-		if (profiler_file != null)
-			analyser.refreshSummary(profiler_file);
-			*/
 	}
-
-	/* TODO REVER 
-	public void setProfilerFile(String file) {
-		this.profiler_file = file;
-		if (profiler_file != null)
-			analyser.refreshSummary(profiler_file);
-		viewer.refresh();
-	}*/
 
 	private void hookContextMenu() {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
@@ -132,26 +144,21 @@ public class LuaProfilerView extends ViewPart {
 	private void fillLocalPullDown(IMenuManager manager) {
 		manager.add(updateAction);
 		manager.add(new Separator());
-		// manager.add(action2);
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
 		manager.add(updateAction);
-		// manager.add(action2);
-		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
 		manager.add(updateAction);
-		// manager.add(action2);
 	}
 
 	private void makeActions() {
 		updateAction = new Action() {
 			public void run() {
 				showMessage(" This may take a few minutes. Depending on the size of profile output :) ");
-				//analyser.refreshSummary();
 				viewer.refresh();
 				showMessage("Profiler information updated");
 			}
@@ -160,24 +167,8 @@ public class LuaProfilerView extends ViewPart {
 		updateAction.setToolTipText("Refresh Profile Information");
 		updateAction.setImageDescriptor(Activator.getImageDescriptor("icons/refresh-icon.gif"));
 
-		/*
-		 * action2 = new Action() { public void run() { showMessage("Action 2
-		 * executed"); } }; action2.setText("Action 2");
-		 * action2.setToolTipText("Action 2 tooltip");
-		 * action2.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-		 * getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
-		 * doubleClickAction = new Action() { public void run() { ISelection
-		 * selection = viewer.getSelection(); Object obj =
-		 * ((IStructuredSelection)selection).getFirstElement();
-		 * showMessage("Double-click detected on "+obj.toString()); } };
-		 */
 	}
 
-	/*
-	 * private void hookDoubleClickAction() { viewer.addDoubleClickListener(new
-	 * IDoubleClickListener() { public void doubleClick(DoubleClickEvent event) {
-	 * doubleClickAction.run(); } }); }
-	 */
 	private void showMessage(String message) {
 		MessageDialog.openInformation(viewer.getControl().getShell(), "Lua Profiler View", message);
 	}

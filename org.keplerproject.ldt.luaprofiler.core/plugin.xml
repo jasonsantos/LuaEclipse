@@ -25,7 +25,6 @@
       </launchConfigurationTabGroup>
    </extension>
 
-
    <extension
          point="org.eclipse.ui.views">
       <category
@@ -40,19 +39,23 @@
             id="org.keplerproject.ldt.luaprofiler.core.views.LuaProfilerView">
       </view>
    </extension>
+   
+   <extension
+       point="org.eclipse.ui.perspectives">
+    <perspective
+          class="org.keplerproject.ldt.luaprofiler.launcher.ui.LuaProfilerPerspective"
+          id="org.keplerproject.ldt.luaprofiler.launcher.ui.LuaProfilerPerspective" 
+          name="Lua Profiler"
+          icon="icons/sample.gif" />
+ </extension>
+   
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
-            targetID="org.eclipse.ui.resourcePerspective">
-         <view
-               ratio="0.5"
-               relative="org.eclipse.ui.views.TaskList"
-               relationship="right"
-               id="org.keplerproject.ldt.luaprofiler.core.views.LuaProfilerView">
-         </view>
+            targetID="org.keplerproject.ldt.luaprofiler.launcher.ui.LuaProfilerPerspective">
       </perspectiveExtension>
    </extension>
-   
+
    <extension point="org.eclipse.ui.commands">
 	<command 
 		categoryId="org.eclipse.debug.ui.category.run" 
@@ -61,8 +64,17 @@
 		name="Profile Lua" />
 	<keyBinding 
 		commandId="org.keplerproject.ldt.luaprofiler.launcher.ui.luaShortcut.run" 
-		keySequence="M2+M3+P L"  
+		keySequence="M2+M3+X P"  
 		keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration" 
 		contextId="org.eclipse.ui.globalScope"/>   	
+   </extension>
+   
+	<extension point="org.eclipse.ui.preferencePages">
+     <page
+            name="Lua Profiler"
+            category="org.keplerproject.ldt.ui.preferences.PreferencePageLua"
+            class="org.keplerproject.ldt.luaprofiler.launcher.ui.preferences.LuaProfilerPreferencePage"
+            id="org.keplerproject.ldt.luaprofiler.launcher.ui.preferences.LuaProfiler">
+      </page>
    </extension>
 </plugin>

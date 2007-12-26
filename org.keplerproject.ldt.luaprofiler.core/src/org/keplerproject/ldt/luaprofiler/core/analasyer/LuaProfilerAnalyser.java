@@ -11,12 +11,12 @@ import org.keplerproject.luajava.LuaStateFactory;
 public class LuaProfilerAnalyser {
 	private static LuaProfilerAnalyser analyser = null;
 	private String filename;
-
 	private LuaState L;
 
 	private LuaProfilerAnalyser(String filename) {
 		if (filename == null)
 			return;
+		
 		L = LuaStateFactory.newLuaState();
 		L.openLibs();
 		// loads the file buffer function (FROM LUA PROFILER summary.lua)
@@ -82,5 +82,4 @@ public class LuaProfilerAnalyser {
 
 		return summaryList.toArray();
 	}
-
 }
