@@ -181,6 +181,17 @@ public class LuadocGenerator {
 		return luaEntryIndex;
 	}
 
+	public void generateIndexes(Map<String, ILuaEntry> generatedEntries) {
+		LuadocGenerator lg = LuadocGenerator.getInstance();
+		for (String s : generatedEntries.keySet()) {
+			// store every entry into the generator's flat index
+			// --- "by my hand ish ill done"
+			// TODO: create a way of navigating module dependencies to determine
+			// priority for symbols
+			lg.getLuaEntryIndex().put(s, generatedEntries.get(s));
+		}
+	}
+
 	public String getDocumentationText(String token) {
 		LuadocEntry l = (LuadocEntry) getLuaEntryIndex().get(token);
 		String doc = null;
