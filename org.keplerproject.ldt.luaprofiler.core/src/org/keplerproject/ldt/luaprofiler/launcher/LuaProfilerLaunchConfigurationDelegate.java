@@ -16,7 +16,6 @@ public class LuaProfilerLaunchConfigurationDelegate implements
 	protected static final InterpreterRunner interpreterRunner = new LuaProfilerInterpreterRunner();
 	public static final String TYPE_ID = "org.keplerproject.ldt.launching.LaunchConfigurationTypeLuaApplication";
 
-	@Override
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		if (LuaRuntime.getDefault().getSelectedInterpreter() == null)

@@ -7,9 +7,7 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -36,12 +34,13 @@ import org.kepler.ldt.laucher.LauncherPlugin;
 import org.keplerproject.ldt.luaprofiler.core.LuaProfiler;
 import org.keplerproject.ldt.luaprofiler.core.LuaProfiler.LuaProfilerInfo;
 
-public class LuaProfilerPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
+public class LuaProfilerPreferencePage extends PreferencePage implements
+		IWorkbenchPreferencePage {
 	protected CheckboxTableViewer tableViewer;
 
 	protected Button addButton;
 
-	//protected Button editButton;
+	// protected Button editButton;
 
 	protected Button removeButton;
 
@@ -49,7 +48,6 @@ public class LuaProfilerPreferencePage extends PreferencePage implements IWorkbe
 		setPreferenceStore(LauncherPlugin.getDefault().getPreferenceStore());
 	}
 
-	@Override
 	public void init(IWorkbench workbench) {
 	}
 
@@ -74,27 +72,23 @@ public class LuaProfilerPreferencePage extends PreferencePage implements IWorkbe
 
 		tableViewer.setContentProvider(new IStructuredContentProvider() {
 			@SuppressWarnings("unchecked")
-			@Override
 			public Object[] getElements(Object input) {
 				List<LuaProfilerInfo> l = (List<LuaProfilerInfo>) input;
 				return l.toArray();
 			}
 
-			@Override
 			public void dispose() {
 			}
 
-			@Override
 			public void inputChanged(Viewer viewer, Object oldVal, Object newVal) {
 			}
 		});
 		tableViewer.setLabelProvider(new ITableLabelProvider() {
-			@Override
+
 			public Image getColumnImage(Object arg0, int arg1) {
 				return null;
 			}
 
-			@Override
 			public String getColumnText(Object arg0, int column) {
 				switch (column) {
 				case 0:
@@ -106,41 +100,40 @@ public class LuaProfilerPreferencePage extends PreferencePage implements IWorkbe
 				}
 			}
 
-			@Override
 			public void addListener(ILabelProviderListener arg0) {
 			}
 
-			@Override
 			public void dispose() {
 			}
 
-			@Override
 			public boolean isLabelProperty(Object arg0, String arg1) {
 				return false;
 			}
 
-			@Override
 			public void removeListener(ILabelProviderListener arg0) {
 			}
 		});
-		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				enableButtons();
-			}
+		tableViewer
+				.addSelectionChangedListener(new ISelectionChangedListener() {
 
-		});
+					public void selectionChanged(SelectionChangedEvent event) {
+						enableButtons();
+					}
+
+				});
 
 		tableViewer.addCheckStateListener(new ICheckStateListener() {
-			@Override
+
 			public void checkStateChanged(CheckStateChangedEvent event) {
-				LuaProfiler.getDefault().setSelectedProfiler((LuaProfilerInfo) event.getElement());
+				LuaProfiler.getDefault().setSelectedProfiler(
+						(LuaProfilerInfo) event.getElement());
 				tableViewer.setChecked(event.getElement(), true);
 			}
 		});
 		tableViewer.setInput(LuaProfiler.getDefault().getAvailableProfilers());
 		if (LuaProfiler.getDefault().getSelectedProfiler() != null) {
-			tableViewer.setChecked(LuaProfiler.getDefault().getSelectedProfiler(), true);
+			tableViewer.setChecked(LuaProfiler.getDefault()
+					.getSelectedProfiler(), true);
 		}
 
 		createButtonGroup(composite);
@@ -174,17 +167,14 @@ public class LuaProfilerPreferencePage extends PreferencePage implements IWorkbe
 
 		});
 		/*
-		editButton = new Button(buttons, 8);
-		editButton.setLayoutData(new GridData(768));
-		editButton.setText("Edit");
-		editButton.addListener(13, new Listener() {
-
-			public void handleEvent(Event evt) {
-				editProfiler();
-			}
-
-		});
-		*/
+		 * editButton = new Button(buttons, 8); editButton.setLayoutData(new
+		 * GridData(768)); editButton.setText("Edit");
+		 * editButton.addListener(13, new Listener() {
+		 * 
+		 * public void handleEvent(Event evt) { editProfiler(); }
+		 * 
+		 * });
+		 */
 		removeButton = new Button(buttons, 8);
 		removeButton.setLayoutData(new GridData(768));
 		removeButton.setText("Remove");
@@ -198,7 +188,8 @@ public class LuaProfilerPreferencePage extends PreferencePage implements IWorkbe
 	}
 
 	protected void addProfiler() {
-		InputDialog name = new InputDialog(getShell(), "Name", "Profiler Name", "Profiler", null);
+		InputDialog name = new InputDialog(getShell(), "Name", "Profiler Name",
+				"Profiler", null);
 		name.open();
 		FileDialog file = new FileDialog(getShell(), SWT.OPEN);
 		file.setFilterExtensions(new String[] { "*.dll", "*.so", "*.a" });
@@ -212,29 +203,32 @@ public class LuaProfilerPreferencePage extends PreferencePage implements IWorkbe
 
 	protected void enableButtons() {
 		if (getSelection() != null) {
-			//editButton.setEnabled(true);
+			// editButton.setEnabled(true);
 			removeButton.setEnabled(true);
 		} else {
-			//editButton.setEnabled(false);
+			// editButton.setEnabled(false);
 			removeButton.setEnabled(false);
 		}
 	}
 
 	protected Object getSelection() {
-		return ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
+		return ((IStructuredSelection) tableViewer.getSelection())
+				.getFirstElement();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean performOk() {
 		TableItem[] itens = tableViewer.getTable().getItems();
-		List<LuaProfilerInfo> profilers = new ArrayList<LuaProfilerInfo>(itens.length);
+		List<LuaProfilerInfo> profilers = new ArrayList<LuaProfilerInfo>(
+				itens.length);
 		for (TableItem item : itens) {
 			profilers.add((LuaProfilerInfo) item.getData());
 		}
 
 		LuaProfiler.getDefault().setAvailableProfilers(profilers);
-		LuaProfilerInfo selected = (LuaProfilerInfo) ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
+		LuaProfilerInfo selected = (LuaProfilerInfo) ((IStructuredSelection) tableViewer
+				.getSelection()).getFirstElement();
 		LuaProfiler.getDefault().setSelectedProfiler(selected);
 
 		return super.performOk();

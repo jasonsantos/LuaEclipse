@@ -34,7 +34,8 @@ public class LuaProfilerView extends ViewPart {
 	private TableViewer viewer;
 	private Action updateAction;
 
-	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
+	class ViewLabelProvider extends LabelProvider implements
+			ITableLabelProvider {
 		public String getColumnText(Object obj, int index) {
 			try {
 				return ((LuaObject) obj).getField(infoNames[index]).toString();
@@ -48,8 +49,10 @@ public class LuaProfilerView extends ViewPart {
 			return null;
 		}
 
+		@Override
 		public Image getImage(Object obj) {
-			return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
+			return PlatformUI.getWorkbench().getSharedImages().getImage(
+					ISharedImages.IMG_OBJ_ELEMENT);
 		}
 
 	}
@@ -58,8 +61,10 @@ public class LuaProfilerView extends ViewPart {
 
 	}
 
-	private static final String[] labelsNames = new String[] { "Node name", "Calls", "Average per call", "Total time", "%Time" };
-	private static final String[] infoNames = new String[] { "func", "calls", "average", "total", "time" };
+	private static final String[] labelsNames = new String[] { "Node name",
+			"Calls", "Average per call", "Total time", "%Time" };
+	private static final String[] infoNames = new String[] { "func", "calls",
+			"average", "total", "time" };
 
 	/**
 	 * The constructor.
@@ -71,9 +76,11 @@ public class LuaProfilerView extends ViewPart {
 	 * This is a callback that will allow us to create the viewer and initialize
 	 * it.
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
+				| SWT.V_SCROLL);
 
 		Table tb = viewer.getTable();
 		tb.setHeaderVisible(true);
@@ -85,33 +92,35 @@ public class LuaProfilerView extends ViewPart {
 
 		}
 
-		LuaProfilerContentProvider.getContentProvider().setListener(new LuaProfilerAnalyserListener() {
-			@Override public void profilerDataChanged(final IProcess process) {
-				Display.getDefault().asyncExec(new Runnable() {
-					@Override public void run() {
-						boolean finish = false;
-						while (!finish) {
-							try {
-								process.getExitValue();
-								finish = true;
-								viewer.refresh();
-								viewer.getControl().setFocus();
-							} catch (DebugException e) {
-								// Oh!! still running
-								try {
-									// wait .5 secs
-									Thread.sleep(500);
-								} catch (InterruptedException e1) {
+		LuaProfilerContentProvider.getContentProvider().setListener(
+				new LuaProfilerAnalyserListener() {
+					public void profilerDataChanged(final IProcess process) {
+						Display.getDefault().asyncExec(new Runnable() {
+							public void run() {
+								boolean finish = false;
+								while (!finish) {
+									try {
+										process.getExitValue();
+										finish = true;
+										viewer.refresh();
+										viewer.getControl().setFocus();
+									} catch (DebugException e) {
+										// Oh!! still running
+										try {
+											// wait .5 secs
+											Thread.sleep(500);
+										} catch (InterruptedException e1) {
+										}
+									}
 								}
+								return;
 							}
-						}
-						return;
+						});
 					}
-				});
-			}
 
-		});
-		viewer.setContentProvider(LuaProfilerContentProvider.getContentProvider());
+				});
+		viewer.setContentProvider(LuaProfilerContentProvider
+				.getContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
 		viewer.setSorter(new NameSorter());
 		viewer.setInput(getViewSite());
@@ -157,6 +166,7 @@ public class LuaProfilerView extends ViewPart {
 
 	private void makeActions() {
 		updateAction = new Action() {
+			@Override
 			public void run() {
 				showMessage(" This may take a few minutes. Depending on the size of profile output :) ");
 				viewer.refresh();
@@ -165,17 +175,20 @@ public class LuaProfilerView extends ViewPart {
 		};
 		updateAction.setText("Refresh Profile Information");
 		updateAction.setToolTipText("Refresh Profile Information");
-		updateAction.setImageDescriptor(Activator.getImageDescriptor("icons/refresh-icon.gif"));
+		updateAction.setImageDescriptor(Activator
+				.getImageDescriptor("icons/refresh-icon.gif"));
 
 	}
 
 	private void showMessage(String message) {
-		MessageDialog.openInformation(viewer.getControl().getShell(), "Lua Profiler View", message);
+		MessageDialog.openInformation(viewer.getControl().getShell(),
+				"Lua Profiler View", message);
 	}
 
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
+	@Override
 	public void setFocus() {
 		viewer.refresh();
 		viewer.getControl().setFocus();

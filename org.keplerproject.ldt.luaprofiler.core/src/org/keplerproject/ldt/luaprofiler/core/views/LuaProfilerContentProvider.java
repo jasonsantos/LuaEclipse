@@ -10,16 +10,17 @@ public class LuaProfilerContentProvider implements IStructuredContentProvider {
 	private LuaProfilerAnalyser analyser;
 	private LuaProfilerAnalyserListener listener;
 	private static LuaProfilerContentProvider provider = new LuaProfilerContentProvider();
-	
-	protected LuaProfilerContentProvider() { }
-	
+
+	protected LuaProfilerContentProvider() {
+	}
+
 	public static LuaProfilerContentProvider getContentProvider() {
 		if (provider == null)
 			provider = new LuaProfilerContentProvider();
 		return provider;
 	}
-	
-	@Override public Object[] getElements(Object parent) {
+
+	public Object[] getElements(Object parent) {
 		this.analyser = LuaProfilerAnalyser.getAnalyser();
 		if (analyser != null) {
 			return analyser.getSummaryList();
@@ -27,18 +28,19 @@ public class LuaProfilerContentProvider implements IStructuredContentProvider {
 			return new Object[] {};
 		}
 	}
-	
-	@Override public void dispose() {
+
+	public void dispose() {
 	}
 
-	@Override public void inputChanged(Viewer view, Object oldInput, Object newInput) {
+	public void inputChanged(Viewer view, Object oldInput, Object newInput) {
 	}
-	
+
 	public void setListener(LuaProfilerAnalyserListener listener) {
 		this.listener = listener;
 	}
-	
+
 	public void fireChange(IProcess process) {
-		if (listener != null) listener.profilerDataChanged(process);
+		if (listener != null)
+			listener.profilerDataChanged(process);
 	}
 }
