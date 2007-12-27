@@ -110,7 +110,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.keplerproject.ldt.linux"
-         os="linux,macosx,win32"
+         os="linux"
+         arch="x86"
          download-size="75"
          install-size="75"
          version="0.0.0"
@@ -145,6 +146,16 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.keplerproject.lualogging"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.keplerproject.ldt.linux64"
+         os="linux"
+         arch="x86_64"
          download-size="0"
          install-size="0"
          version="0.0.0"

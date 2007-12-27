@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Linux LDT Fragment
-Bundle-SymbolicName: org.keplerproject.ldt.linux; singleton:=true
+Bundle-Name: Linux x64 LDT Fragment
+Bundle-SymbolicName: org.keplerproject.ldt.linux64; singleton:=true
 Bundle-Version: 1.2.0.qualifier
 Bundle-Vendor: Kepler Project
 Fragment-Host: org.keplerproject.ldt.core;bundle-version="1.2.0"
