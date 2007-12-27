@@ -4,6 +4,7 @@
       label="Lua Development Tool"
       version="1.2.0.qualifier"
       provider-name="Kepler Project "
+      arch="x86"
       colocation-affinity="org.keplerproject.ldt.feature">
 
    <description url="http://luaeclipse.luaforge.net">
@@ -75,9 +76,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.debug.core"/>
-      <import plugin="org.keplerproject.ldt.core" version="1.1.0" match="greaterOrEqual"/>
-      <import plugin="org.keplerproject.ldt.core" version="1.1.0" match="greaterOrEqual"/>
-      <import plugin="org.keplerproject.ldt.ui" version="1.1.0" match="greaterOrEqual"/>
+      <import plugin="org.keplerproject.ldt.ui" version="1.0.1" match="compatible"/>
    </requires>
 
    <plugin
@@ -110,7 +109,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.keplerproject.ldt.linux"
-         os="linux"
+         os="linux,macosx,win32"
          arch="x86"
          download-size="75"
          install-size="75"
@@ -146,16 +145,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.keplerproject.lualogging"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.keplerproject.ldt.linux64"
-         os="linux"
-         arch="x86_64"
          download-size="0"
          install-size="0"
          version="0.0.0"
