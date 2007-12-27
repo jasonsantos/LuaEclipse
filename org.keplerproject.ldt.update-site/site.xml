@@ -9,7 +9,10 @@
    <feature url="features/org.keplerproject.ldt.feature_1.1.0.200710012327.jar" id="org.keplerproject.ldt.feature" version="1.1.0.200710012327">
       <category name="LuaEclipse 1.1"/>
    </feature>
-   <feature url="features/org.keplerproject.ldt.feature_1.2.0.200711270326.jar" id="org.keplerproject.ldt.feature" version="1.2.0.200711270326">
+   <feature url="features/org.keplerproject.ldt.feature_1.2.0.200712262259.jar" id="org.keplerproject.ldt.feature" version="1.2.0.200712262259">
+      <category name="LuaEclipse 1.2"/>
+   </feature>
+   <feature url="features/org.keplerproject.ldt.luaprofiler.feature_1.0.0.200712262300.jar" id="org.keplerproject.ldt.luaprofiler.feature" version="1.0.0.200712262300">
       <category name="LuaEclipse 1.2"/>
    </feature>
    <category-def name="LuaEclipse 1.0" label="LuaEclipse 1.0">
