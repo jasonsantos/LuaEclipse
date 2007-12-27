@@ -11,9 +11,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.core.resources,
+ org.eclipse.ui.ide,
  org.keplerproject.ldt.core,
- org.keplerproject.ldt.ui,
- org.eclipse.ui.ide
+ org.keplerproject.ldt.ui
 Eclipse-LazyStart: true
 Bundle-ClassPath: LDTLaunching.jar
 Export-Package: org.kepler.ldt.laucher;uses:="org.eclipse.jface.resource,org.eclipse.ui.plugin,org.osgi.framework",

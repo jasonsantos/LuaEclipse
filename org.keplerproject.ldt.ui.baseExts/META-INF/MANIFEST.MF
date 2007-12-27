@@ -14,6 +14,5 @@ Export-Package: org.keplerproject.ldt.ui.baseExts,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.jface.text,
- org.keplerproject.ldt.core;bundle-version="[1.0.0,2.0.0)",
  org.keplerproject.ldt.ui;bundle-version="[1.0.1,2.0.0)";visibility:=reexport
 Eclipse-LazyStart: true
