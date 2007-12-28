@@ -5,7 +5,7 @@
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
             delegate="org.keplerproject.ldt.luaprofiler.launcher.LuaProfilerLaunchConfigurationDelegate"
-            id="org.keplerproject.ldt.launching.ProfilerLaunchConfigurationTypeLuaApplication"
+            id="org.keplerproject.ldt.luaprofiler.launcher.ProfilerLaunchConfigurationTypeLuaApplication"
             modes="run"
             name="Lua Profiler"
             sourceLocatorId="org.keplerproject.ldt.launching.ui.luaSourceLocator">
@@ -19,7 +19,7 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            type="org.keplerproject.ldt.launching.ProfilerLaunchConfigurationTypeLuaApplication"
+            type="org.keplerproject.ldt.luaprofiler.launcher.ProfilerLaunchConfigurationTypeLuaApplication"
             class="org.keplerproject.ldt.luaprofiler.launcher.ui.LuaProfilerApplicationTabGroup"
             id="org.keplerproject.ldt.launching.ui.ProfilerLaunchConfigurationTabGroupLuaApplication">
       </launchConfigurationTabGroup>
@@ -56,6 +56,31 @@
       </perspectiveExtension>
    </extension>
 
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            label="Profile Lua Application"
+            modes="run"
+            class="org.keplerproject.ldt.luaprofiler.launcher.ui.LuaProfilerShortcut"
+            id="org.keplerproject.ldt.luaprofiler.launcher.ui.luaShortcut">
+        <contextualLaunch>
+		<enablement>
+		<with variable="selection">
+		<count value="1"/>
+			<iterate>
+			<or><test property="org.eclipse.debug.ui.matchesPattern" value="*.lua"/></or>
+			</iterate>
+		</with>
+		</enablement>
+		</contextualLaunch>
+         <perspective id="org.eclipse.jdt.ui.JavaPerspective"/>
+         <perspective id="org.eclipse.jdt.ui.JavaHierarchyPerspective"/>
+         <perspective id="org.eclipse.jdt.ui.JavaBrowsingPerspective"/>
+         <perspective id="org.eclipse.debug.ui.DebugPerspective"/>
+         <perspective id="org.keplerproject.ldt.luaprofiler.launcher.ui.LuaProfilerPerspective"/>
+      </shortcut>
+   </extension>
+
    <extension point="org.eclipse.ui.commands">
 	<command 
 		categoryId="org.eclipse.debug.ui.category.run" 
@@ -64,7 +89,7 @@
 		name="Profile Lua" />
 	<keyBinding 
 		commandId="org.keplerproject.ldt.luaprofiler.launcher.ui.luaShortcut.run" 
-		keySequence="M2+M3+X P"  
+		keySequence="M2+M3+X P"
 		keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration" 
 		contextId="org.eclipse.ui.globalScope"/>   	
    </extension>

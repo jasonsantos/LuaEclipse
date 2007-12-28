@@ -23,15 +23,25 @@ public class LuaProfilerInterpreterRunner extends InterpreterRunner {
 	private static final Logger log = Logger.getLogger("profiler");
 
 	@Override
+	protected String renderLabel(InterpreterRunnerConfiguration configuration) {
+		// TODO Auto-generated method stub
+		return super.renderLabel(configuration);
+	}
+	
+	@Override
 	protected String renderCommandLine(InterpreterRunnerConfiguration configuration) {
 		File profiled = null;
 		LuaProfilerInfo profilerLib = LuaProfiler.getDefault().getSelectedProfiler();
+		if (profilerLib == null) {
+			return configuration.getAbsoluteFileName();
+		}
 		try {
 			profiled = File.createTempFile(configuration.getFileName(), "lua");
 			profiled.deleteOnExit();
 			BufferedInputStream in = new BufferedInputStream(new FileInputStream(new File(configuration.getAbsoluteFileName())));
 			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(profiled));
-
+			
+		
 			File f = File.createTempFile(configuration.getFileName() + ".prof", "lua");
 			f.deleteOnExit();
 			LuaProfilerAnalyser.create(f.getAbsolutePath());

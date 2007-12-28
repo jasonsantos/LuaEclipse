@@ -28,7 +28,6 @@ public class LuaProfilerContentProvider implements IStructuredContentProvider {
 			return new Object[] {};
 		}
 	}
-
 	public void dispose() {
 	}
 
