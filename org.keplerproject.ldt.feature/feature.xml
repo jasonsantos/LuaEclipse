@@ -4,7 +4,7 @@
       label="Lua Development Tool"
       version="1.2.0.qualifier"
       provider-name="Kepler Project "
-      arch="x86"
+      arch="ia64_32,PA_RISC,ppc,sparc,x86"
       colocation-affinity="org.keplerproject.ldt.feature">
 
    <description url="http://luaeclipse.luaforge.net">

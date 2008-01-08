@@ -9,13 +9,13 @@
    <feature url="features/org.keplerproject.ldt.feature_1.1.0.200710012327.jar" id="org.keplerproject.ldt.feature" version="1.1.0.200710012327">
       <category name="LuaEclipse 1.1"/>
    </feature>
-   <feature url="features/org.keplerproject.ldt.feature_1.2.0.200801051458.jar" id="org.keplerproject.ldt.feature" version="1.2.0.200801051458" arch="">
+   <feature url="features/org.keplerproject.ldt.feature_1.2.0.200801072322.jar" id="org.keplerproject.ldt.feature" version="1.2.0.200801072322" arch="ia64_32,PA_RISC,ppc,sparc,x86">
       <category name="LuaEclipse 1.2"/>
    </feature>
-   <feature url="features/org.keplerproject.ldt.feature_x64_1.2.0.200712311003.jar" id="org.keplerproject.ldt.feature_x64" version="1.2.0.200712311003" os="linux" arch="x86_64">
+   <feature url="features/org.keplerproject.ldt.feature_x64_1.2.0.200801072322.jar" id="org.keplerproject.ldt.feature_x64" version="1.2.0.200801072322" os="linux" arch="x86_64">
       <category name="LuaEclipse 1.2"/>
    </feature>
-   <feature url="features/org.keplerproject.ldt.luaprofiler.feature_1.0.0.200712311010.jar" id="org.keplerproject.ldt.luaprofiler.feature" version="1.0.0.200712311010">
+   <feature url="features/org.keplerproject.ldt.luaprofiler.feature_1.0.0.200801072322.jar" id="org.keplerproject.ldt.luaprofiler.feature" version="1.0.0.200801072322">
       <category name="LuaEclipse 1.2"/>
    </feature>
    <category-def name="LuaEclipse 1.0" label="LuaEclipse 1.0">
