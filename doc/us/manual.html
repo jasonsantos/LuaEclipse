@@ -98,11 +98,13 @@ it is necessary that Java SDK is installed to run Eclipse.</p>
 	<ul>
 		<li>On the top menu, go to option Help-&gt;Find and Install, choose option
 		&quot;Search for new features to install&quot; and click on &quot;Next&quot;.</li>
-		<li>Click on &quot;Add Remote Site&quot;, in field URL type <a
+		<li>If this is the first time you are installing LuaEclipse from its update-site, click on &quot;Add Remote Site&quot;. <br />You can name the LuaEclipse  Update-site anything you want, but  in field URL you must type <a
 			href="http://luaeclipse.luaforge.net/update-site/site.xml">http://luaeclipse.luaforge.net/update-site/site.xml</a>.
 		</li>
-		<li>Choose only LuaEclipse and click on &quot;Finish&quot;. Then follow the installation steps <img alt="LuaElipse"
-			src="img/install1.png" /></li>
+		<li>Make sure the  LuaEclipse Update-site  is checked, then click on &quot;Finish&quot;. <br />
+		<img alt="LuaElipse" src="img/install1.png" /></li>
+		<li>In the next screen, select the features to install. If you want to use the new LuaProfiler integration, select the appropriate feature.<br/>
+		<img alt="LuaElipse" src="img/install2.png" /></li>
 	</ul>
 	</li>
 	
@@ -110,10 +112,10 @@ it is necessary that Java SDK is installed to run Eclipse.</p>
 	<ul>
 		<li>Download the latest version of LuaEclipse at <a href="http://www.luaforge.net">LuaForge</a>.
 		To install Eclipse, just decompress the zip file in the root folder of Eclipse, for example: 
-		&quot;/usr/local/eclipse&quot;. After that start Eclipse and the installation is complete. In some systems
-		it's necessary to start eclipse with the &quot;-clean&quot; command line argument.<br />
-		To check if the installation was correct, go to the menu option Help->About Eclipse SKD and select
-		the Plug-ins Details option and check if LuaEclipse is installed correctly. Look the the picture bellow:<br />
+		&quot;/usr/local/eclipse&quot;. After that start Eclipse and the installation is complete. </li>
+		<li>In some systems it's necessary to start eclipse with the &quot;-clean&quot; command line argument.</li>
+		<li>To check if the installation was correct, go to the menu option Help->About Eclipse Platform and select
+		the Plug-ins Details option and check if LuaEclipse is installed correctly. Your window must look like the picture bellow:<br />
 		<br />
 		<img alt="LuaElipse" src="img/verify.png" /></li>
 	</ul>
@@ -129,7 +131,8 @@ it is necessary that Java SDK is installed to run Eclipse.</p>
 
 <p>To create a new Lua Project, click on menu option
 File-&gt;New-&gt;New Lua Project.</p>
-<p><img alt="LuaElipse" src="img/newproject.png" /></p>
+<p><img alt="LuaElipse" src="img/newproject.png" /><br/>
+<img  src="img/newproject_wizard.png" /></p>
 <p>To include a new Lua script, select the Lua project wanted, 
 then click with the right button and select the option
 Lua Actions-&gt;New Lua File</p>
@@ -146,24 +149,24 @@ Windows-&gt;preferences... and then the Lua-&gt;Installed Interpreters
 category, as in the following picture.</p>
 <p><img alt="LuaElipse" src="img/preferences.png" /></p>
 
-<p>In this windows it is possible to add, edit or remove an interpreter.
+<p>In this window it is possible to add, edit or remove an interpreter LuaEclipse will use to execute lua scripts.
 The configuration of an interpreter is basically the name that identifies
 it and the path to its Lua executable. On the first column of the interpreter
 list, there is an option to select one of them as the default interpreter
 to execute scripts. This option is used on the script execution configuration.
-After the necessary configurations are made, click on &quot;Ok&quot; and
-it will be saved.</p>
-<p>You must configure your host application binary as an interpreter if your project uses Lua as an extension language; otherwise, you will not be able to run it properly.</p>  
+After the necessary configurations are made, click on &quot;Ok&quot; to save them.</p>
+<p>You must configure your host application binary as an interpreter if your project uses Lua as an extension language; otherwise, you might not be able to run your lua scripts properly.</p>  
 
 <h2><a name="run"></a>Running a Lua file</h2>
 
-<p>LuaEclipse uses the Eclipse Platform Lauchers to run Lua scripts. To run a lua file, select the menu option
+<p>LuaEclipse uses the Eclipse Platform Lauchers to run Lua scripts. <br />There are two ways of executing a lua script file: you can either create a run configuration for your script or you can use the Eclipse context menu on the script file, selecting Run As -&gt; Lua application. <br />
+<img alt="LuaElipse" src="img/runfileas.png" /><br/>To create a Run configuration, select the menu option
 Run-&gt;Run...<br />
 Create a new "Lua Standalone Application" launch configuration .</p>
 <p><img alt="LuaElipse" src="img/runfile.png" /></p>
 
-<p>The File Tab: select the Lua project and file to be executed.</p>
-<p>The Arguments Tab:configure the working directory, interpreter arguments and program arguments.</p>
+<p>On the File Tab: select the Lua project and file to be executed.</p>
+On the Arguments Tab: configure the working directory, interpreter arguments and program arguments.
 <p><img alt="LuaElipse" src="img/tabArgs.png" /></p>
 <p> At Environment Tab: select or add a Lua interpreter that will run th script.
 At Variables field, add th environment variables needed for your script.</p>
