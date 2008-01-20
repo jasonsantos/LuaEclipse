@@ -4,3 +4,4 @@ Bundle-Name: Lualogging Fragment
 Bundle-SymbolicName: org.keplerproject.lualogging
 Bundle-Version: 1.1.4
 Fragment-Host: org.keplerproject.ldt.core;bundle-version="1.2.0"
+Bundle-Vendor: Kepler Project

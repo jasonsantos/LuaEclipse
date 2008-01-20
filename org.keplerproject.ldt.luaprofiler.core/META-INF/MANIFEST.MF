@@ -13,3 +13,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.debug.ui,
  org.eclipse.ui.console
 Eclipse-LazyStart: true
+Bundle-Vendor: Kepler Project

@@ -4,3 +4,4 @@ Bundle-Name: Luadoc Fragment
 Bundle-SymbolicName: org.keplerproject.luadoc
 Bundle-Version: 3.0.0
 Fragment-Host: org.keplerproject.ldt.core;bundle-version="1.2.0"
+Bundle-Vendor: Kepler Project
