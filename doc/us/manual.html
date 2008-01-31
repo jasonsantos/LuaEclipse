@@ -172,6 +172,16 @@ On the Arguments Tab: configure the working directory, interpreter arguments and
 At Variables field, add th environment variables needed for your script.</p>
 <p><img alt="LuaElipse" src="img/environment.png" /></p>
 <p> Press Run and view the script output at the "Console View".</p>
+<h2><a name="preferences"></a>LuaProfiler Integration</h2>
+<p>LuaEclipse introduced in version 1.2 a new Lua Profiler perspective. It makes possible for the user to run a lua script using the LuaProfiler module, while seeing the results in a special View</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-profiler-01.png" /></p>
+<p>Since one can make use of several runtime binaries, it is necessary to select a profiler engine to use.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-Profiler-02.png" /></p>
+<p>This profiler engine will be identified by a name, and can be reused in many projects.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-Profiler-03.png" /></p>
+<p>Once the profiler is selected, any executable script can be profiled. There is no need to require or to start the profiler within the program - the plug-in will automatically work on any valid Lua script</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-Profiler-05.png" /></p>
+<p>Results of the profiling execution can be seen in a special View, separated in columns. The first column will show all functions used in the execution; the second column will show the amount of times each function was called; A third column shows the average time spent inside the function, divided by the amount of calls; the last two columns are the total time spent inside each function and the percent of the total execution that these times represent.</p> 
 </div>
 <!-- id="content" --></div>
 <!-- id="main" -->
