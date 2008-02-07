@@ -82,7 +82,7 @@ public class LuadocGenerator {
 					LuaObject entrySummary = getParam(5);
 					LuaObject entryDescription = getParam(6);
 					LuaObject entryComment = getParam(7);
-					LuaObject entryCode = getParam(8);
+					LuaObject entryHTML = getParam(8);
 
 					LuadocEntry e = new LuadocEntry();
 
@@ -92,7 +92,7 @@ public class LuadocGenerator {
 					e.setSummary(entrySummary.toString());
 					e.setDescription(entryDescription.toString());
 					e.setComment(entryComment.toString());
-					e.setCode(entryCode.toString());
+					e.setHTML(entryHTML.toString());
 
 					m.put(entryName.toString(), e);
 					return 0;
@@ -101,64 +101,19 @@ public class LuadocGenerator {
 			});
 
 			L.setGlobal("addDocumentationEntry");
-
+			
+			final String CR = "\n";  
+			
 			int result = L
-					.LdoString("local string = require 'string' local lfs = require 'lfs' require 'logging' "
-							+ "\n"
-							+ "require 'luadoc' "
-							+ "\n"
-							+ "local files = {'"
-							+ fileName
-							+ "'}"
-							+ "\n"
-							+ "local options = require 'luadoc.config'"
-							+ "\n"
-							+ "module ('loopback.doclet', package.seeall)"
-							+ "\n"
-							+ "t = {}"
-							+ "\n"
-							+ "function start(doc)"
-							+ "\n"
-							+ "local fileOrModuleName = ''"
-							+ "\n"
-							+ "r = function(d)"
-							+ "\n"
-							+ "for k, v in pairs(d) do"
-							+ "\n"
-							+ "if type(v)=='table' then"
-							+ "\n"
-							+ "if  v.class=='function' then"
-							+ "\n"
-							+ "addDocumentationEntry("
-							+ "fileOrModuleName, "
-							+ "v.name, "
-							+ "v.class, "
-							+ "v.summary,"
-							+ "v.description,"
-							+ "table.concat(v.comment, '\\n'),"
-							+ "table.concat(v.code, '\\n')"
-							+ ")"
-							+ "\n"
-							+ "elseif v.type == 'file' or v.type == 'module' then"
-							+ "\n"
-							+ "fileOrModuleName =  v.name"
-							+ "\n"
-							+ "end"
-							+ "\n"
-							+ "r(v)"
-							+ "\n"
-							+ "end"
-							+ "\n"
-							+ "end"
-							+ "\n"
-							+ "end"
-							+ "\n"
-							+ "r(doc)"
-							+ "end"
-							+ "\n"
-							+ "options.doclet = 'loopback.doclet'"
-							+ "local os = require 'os'\n"
-							+ "luadoc.main(files, options)");
+					.LdoString("" +
+"require 'luadoc' " + CR +
+"" +CR +
+"local files = {'" + fileName + "'}" +CR +
+"local options = require 'luadoc.config'" +CR +
+"" +CR +
+"options.doclet = 'eclipse.doclet' " +CR +
+"" +CR +
+"luadoc.main(files, options)");
 
 			if (result != 0) {
 				String s = L.toString(-1);
@@ -197,10 +152,10 @@ public class LuadocGenerator {
 		String doc = null;
 		if (l != null) {
 			// TODO: enhance the summary with HTML formatting
-			doc = l.getComment();
+			doc = l.getHtml();
 			// TODO: enhance the non-summary value with module information
 			if (doc == null || doc.length() == 0)
-				doc = l.getCode();
+				doc = l.getComment();
 
 			if (doc == null || doc.length() == 0)
 				doc = l.getName();

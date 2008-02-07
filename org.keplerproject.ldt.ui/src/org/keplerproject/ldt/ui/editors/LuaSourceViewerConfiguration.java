@@ -28,6 +28,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jface.internal.text.html.HTMLTextPresenter;
+import org.eclipse.jface.text.DefaultInformationControl;
+import org.eclipse.jface.text.IInformationControl;
+import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
@@ -38,7 +42,9 @@ import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.keplerproject.ldt.ui.LDTUIPlugin;
 import org.keplerproject.ldt.ui.editors.ext.ILuaContentAssistExtension;
@@ -72,11 +78,11 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	 * 
 	 */
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
-		List stringContentTypes = new ArrayList();
+		List<String> stringContentTypes = new ArrayList<String>();
 		String editorId = this.editor.getInstanceId();
 		
-		List extensions = LDTUIPlugin.getDefault().getContentTypeExtension(editorId);
-		Iterator extIte = extensions.iterator();
+		List<?> extensions = LDTUIPlugin.getDefault().getContentTypeExtension(editorId);
+		Iterator<?> extIte = extensions.iterator();
 		while (extIte.hasNext()) {
 			ILuaContentTypeExtension ext = (ILuaContentTypeExtension) extIte
 					.next();
@@ -116,8 +122,8 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		ContentAssistant assistant = new ContentAssistant();
 		String editorId = this.editor.getInstanceId();
-		List extensions = LDTUIPlugin.getDefault().getAssistExtension(editorId);
-		Iterator extIte = extensions.iterator();
+		List<?> extensions = LDTUIPlugin.getDefault().getAssistExtension(editorId);
+		Iterator<?> extIte = extensions.iterator();
 		while (extIte.hasNext()) {
 			/*
 			 * assistant.setContentAssistProcessor(new
@@ -149,8 +155,8 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 			ISourceViewer sourceViewer) {
 		String editorId = this.editor.getInstanceId();
 		PresentationReconciler reconciler = new PresentationReconciler();
-		List extensions = LDTUIPlugin.getDefault().getReconcilierExtension(editorId);
-		Iterator extIte = extensions.iterator();
+		List<?> extensions = LDTUIPlugin.getDefault().getReconcilierExtension(editorId);
+		Iterator<?> extIte = extensions.iterator();
 		reconciler.install(sourceViewer);
 		while (extIte.hasNext()) {
 			/*
@@ -188,5 +194,22 @@ public class LuaSourceViewerConfiguration extends SourceViewerConfiguration {
 
 	public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
 		return new LuaTextHover();
+	}
+	
+	/*
+	 * @see SourceViewerConfiguration#getInformationControlCreator(ISourceViewer)
+	 * @since 2.0
+	 */
+	@Override
+	public IInformationControlCreator getInformationControlCreator(
+			ISourceViewer sourceViewer) {
+		return new IInformationControlCreator() {
+
+			public IInformationControl createInformationControl(Shell parent) {
+				return new DefaultInformationControl(parent, SWT.NONE,
+						new HTMLTextPresenter(true));
+			}
+
+		};
 	}
 }

@@ -45,12 +45,12 @@ public class LuadocEntry implements ILuaEntry, Serializable {
 	String entryType;
 	String summary;
 	String description;
-	List<String> codeLines;
+	List<String> htmlLines;
 	List<String> commentLines;
 	Map<String, String> params;
 
-	public List<String> getCodeLines() {
-		return codeLines;
+	public List<String> getHtmlLines() {
+		return htmlLines;
 	}
 
 	public List<String> getCommentLines() {
@@ -77,8 +77,8 @@ public class LuadocEntry implements ILuaEntry, Serializable {
 		return summary;
 	}
 
-	public void setCodeLines(List<String> codeLines) {
-		this.codeLines = codeLines;
+	public void setHtmlLines(List<String> htmlLines) {
+		this.htmlLines = htmlLines;
 	}
 
 	public void setCommentLines(List<String> commentLines) {
@@ -117,8 +117,8 @@ public class LuadocEntry implements ILuaEntry, Serializable {
 		this.commentLines = Arrays.asList(comment.split("\n"));
 	}
 
-	public void setCode(String string) {
-		this.codeLines = Arrays.asList(string.split("\n"));
+	public void setHTML(String string) {
+		this.htmlLines = Arrays.asList(string.split("\n"));
 	}
 
 	public String getComment() {
@@ -126,8 +126,8 @@ public class LuadocEntry implements ILuaEntry, Serializable {
 		return getAsString(l, "\n");
 	}
 
-	public String getCode() {
-		List<String> l = this.codeLines;
+	public String getHtml() {
+		List<String> l = this.htmlLines;
 		return getAsString(l, "\n");
 	}
 
