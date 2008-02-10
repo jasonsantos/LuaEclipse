@@ -25,6 +25,7 @@ package org.keplerproject.ldt.core;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -99,11 +100,16 @@ public class LuaProject implements IProjectNature, LuaElement {
 				byte[] syncInfo = synchronizer.getSyncInfo(qualifiedName,
 						project);
 				if (syncInfo != null) {
+					
 					ObjectInputStream ois = new ObjectInputStream(
 							new ByteArrayInputStream(syncInfo));
-					HashMap<String, Map<String, ILuaEntry>> savedObject = (HashMap<String, Map<String, ILuaEntry>>) ois
-							.readObject();
-					luaEntries = savedObject;
+					try {
+						HashMap<String, Map<String, ILuaEntry>> savedObject = (HashMap<String, Map<String, ILuaEntry>>) ois
+								.readObject();
+						luaEntries = savedObject;
+					} catch(InvalidClassException e) {
+						
+					}
 				}
 			}
 
@@ -119,6 +125,8 @@ public class LuaProject implements IProjectNature, LuaElement {
 			}
 
 		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} catch (CoreException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
