@@ -40,7 +40,7 @@ end
 
 
 t = {}
---TODO: Find a way to iterate through the modules using their module names
+--TODO: Find a way to iterate through the modules using their module names instead of their filenames
 
 function start(doc)
 	local fileOrModule = nil
@@ -50,9 +50,6 @@ function start(doc)
 			if type(v)=='table' then
 				if  v.class=='function' then
 					local strDoc = getFunctionDoc(doc, fileOrModule, v)
-					print("------------" .. v.name .. "--------------")
-					print(strDoc)
-					print'--------------------------------------------'
 					addDocumentationEntry(fileOrModuleName, v.name, v.class, v.summary,v.description,table.concat(v.comment, '\\n'),strDoc)
 				elseif v.type == 'file' or v.type == 'module' then
 					fileOrModuleName =  v.name
