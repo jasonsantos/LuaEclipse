@@ -4,20 +4,19 @@
 -------------------------------------------------------------------------------
 
 local require = require
-local logging = require "logging"
-require "logging.console"
+
+local util = require "luadoc.util"
+
+logger = {}
 
 module ("luadoc")
-
-logger = logging.console("[%level] %message\n")
---logger = logging.file("luadoc.log") -- use this to get a file log
 
 -------------------------------------------------------------------------------
 -- LuaDoc version number.
 
 _COPYRIGHT = "Copyright (c) 2003-2007 The Kepler Project"
 _DESCRIPTION = "Documentation Generator Tool for the Lua language"
-_VERSION = "LuaDoc 3.0.0"
+_VERSION = "LuaDoc 3.0.1"
 
 -------------------------------------------------------------------------------
 -- Main function
@@ -25,11 +24,7 @@ _VERSION = "LuaDoc 3.0.0"
 -- @see luadoc.taglet.standard
 
 function main (files, options)
-	if options.verbose then
-		logger:setLevel(logging.INFO)
-	else
-		logger:setLevel(logging.WARN)
-	end
+	logger = util.loadlogengine(options)
 
 	-- load config file
 	if options.config ~= nil then

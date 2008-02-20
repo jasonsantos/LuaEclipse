@@ -24,43 +24,11 @@ local table = require"table"
 module "luadoc.doclet.html"
 
 -------------------------------------------------------------------------------
--- Preprocess and include the content of a mixed HTML file into the 
--- currently 'open' HTML document. 
-
---[[function lp2func (filename, doc)
-	local fh = assert (io.open (filename))
-	local prog = fh:read("*a")
-	fh:close()
-	prog = lp.translate (prog, "file "..filename)
-	if prog then
-		local f, err = loadstring (prog, "@"..filename)
-		if f then
-			return f
-		else
-			error (err)
-		end
-	end
-end
-
-function envexec (prog, env)
-	local _env
-	if env then
-		_env = getfenv (prog)
-		setfenv (prog, env)
-	end
-	prog ()
-	if env then
-		setfenv (prog, _env)
-	end
-end
-
-function lp.include (filename, env)
-	local prog = lp2func (filename)
-	envexec (prog, env)
-end
-]]
--------------------------------------------------------------------------------
 -- Looks for a file `name' in given path. Removed from compat-5.1
+-- @param path String with the path.
+-- @param name String with the name to look for.
+-- @return String with the complete path of the file found
+--	or nil in case the file is not found.
 
 local function search (path, name)
   for c in string.gfind(path, "[^;]+") do
@@ -158,17 +126,19 @@ function file_link (to, from)
 end
 
 -------------------------------------------------------------------------------
--- Returns a link to a function
--- @param fname name of the function to link to.
+-- Returns a link to a function or to a table
+-- @param fname name of the function or table to link to.
 -- @param doc documentation table
+-- @param kind String specying the kinf of element to link ("functions" or "tables").
 
-function function_link (fname, doc, module_doc, file_doc, from)
+function link_to (fname, doc, module_doc, file_doc, from, kind)
 	assert(fname)
 	assert(doc)
 	from = from or ""
+	kind = kind or "functions"
 	
 	if file_doc then
-		for _, func_name in pairs(file_doc.functions) do
+		for _, func_name in pairs(file_doc[kind]) do
 			if func_name == fname then
 				return file_link(file_doc.name, from) .. "#" .. fname
 			end
@@ -189,7 +159,7 @@ function function_link (fname, doc, module_doc, file_doc, from)
 		return
 	end
 	
-	for _, func_name in pairs(module_doc.functions) do
+	for _, func_name in pairs(module_doc[kind]) do
 		if func_name == fname then
 			return module_link(modulename, doc, from) .. "#" .. fname
 		end
@@ -208,7 +178,8 @@ function symbol_link (symbol, doc, module_doc, file_doc, from)
 	local href = 
 --		file_link(symbol, from) or
 		module_link(symbol, doc, from) or 
-		function_link(symbol, doc, module_doc, file_doc, from)
+		link_to(symbol, doc, module_doc, file_doc, from, "functions") or
+		link_to(symbol, doc, module_doc, file_doc, from, "tables")
 	
 	if not href then
 		logger:error(string.format("unresolved reference to symbol `%s'", symbol))

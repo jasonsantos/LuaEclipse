@@ -30,6 +30,18 @@
 <%if file_doc.description then%>
 <p><%=file_doc.description%></p>
 <%end%>
+<%if file_doc.author then%>
+<p><b><%= #file_doc.author>1 and "Authors" or "Author" %>:</b>
+<table class="authors_list">
+<%for _, author in ipairs(file_doc.author) do%>
+	<tr><td class="name"><%= author %></td></tr>
+<%end%>
+</table>
+</p>
+<%end%>
+<%if file_doc.copyright then%>
+<p>Copyright &copy;<%=file_doc.copyright%></p>
+<%end%>
 <%if file_doc.release then%>
 <p><small><b>Release:</b> <%=file_doc.release%></small></p>
 <%end%>
@@ -37,10 +49,11 @@
 <%if #file_doc.functions > 0 then%>
 <h2>Functions</h2>
 <table class="function_list">
-<%for _, func_name in ipairs(file_doc.functions) do%>
+<%for _, func_name in ipairs(file_doc.functions) do
+  local func_data = file_doc.functions[func_name]%>
 	<tr>
-	<td class="name" nowrap><a href="#<%=func_name%>"><%=func_name%></a>&nbsp;(<%=table.concat(file_doc.functions[func_name].param, ", ")%>)</td>
-	<td class="summary"><%=file_doc.functions[func_name].summary%></td>
+	<td class="name" nowrap><%=func_data.private and "local " or ""%><a href="#<%=func_name%>"><%=func_name%></a>&nbsp;(<%=table.concat(func_data.param, ", ")%>)</td>
+	<td class="summary"><%=func_data.summary%></td>
 	</tr>
 <%end%>
 </table>

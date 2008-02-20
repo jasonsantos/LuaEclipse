@@ -8,7 +8,7 @@ else
 end
 %>
 
-<dt><a name="<%=func.name%>"></a><strong><%=func.name%></strong>&nbsp;(<%=table.concat(func.param, ", ")%>)</dt>
+<dt><%=func.private and "local " or ""%><a name="<%=func.name%>"></a><strong><%=func.name%></strong>&nbsp;(<%=table.concat(func.param, ", ")%>)</dt>
 <dd>
 <%=func.description or ""%>
 
@@ -23,6 +23,18 @@ end
 </ul>
 <%end%>
 
+
+<%if type(func.usage) == "string" then%>
+<h3>Usage:</h3>
+<%=func.usage%>
+<%elseif type(func.usage) == "table" then%>
+<h3>Usage</h3>
+<ul>
+	<%for _, usage in ipairs(func.usage) do%>
+	<li><%= usage %>
+	<%end%>
+</ul>
+<%end%>
 
 <%if type(func.ret) == "string" then%>
 <h3>Return value:</h3>
@@ -40,12 +52,13 @@ end
 <h3>See also:</h3>
 	<a href="<%=func.see%>"><%=func.see%></a>
 <%elseif type(func.see) == "table" and #func.see > 0 then %>
-<em>See also:</em>
+<h3>See also:</h3>
+<ul>
 	<%for i = 1, #func.see do%>
-	<a href="<%=luadoc.doclet.html.symbol_link(func.see[i], doc, module_doc, file_doc, from)%>">
+	<li><a href="<%=luadoc.doclet.html.symbol_link(func.see[i], doc, module_doc, file_doc, from)%>">
 		<%=func.see[i]%>
 	</a>
-	<%if i < #func.see then %>, <%end%>
 	<%end%>
+</ul>
 <%end%>
 </dd>

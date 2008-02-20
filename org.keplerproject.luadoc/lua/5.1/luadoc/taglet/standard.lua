@@ -32,6 +32,15 @@ function class_iterator (t, class)
 	end
 end
 
+-- Patterns for function recognition
+local identifiers_list_pattern = "%s*(.-)%s*"
+local identifier_pattern = "[^%(%s]+"
+local function_patterns = {
+	"^()%s*function%s*("..identifier_pattern..")%s*%("..identifiers_list_pattern.."%)",
+	"^%s*(local%s)%s*function%s*("..identifier_pattern..")%s*%("..identifiers_list_pattern.."%)",
+	"^()%s*("..identifier_pattern..")%s*%=%s*function%s*%("..identifiers_list_pattern.."%)",
+}
+
 -------------------------------------------------------------------------------
 -- Checks if the line contains a function definition
 -- @param line string with line text
@@ -40,13 +49,7 @@ end
 local function check_function (line)
 	line = util.trim(line)
 
-	local patterns = {
-		"^()%s*function%s+([^%(%s]+)%s*%(%s*(.-)%s*%)",
-		"^%s*(local)%s+function%s+([^%(%s]+)%s*%(*s*(.-)%s*%)",
-		"^()%s*([^%(%s]+)%s*%=%s*function%s*%(%s*(.-)%s*%)"
-	}
-	
-	local info = table.foreachi(patterns, function (_, pattern)
+	local info = table.foreachi(function_patterns, function (_, pattern)
 		local r, _, l, id, param = string.find(line, pattern)
 		if r ~= nil then
 			return {
@@ -84,7 +87,7 @@ local function check_module (line, currentmodule)
 	-- module([[x.y]])
 	-- module(...)
 
-	local r, _, modulename = string.find(line, "^module%s*[\"'(%[]+([^,\"')%]]+)")
+	local r, _, modulename = string.find(line, "^module%s*[%s\"'(%[]+([^,\"')%]]+)")
 	if r then
 		-- found module definition
 		logger:debug(string.format("found module `%s'", modulename))
@@ -148,11 +151,19 @@ end
 -- @param block block with comment field
 -- @return block parameter
 
-local function parse_comment (block)
+local function parse_comment (block, first_line)
 
-	-- get the first non-empty line of code which does not begin with `local'
+	-- get the first non-empty line of code
 	local code = table.foreachi(block.code, function(_, line)
-		if not util.line_empty(line) and not line:find"%s*local" then
+		if not util.line_empty(line) then
+			-- `local' declarations are ignored in two cases:
+			-- when the `nolocals' option is turned on; and
+			-- when the first block of a file is parsed (this is
+			--	necessary to avoid confusion between the top
+			--	local declarations and the `module' definition.
+			if (options.nolocals or first_line) and line:find"^%s*local" then
+				return
+			end
 			return line
 		end
 	end)
@@ -165,6 +176,7 @@ local function parse_comment (block)
 			block.class = "function"
 			block.name = func_info.name
 			block.param = func_info.param
+			block.private = func_info.private
 		elseif module_name then
 			block.class = "module"
 			block.name = module_name
@@ -216,12 +228,12 @@ end
 -- @return block parsed
 -- @return modulename if found
 
-local function parse_block (f, line, modulename)
+local function parse_block (f, line, modulename, first)
 	local block = {
 		comment = {},
 		code = {},
 	}
-	
+
 	while line ~= nil do
 		if string.find(line, "^[\t ]*%-%-") == nil then
 			-- reached end of comment, read the code below it
@@ -229,8 +241,8 @@ local function parse_block (f, line, modulename)
 			line, block.code, modulename = parse_code(f, line, modulename)
 			
 			-- parse information in block comment
-			block = parse_comment(block)
-			
+			block = parse_comment(block, first)
+
 			return line, block, modulename
 		else
 			table.insert(block.comment, line)
@@ -240,7 +252,7 @@ local function parse_block (f, line, modulename)
 	-- reached end of file
 	
 	-- parse information in block comment
-	block = parse_comment(block)
+	block = parse_comment(block, first)
 	
 	return line, block, modulename
 end
@@ -259,11 +271,12 @@ function parse_file (filepath, doc)
 	local f = io.open(filepath, "r")
 	local i = 1
 	local line = f:read()
+	local first = true
 	while line ~= nil do
 		if string.find(line, "^[\t ]*%-%-%-") then
 			-- reached a luadoc block
 			local block
-			line, block, modulename = parse_block(f, line, modulename)
+			line, block, modulename = parse_block(f, line, modulename, first)
 			table.insert(blocks, block)
 		else
 			-- look for a module definition
@@ -273,6 +286,7 @@ function parse_file (filepath, doc)
 			
 			line = f:read()
 		end
+		first = false
 		i = i + 1
 	end
 	f:close()
@@ -289,6 +303,8 @@ function parse_file (filepath, doc)
 --
 	local first = doc.files[filepath].doc[1]
 	if first and modulename then
+		doc.files[filepath].author = first.author
+		doc.files[filepath].copyright = first.copyright
 		doc.files[filepath].description = first.description
 		doc.files[filepath].release = first.release
 		doc.files[filepath].summary = first.summary
@@ -314,6 +330,8 @@ function parse_file (filepath, doc)
 				doc = blocks,
 --				functions = class_iterator(blocks, "function"),
 --				tables = class_iterator(blocks, "table"),
+				author = first and first.author,
+				copyright = first and first.copyright,
 				description = "",
 				release = first and first.release,
 				summary = "",
@@ -327,6 +345,12 @@ function parse_file (filepath, doc)
 				doc.modules[modulename].summary = util.concat(
 					doc.modules[modulename].summary, 
 					m.summary)
+				if m.author then
+					doc.modules[modulename].author = m.author
+				end
+				if m.copyright then
+					doc.modules[modulename].copyright = m.copyright
+				end
 				if m.release then
 					doc.modules[modulename].release = m.release
 				end

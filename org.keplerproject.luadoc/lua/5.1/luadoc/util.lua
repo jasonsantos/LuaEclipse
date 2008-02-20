@@ -4,7 +4,7 @@
 -------------------------------------------------------------------------------
 
 local lfs = require "lfs"
-local type, table, string, io, assert, tostring = type, table, string, io, assert, tostring
+local type, table, string, io, assert, tostring, setmetatable, pcall = type, table, string, io, assert, tostring, setmetatable, pcall
 
 -------------------------------------------------------------------------------
 -- Module with several utilities that could not fit in a specific module
@@ -26,6 +26,7 @@ end
 -- @param s string to be trimmed
 -- @return trimmed string
 -- @see trim
+-- @see string.gsub
 
 function trim_comment (s)
 	s = string.gsub(s, "%-%-+(.*)$", "%1")
@@ -156,3 +157,45 @@ function lfs.open (filename, mode)
 	end
 	return f
 end
+
+
+----------------------------------------------------------------------------------
+-- Creates a Logger with LuaLogging, if present. Otherwise, creates a mock logger.
+-- @param options a table with options for the logging mechanism
+-- @return logger object that will implement log methods
+
+function loadlogengine(options)
+	local logenabled = pcall(function()
+		require "logging"
+		require "logging.console"
+	end)
+	
+	local logging = logenabled and logging
+	
+	if logenabled then
+		if options.filelog then
+			logger = logging.file("luadoc.log") -- use this to get a file log
+		else
+			logger = logging.console("[%level] %message\n")
+		end
+	
+		if options.verbose then
+			logger:setLevel(logging.INFO)
+		else
+			logger:setLevel(logging.WARN)
+		end
+		
+	else
+		noop = {__index=function(...)
+			return function(...)
+				-- noop
+			end
+		end}
+		
+		logger = {} 
+		setmetatable(logger, noop)
+	end
+	
+	return logger
+end
+

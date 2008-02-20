@@ -21,6 +21,9 @@ local function include(template, env)
 		env.outfunc = outfunc
 		env.table = table
 		env.type = type
+		env.luadoc = {}
+		env.luadoc.doclet = {}
+		env.luadoc.doclet.html = { symbol_link = function(...) return "" end }
 		_env = getfenv (prog)
 		setfenv (prog, env)
 	end
@@ -37,6 +40,8 @@ end
 
 
 t = {}
+--TODO: Find a way to iterate through the modules using their module names
+
 function start(doc)
 	local fileOrModule = nil
 	local fileOrModuleName = ''
