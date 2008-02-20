@@ -23,17 +23,14 @@
 
 package org.keplerproject.ldt.core.lua.modules;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 
-import org.eclipse.core.runtime.Platform;
+import org.keplerproject.ldt.core.utils.ResourceUtils;
 import org.keplerproject.luajava.JavaFunction;
 import org.keplerproject.luajava.LuaException;
 import org.keplerproject.luajava.LuaObject;
 import org.keplerproject.luajava.LuaState;
-import org.osgi.framework.Bundle;
 
 /**
  * A Loader for modules installed within LuaEclipse
@@ -59,50 +56,11 @@ public class LuaModuleLoader {
 		return sb.toString();
 	}
 
-	private static URL findfile(String name, String pluginName) {
-		Bundle b = Platform.getBundle(pluginName);
-		name = name.replace('.', '/');
-		String[] moduleLocations = { "lua/5.1/" + name + ".lua",
-				"lua/5.1/" + name + "/init.lua",
-				"lua/5.1/" + name + ".lp"};
-
-		URL u = null;
-
-		for (String moduleLocation : moduleLocations) {
-			if ((u = b.getResource(moduleLocation)) != null)
-				break;
-		}
-		
-		return u;
-	}
-
-	/**
-	 * Loads the contents of an URL
-	 * 
-	 * @param u
-	 *            URL to the file
-	 * @return String with the file contetn
-	 * @throws IOException
-	 */
-	private static String getFileContents(URL u) throws IOException {
-		BufferedReader is = new BufferedReader(new InputStreamReader(u
-				.openStream()));
-		String s = null;
-
-		StringBuilder moduleBody = new StringBuilder();
-		while ((s = is.readLine()) != null) {
-			moduleBody.append(s + "\n");
-		}
-
-		return moduleBody.toString();
-	}
-	
-	
 	private static int LoadFile(LuaState L, URL u)  throws IOException {
 		int res = -1;
 		
 		if (u != null) {
-			String body = getFileContents(u);
+			String body = ResourceUtils.getFileContents(u);
 
 			res = L.LloadString(body);
 		}
@@ -122,10 +80,10 @@ public class LuaModuleLoader {
 					String sFileName = (o = getParam(2)) != null ? o.toString()
 							: null;
 					
-					URL u = findfile(sFileName, "org.keplerproject.ldt.core");
+					URL u = ResourceUtils.findmodule(sFileName, "org.keplerproject.ldt.core");
 					try {
 						if(u!=null) {
-							L.pushString(getFileContents(u));
+							L.pushString(ResourceUtils.getFileContents(u));
 						} else  {
 							String err = "error loading file " + sFileName
 									+ " from resource " + u.getPath() + ":\n\t"
@@ -155,7 +113,7 @@ public class LuaModuleLoader {
 					String sFileName = (o = getParam(2)) != null ? o.toString()
 							: null;
 					
-					URL u = findfile(sFileName, "org.keplerproject.ldt.core");
+					URL u = ResourceUtils.findmodule(sFileName, "org.keplerproject.ldt.core");
 					try {
 						int res = LoadFile(L, u);
 						
@@ -313,7 +271,7 @@ public class LuaModuleLoader {
 					
 					String sFileName = objModuleName.toString();
 					
-					URL u = findfile(sFileName, "org.keplerproject.ldt.core");
+					URL u = ResourceUtils.findmodule(sFileName, "org.keplerproject.ldt.core");
 					res = LoadFile(L, u);
 
 					if (res != 0) {

@@ -62,45 +62,7 @@ public class LuadocGenerator {
 		final Map<String, ILuaEntry> m = new HashMap<String, ILuaEntry>();
 
 		try {
-			LuaState L = LuaStateFactory.newLuaState();
-
-			L.openLibs();
-
-			JLuaFileSystem.register(L);
-			LuaModuleLoader.register(L);
-
-			L.pushJavaFunction(new JavaFunction(L) {
-
-				@Override
-				public int execute() throws LuaException {
-					// String t = getParam(1).toString();
-					LuaObject fileOrModuleName = getParam(2);
-
-					LuaObject entryName = getParam(3);
-					LuaObject entryType = getParam(4);
-
-					LuaObject entrySummary = getParam(5);
-					LuaObject entryDescription = getParam(6);
-					LuaObject entryComment = getParam(7);
-					LuaObject entryHTML = getParam(8);
-
-					LuadocEntry e = new LuadocEntry();
-
-					e.setModule(fileOrModuleName.toString());
-					e.setEntryType(entryType.toString());
-					e.setName(entryName.toString());
-					e.setSummary(entrySummary.toString());
-					e.setDescription(entryDescription.toString());
-					e.setComment(entryComment.toString());
-					e.setHTML(entryHTML.toString());
-
-					m.put(entryName.toString(), e);
-					return 0;
-				}
-
-			});
-
-			L.setGlobal("addDocumentationEntry");
+			LuaState L = loadLuadocLuaState(m);
 			
 			final String CR = "\n";  
 			
@@ -132,8 +94,56 @@ public class LuadocGenerator {
 		return null;
 	}
 
+	public LuaState loadLuadocLuaState(final Map<String, ILuaEntry> m)
+			throws LuaException {
+		LuaState L = LuaStateFactory.newLuaState();
+
+		L.openLibs();
+
+		JLuaFileSystem.register(L);
+		LuaModuleLoader.register(L);
+
+		L.pushJavaFunction(new JavaFunction(L) {
+
+			@Override
+			public int execute() throws LuaException {
+				// String t = getParam(1).toString();
+				LuaObject fileOrModuleName = getParam(2);
+
+				LuaObject entryName = getParam(3);
+				LuaObject entryType = getParam(4);
+
+				LuaObject entrySummary = getParam(5);
+				LuaObject entryDescription = getParam(6);
+				LuaObject entryComment = getParam(7);
+				LuaObject entryHTML = getParam(8);
+
+				LuadocEntry e = (LuadocEntry)createLuaEntry(fileOrModuleName.toString(), entryName.toString(),
+						entryType.toString(), entrySummary.toString(), entryDescription.toString(),
+						entryComment.toString(), entryHTML.toString());
+
+				m.put(entryName.toString(), e);
+				return 0;
+			}
+
+		});
+
+		L.setGlobal("addDocumentationEntry");
+		return L;
+	}
+
 	public Map<String, ILuaEntry> getLuaEntryIndex() {
 		return luaEntryIndex;
+	}
+	
+	public ILuaEntry getBestEntryIndex(String token) {
+		Map<String, ILuaEntry> index = getLuaEntryIndex();
+		ILuaEntry entry;
+		token = token.replaceAll("[:]", ".");
+		while((entry=index.get(token))==null && token.indexOf('.')>1)
+			token = token.substring(token.indexOf('.')+1);
+		
+		return entry;
 	}
 
 	public void generateIndexes(Map<String, ILuaEntry> generatedEntries) {
@@ -141,18 +151,22 @@ public class LuadocGenerator {
 		for (String s : generatedEntries.keySet()) {
 			// store every entry into the generator's flat index
 			// --- "by my hand ish ill done"
-			// TODO: create a way of navigating module dependencies to determine
-			// priority for symbols
+			
+			// TODO: create a way of navigating module dependencies to determine priority for selecting symbols
+			
+			// TODO: create entries for the full name (module.function).
+			// TODO: allow the word-finding logic to find those too
 			lg.getLuaEntryIndex().put(s, generatedEntries.get(s));
 		}
 	}
 
 	public String getDocumentationText(String token) {
-		LuadocEntry l = (LuadocEntry) getLuaEntryIndex().get(token);
+		LuadocEntry l = (LuadocEntry) getBestEntryIndex(token);
 		String doc = null;
 		if (l != null) {
-			// TODO: enhance the summary with HTML formatting
+
 			doc = l.getHtml();
+			
 			// TODO: enhance the non-summary value with module information
 			if (doc == null || doc.length() == 0)
 				doc = l.getComment();
@@ -161,5 +175,32 @@ public class LuadocGenerator {
 				doc = l.getName();
 		}
 		return doc;
+	}
+
+
+	/**
+	 * @param fileOrModuleName
+	 * @param entryName
+	 * @param entryType
+	 * @param entrySummary
+	 * @param entryDescription
+	 * @param entryComment
+	 * @param entryHTML
+	 * @return
+	 */
+	public ILuaEntry createLuaEntry(String fileOrModuleName,
+			String entryName, String entryType, String entrySummary,
+			String entryDescription, String entryComment,
+			String entryHTML) {
+		LuadocEntry e = new LuadocEntry();
+
+		e.setModule(fileOrModuleName);
+		e.setEntryType(entryType);
+		e.setName(entryName);
+		e.setSummary(entrySummary);
+		e.setDescription(entryDescription);
+		e.setComment(entryComment);
+		e.setHTML(entryHTML);
+		return e;
 	}
 }

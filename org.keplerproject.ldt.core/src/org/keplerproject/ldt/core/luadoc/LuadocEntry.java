@@ -114,11 +114,13 @@ public class LuadocEntry implements ILuaEntry, Serializable {
 	}
 
 	public void setComment(String comment) {
-		this.commentLines = Arrays.asList(comment.split("\n"));
+		if(comment!=null) 
+			this.commentLines = Arrays.asList(comment.split("\n"));
 	}
 
 	public void setHTML(String string) {
-		this.htmlLines = Arrays.asList(string.split("\n"));
+		if(string!=null) 
+			this.htmlLines = Arrays.asList(string.split("\n"));
 	}
 
 	public String getComment() {

@@ -22,17 +22,22 @@
  */
 package org.keplerproject.ldt.core;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
+import java.io.InputStreamReader;
+
 import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Scanner;
+import java.util.regex.MatchResult;
 
 import javax.xml.parsers.SAXParserFactory;
 
@@ -46,7 +51,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
+import org.keplerproject.ldt.core.luadoc.LuadocEntry;
 import org.keplerproject.ldt.core.luadoc.LuadocGenerator;
+import org.keplerproject.ldt.core.utils.ResourceUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
@@ -68,11 +75,11 @@ public class LuaProject implements IProjectNature, LuaElement {
 	protected IProject project;
 	protected List<LoadPathEntry> loadPathEntries;
 	protected boolean scratched;
+	protected String luaRefManualDoc;
 
 	protected Map<String, Map<String, ILuaEntry>> luaEntries;
 
 	public LuaProject() {
-
 	}
 
 	public void configure() throws CoreException {
@@ -95,26 +102,38 @@ public class LuaProject implements IProjectNature, LuaElement {
 				.getName()
 				+ ".luadoc.projectdata");
 		try {
+			if (luaEntries == null)
+				luaEntries = new HashMap<String, Map<String, ILuaEntry>>();
+
+			if(luaRefManualDoc == null) {
+				URL u = ResourceUtils.findfile("doc/org.lua.www.manual", "org.keplerproject.ldt.core");
+				if(u!=null)
+					try {
+						luaRefManualDoc = ResourceUtils.getFileContents(u);
+					} catch (IOException e) {
+						luaRefManualDoc = "";
+					}
+			}
+			
 			synchronizer.add(qualifiedName);
 			{
 				byte[] syncInfo = synchronizer.getSyncInfo(qualifiedName,
 						project);
 				if (syncInfo != null) {
+					BufferedReader in
+					   = new BufferedReader(new InputStreamReader(
+							new ByteArrayInputStream(syncInfo)));
 					
-					ObjectInputStream ois = new ObjectInputStream(
-							new ByteArrayInputStream(syncInfo));
-					try {
-						HashMap<String, Map<String, ILuaEntry>> savedObject = (HashMap<String, Map<String, ILuaEntry>>) ois
-								.readObject();
-						luaEntries = savedObject;
-					} catch(InvalidClassException e) {
-						
-					}
+					Scanner docs = new Scanner(in);
+					
+					loadEntries(docs);
+					
+					docs = new Scanner(luaRefManualDoc);
+					
+					loadEntries(docs);
+					
 				}
 			}
-
-			if (luaEntries == null)
-				luaEntries = new HashMap<String, Map<String, ILuaEntry>>();
 
 			if (luaEntries.size() > 0) {
 				LuadocGenerator lg = LuadocGenerator.getInstance();
@@ -124,30 +143,85 @@ public class LuaProject implements IProjectNature, LuaElement {
 				}
 			}
 
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
 		} catch (CoreException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-		}
+		} 
 
+	}
+
+	/**
+	 * @param docs
+	 */
+	private void loadEntries(Scanner docs) {
+		String moduleName;
+		String functionName;
+		String htmlDoc;
+		
+		LuadocGenerator gen = LuadocGenerator.getInstance();
+		
+		while (null!=docs.findWithinHorizon("\\s*([a-zA-Z0-9_]+?[.])*?(\\w+?)\\s*?=\\s*?.====.(.*?).====.", 0)) {
+			
+			MatchResult res = docs.match();
+			
+			moduleName = res.group(1);
+			functionName = res.group(2);
+			htmlDoc = res.group(3);
+			
+			if(moduleName!=null)
+				moduleName = moduleName.replaceAll("[.]$", "");
+			
+			// get the entry for this particular module...
+			Map<String, ILuaEntry> entries = luaEntries.get(moduleName);
+			// .. or create an entry if there's none
+			if(entries==null) {
+				entries = new HashMap<String, ILuaEntry>();
+				luaEntries.put(moduleName, entries);
+			}
+			
+			ILuaEntry entry = gen.createLuaEntry(moduleName, functionName, "function", null, null, null,  htmlDoc.replaceAll("\\\\n", "\n").replaceAll("\\\\r", "\r").replaceAll("\\\\\\\\", "\\\\")); 
+			
+			entries.put(functionName, entry);
+			
+		}
 	}
 
 	public void saveLuaDocEntries() {
 		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
-
-			oos.writeObject(luaEntries);
-
+			StringBuilder docEntries = new StringBuilder();
+			
+			for(Map.Entry<String, Map<String, ILuaEntry>> moduleEntries : luaEntries.entrySet()) {
+				
+				String moduleName = moduleEntries.getKey();
+				
+				for(Map.Entry<String, ILuaEntry> entry : moduleEntries.getValue().entrySet()) {
+					
+					String functionName = entry.getKey();
+					
+					LuadocEntry l = (LuadocEntry) entry.getValue();
+					
+					if(l!=null) {
+						if(moduleName != null) 
+							docEntries.append(moduleName).append('.');
+						
+						docEntries.append(functionName).append("=");	
+						
+						docEntries.append("[====[");
+						String html = l.getHtml();
+						if(html!=null)
+							docEntries.append(html.replaceAll("\\\\", "\\\\").replaceAll("\n", "\\n").replaceAll("\r", "\\r"));
+						docEntries.append("]====]\n");
+					}
+				}
+				
+			}
+			
 			synchronizer
-					.setSyncInfo(qualifiedName, project, baos.toByteArray());
+					.setSyncInfo(qualifiedName, project, docEntries.toString().getBytes());
+			
+			//System.out.println(docEntries.toString());
 
 		} catch (CoreException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

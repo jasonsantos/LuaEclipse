@@ -50,7 +50,7 @@ public class LuaWordFinder {
 
 			while (pos >= 0) {
 				c= document.getChar(pos);
-				if (!Character.isJavaIdentifierPart(c))
+				if (!Character.isJavaIdentifierPart(c) && c!='.'&& c!=':')
 					break;
 				--pos;
 			}
@@ -61,7 +61,7 @@ public class LuaWordFinder {
 
 			while (pos < length) {
 				c= document.getChar(pos);
-				if (!Character.isJavaIdentifierPart(c))
+				if (!Character.isJavaIdentifierPart(c)&& c!='.'&& c!=':')
 					break;
 				++pos;
 			}
