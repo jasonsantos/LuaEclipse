@@ -55,7 +55,8 @@ environment for the Lua programming language</div>
 				<li><a href="manual.html#project">First Lua project</a></li>
 				<li><a href="manual.html#preferences">Preferences and interpreters</a></li>
 				<li><a href="manual.html#run">Running a Lua file</a></li>
-                                <!--<li><a href="manual.html#extension">Pontos de extens&atilde;o</a></li>-->
+				<li><a href="manual.html#luaprofiler">LuaProfiler Integration</a></li>
+				<li><a href="manual.html#luadoc">LuaDoc Integration</a></li>
 			</ul>
 		</li>
 		<li><a href="screenshots.html">Screenshots</a></li>
@@ -90,6 +91,8 @@ The first one is that the user must have already installed the 3.2.* or later ve
 the Eclipse platform. Eclipse can be downloaded at 
 <a href="http://www.eclipse.org">www.eclipse.org</a>. As a consequence,
 it is necessary that Java SDK is installed to run Eclipse.</p>
+
+<p>It is possible to install LuaEclipse with the minimal installation of Eclipse (Eclipse Platform Binaries), but we recommend a more complete distribution, such as C/C++ Development Tooling (CDT).</p>
 
 <p>There are two ways to install LuaEclipse.</p>
 
@@ -172,7 +175,9 @@ On the Arguments Tab: configure the working directory, interpreter arguments and
 At Variables field, add th environment variables needed for your script.</p>
 <p><img alt="LuaElipse" src="img/environment.png" /></p>
 <p> Press Run and view the script output at the "Console View".</p>
-<h2><a name="preferences"></a>LuaProfiler Integration</h2>
+
+<h2><a name="luaprofiler"></a>LuaProfiler Integration</h2>
+
 <p>LuaEclipse introduced in version 1.2 a new Lua Profiler perspective. It makes possible for the user to run a lua script using the LuaProfiler module, while seeing the results in a special View</p> 
 <p><img alt="LuaElipse" src="img/LuaEclipse-profiler-01.png" /></p>
 <p>Since one can make use of several runtime binaries, it is necessary to select a profiler engine to use.</p> 
@@ -181,7 +186,22 @@ At Variables field, add th environment variables needed for your script.</p>
 <p><img alt="LuaElipse" src="img/LuaEclipse-Profiler-03.png" /></p>
 <p>Once the profiler is selected, any executable script can be profiled. There is no need to require or to start the profiler within the program - the plug-in will automatically work on any valid Lua script</p> 
 <p><img alt="LuaElipse" src="img/LuaEclipse-Profiler-05.png" /></p>
-<p>Results of the profiling execution can be seen in a special View, separated in columns. The first column will show all functions used in the execution; the second column will show the amount of times each function was called; A third column shows the average time spent inside the function, divided by the amount of calls; the last two columns are the total time spent inside each function and the percent of the total execution that these times represent.</p> 
+<p>Results of the profiling execution can be seen in a special View, separated in columns. The first column will show all functions used in the execution; the second column will show the amount of times each function was called; A third column shows the average time spent inside the function, divided by the amount of calls; the last two columns are the total time spent inside each function and the percent of the total execution that these times represent.</p>
+
+
+<h2><a name="luadoc"></a>LuaDoc Integration</h2>
+
+<p>Version 1.2 introduced also basic integration with the LuaDoc module.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-luadoc-01.png" /></p>
+<p>It makes possible for the user to write LuaDoc-style documentation on his code and make their HTML results available in mouse hover.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-luadoc-03.png" /></p>
+<p>The plugin uses LuaDoc itself for processing documentation; the module is now included in the standard bundle of LuaEclipse, so users do not need to install it before using this feature.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-luadoc-05.png" /></p>
+<p>Documentation is processed every time a file is saved in the project, and documentation present in project is persisted and available after the project is closed and reopen.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-luadoc-04.png" /></p>
+<p>Aditionally, Lua 5.1 reference was included as a bonus documentation - so the user now can hover standard library functions for their official documentation.</p>
+
+ 
 </div>
 <!-- id="content" --></div>
 <!-- id="main" -->

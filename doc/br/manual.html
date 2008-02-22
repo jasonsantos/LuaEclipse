@@ -52,10 +52,10 @@ integrado para a linguagem de programa&ccedil;&atilde;o Lua</div>
 		<li><a href="manual.html#introduction">Introdu&ccedil;&atilde;o</a></li>
 		<li><a href="manual.html#installation">Instala&ccedil;&atilde;o</a></li>
 		<li><a href="manual.html#project">Primeiro Projeto Lua</a></li>
-		<li><a href="manual.html#preferences">Prefer&ecirc;ncias e
-		interpretadores</a></li>
+		<li><a href="manual.html#preferences">Prefer&ecirc;ncias e interpretadores</a></li>
 		<li><a href="manual.html#run">Executando um arquivo Lua</a></li>
-		<!--<li><a href="manual.html#extension">Pontos de extens&atilde;o</a></li>-->
+		<li><a href="manual.html#luaprofiler">Integração com LuaProfiler</a></li>
+		<li><a href="manual.html#luadoc">Integração com LuaDoc</a></li>
 	</ul>
 	</li>
 	<li><a href="screnshots.html">Screenshots</a></li>
@@ -94,6 +94,8 @@ simples, mas necessita de alguns pr&eacute;-requisitos. O primeiro deles
 3.2 ou superior da plataforma Eclipse. O Eclipse pode ser baixado no endere&ccedil;o
 <a href="http://www.eclipse.org">www.eclipse.org</a>. A instala&ccedil;&atilde;o do Eclipse, por sua vez, exigir&aacute; uma instala&ccedil;&atilde;o pr&eacute;via do  Java SDK.</p>
 
+<p>É possível install o LuaEclipse com a instalação mínima do Eclipse (Eclipse Platform Binaries), mas é recomendável usar uma distribuição mais completa, como o C/C++ Development Tooling (CDT).</p>
+
 <p>Existem duas formas de instalar o LuaEclipse.</p>
 
 <ul>
@@ -108,7 +110,8 @@ simples, mas necessita de alguns pr&eacute;-requisitos. O primeiro deles
 		</li>
 		<li>Marque somente LuaEclipse e clique em "Finish". Em seguida
 		siga os passos da instala&ccedil;&atilde;o <img alt="LuaElipse"
-			src="img/install1.png" /></li>
+			src="img/install1.png" /><li>Na próxima tela, seleciona as <i>features</i> para instalar. Se deseja utilizar a nova integração com o LuaProfiler, selecione a feature apropriada.<br />
+		<img alt="LuaElipse" src="img/install2.png" /></li></li>
 	</ul>
 	</li>
 	<li>A partir do download manual:
@@ -137,7 +140,7 @@ simples, mas necessita de alguns pr&eacute;-requisitos. O primeiro deles
 
 <p>Para criar um novo projeto Lua, clique no menu na
 op&ccedil;&atilde;o File-&gt;New-&gt;New Lua Project.</p>
-<p><img alt="LuaElipse" src="img/newproject.png" /></p>
+<p><img alt="LuaElipse" src="img/newproject.png" /><br /><img src="img/newproject_wizard.png" /></p>
 <p>Para incluir um novo script Lua. Selecione o projeto Lua
 desejado, em seguida clique com o bot&atilde;o direito e selecione a
 op&ccedil;&atilde;o Lua Actions-&gt;New Lua File</p>
@@ -174,10 +177,10 @@ ser&aacute; armazenada.</p>
 
 <h2><a name="run"></a>Executando um arquivo Lua</h2>
 
-<p>O LuaEclipse utiliza as extens&otilde;es do Eclipse para
-execu&ccedil;&atilde;o de scripts Lua. Para executar um arquivo .lua
+<p>O LuaEclipse usa os <i>Launchers</i> da plataforma Eclipse para executar os scripts Lua. <br />Existem duas maneiras de executar um script lua: você pode criar uma configuração de execução para seu script ou pode usar o menu de contexto do Eclipse diretamente no arquivo, selecionando  Run As -&gt; Lua application. <br />
+<img alt="LuaElipse" src="img/runfileas.png" /><br />Para criar uma configuração de execução,
 selecione a op&ccedil;&atilde;o de menu Run-&gt;Run...<br />
-Crie uma nova configura&ccedil;&atilde;o de execu&ccedil;&atilde;o do
+Crie uma nova configura&ccedil;&atilde;o do
 tipo "Lua Standalone Application".</p>
 <p><img alt="LuaElipse" src="img/runfile.png" /></p>
 
@@ -187,9 +190,33 @@ tipo "Lua Standalone Application".</p>
 <p> Finalmente na aba Environment, selecione ou adicione um interpretador Lua para executar o arquivo Lua.
 No campo Variables, adicione as vari&aacute;veis de ambiente que desejar para a execu&ccedil;&atilde;o do script.</p>
 <p><img alt="LuaElipse" src="img/environment.png" /></p>
-<p> Pressione o bot&atilde;o "Run", e acompanhe a saída padr&atilde;o na "Console View".
+<p> Pressione o bot&atilde;o "Run", e acompanhe a saída padr&atilde;o na "Console View".<br /><h2>Integração com o LuaProfiler</h2>
+
+<p>LuaEclipse introduziu na version 1.2 uma nova perspectiva para o  Lua Profiler. Ela torna possível ao usuário executar um script lua usando o módulo LuaProfiler, exibindo os resultados numa View especial</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-profiler-01.png" /></p>
+<p>Uma vez que é possível utilizar diversos binários de runtime, é necessário indicar o mecanismo de profile que se deseja usar.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-Profiler-02.png" /></p>
+<p>Esse mecanismo de profiler será identificado por um nome, e pode ser reutilizado em diversos projetos.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-Profiler-03.png" /></p>
+<p>Uma vez que o profiler estiver selecionado, qualquer script que possa ser executado poderá ser analisado com o LuaProfiler. Não há necessidade de incluir comandos 'require' ou iniciar o profiler de nenhuma forma dentro do script - o plug-in  funcionará automaticamente em qualquer script Lua válido</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-Profiler-05.png" /></p>
+<p>Os resultados da análise de execução com o LuaProfiler podem ser vistos em uma View especial, separados em colunas. A primeira coluna mostrará todas as funções usadas na execução; a segunda coluna mostrará a quantidade de vezes que cada função foi chamada; a terceira mostra o tempo médio decorrido dentro da função, dividido pela quantidade de chamadas; as últimas duas colunas são o tempo total gasto dentro de cada função e o percentual da execução total que esses tempos representam.</p>
+
+<h2><a name="luadoc"></a>Integração com o LuaDoc</h2>
+
+<p>A versão  1.2  do LuaEclipse também introduziu integração básica com o módulo LuaDoc.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-luadoc-01.png" /></p>
+<p>É possível ao usuário escrever documentação no estilo LuaDoc diretamente em seu código, e visualizar os resultados formatados em HTML no hover do mouse.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-luadoc-03.png" /></p>
+<p>O plugin usa o próprio LuaDoc para processar a documentação; o módulo está agora embutido na distribuição padrão do LuaEclipse, de modo que os usuários não precisam instalá-lo antes de usar essas funcionalidades.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-luadoc-05.png" /></p>
+<p>A documetação é processada cada vez que um arquivo lua é salvo, e a documentação presente no projeto é persistida e fica disponível mesmo depois que o projeto é fechado e reaberto.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-luadoc-04.png" /></p>
+<p>Adicionalmente, o manual de referência do  Lua 5.1 foi incluída como uma documentação extra - de modo que o usuário agora pode sobrevoar as funções da biblioteca padrão com o mouse para visualizar sua documentação oficial.</p>
 </div>
 <!-- id="content" --></div>
+
+
 <!-- id="main" -->
 
 <div id="about">

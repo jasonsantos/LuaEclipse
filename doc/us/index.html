@@ -52,7 +52,9 @@
 				<li><a href="manual.html#project">First Lua project</a></li>
 				<li><a href="manual.html#preferences">Preferences and interpreters</a></li>
 				<li><a href="manual.html#run">Running a Lua file</a></li>
-                                <!--<li><a href="manual.html#extension">Pontos de extens&atilde;o</a></li>-->
+				<li><a href="manual.html#luaprofiler">LuaProfiler Integration</a></li>
+				<li><a href="manual.html#luadoc">LuaDoc Integration</a></li>
+
 			</ul>
 		</li>
 		<li><a href="screenshots.html">Screenshots</a></li>
@@ -71,13 +73,11 @@
 <h2><a name="overview"></a>Overview
 </h2>
 <p>
-
-
   LuaEclipse is a collection of plugins developed for the <a href="https://www.eclipse.org">Eclipse</a>  platform that together make an IDE for the development of applications in the Lua programming language.
   In this environment it's possible to edit Lua scripts with <i>syntax highlight, code completion</i>, compilation errors, code and comment folding, script execution with a pre-configured interpreter, besides the tools that the eclipse platform provides.
 </p>
 <p>
-The main goal of the project is that new tools will be developed using the extension architecture that the Eclipse platform provides and that LuaEclipse has available for extension of its capabilities.
+  The main goal of the project is that new tools will be developed using the extension architecture that the Eclipse platform provides and that LuaEclipse has available for extension of its capabilities.
 </p>
 
 
@@ -88,13 +88,13 @@ The main goal of the project is that new tools will be developed using the exten
   All plugins are developed in Java. A plugin consists of Java classes packed in a JAR library and some files like img, XML files, native libraries, etc. Not all plugins have Java code, some of them are plugins holding help files and user manuals.
 </p>
 <p>
-  Version 1.2.0 has introduced integration with LuaDoc 3.0 - that is distributed embedded within LuaEclipse - and LuaProfiler. 
+  Version 1.2.0 has introduced integration with <a href="http://luadoc.luaforge.net/">LuaDoc</a> 3.0.1 - that is distributed embedded within LuaEclipse - and <a href="http://www.keplerproject.org/luaprofiler/">LuaProfiler</a>, that must be installed independently. 
 </p>
 <h2><a name="status"></a>Status</h2>
 <p>LuaEclipse 1.2.0 (for Lua 5.1) is available for 
 <a href="#download">download</a>.
 </p>
-<p>The plugin has versions for Windows, MacOS X and Linux, and has been tested for Eclipse 3.2.x and Eclipse 3.3.x</p>
+<p>The plugin has versions for Windows, MacOS X and Linux, and has been tested for Eclipse 3.3.x</p>
 
 <h2><a name="download"></a>Download</h2>
 <p>LuaEclipse can be obtained directly from the plug-in update site. See <a href="manual.html#installation">installation instructions.</a></p>
@@ -105,7 +105,7 @@ The main goal of the project is that new tools will be developed using the exten
 
 <h4>LuaEclipse 1.2</h4>
 <p>
-The 1.2 version was developed by Luís Eduardo Jason Santos,   Edgard Arakaki and Guilherme Martins, with contribuitions from Andr&eacute; Carregal, Raphael Amorim, Danilo Tuler and Thiago Ponte.
+The 1.2 version was developed by Lu&iacute;s Eduardo Jason Santos,   Edgard Arakaki and Guilherme Martins, with contribuitions from Andr&eacute; Carregal, Raphael Amorim, Danilo Tuler and Thiago Ponte.
 </p>
 <h4>LuaEclipse 1.1</h4>
 <p>
