@@ -65,7 +65,7 @@ public class LuadocGenerator {
 			LuaState L = loadLuadocLuaState(m);
 			
 			final String CR = "\n";  
-			
+			fileName = fileName.replace("\\\\", "\\\\\\\\");
 			int result = L
 					.LdoString("" +
 "require 'luadoc' " + CR +
