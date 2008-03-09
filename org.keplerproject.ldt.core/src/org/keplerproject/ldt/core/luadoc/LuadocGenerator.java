@@ -65,17 +65,32 @@ public class LuadocGenerator {
 			LuaState L = loadLuadocLuaState(m);
 			
 			final String CR = "\n";  
-			fileName = fileName.replace("\\\\", "\\\\\\\\");
-			int result = L
-					.LdoString("" +
-"require 'luadoc' " + CR +
-"" +CR +
-"local files = {'" + fileName + "'}" +CR +
-"local options = require 'luadoc.config'" +CR +
-"" +CR +
-"options.doclet = 'eclipse.doclet' " +CR +
-"" +CR +
-"luadoc.main(files, options)");
+
+			String sfile = fileName.replaceAll("\\\\", "\\\\\\\\");
+			System.out.println(sfile);
+			
+			String code = "" +
+			"require 'luadoc' " + CR +
+			"" +CR +
+			"local files = {'" + sfile + "'}" +CR +
+			"local options = require 'luadoc.config'" +CR +
+			"" +CR +
+			"options.doclet = 'eclipse.doclet' " +CR +
+			"" +CR +
+			"luadoc.main(files, options)";
+			
+			L.LdoString("debug.sethook(function(...) __fdebug = io.open([[C:\\Documents and Settings\\jasonsantos\\Desktop\\out.log]], 'a') table.foreach(debug.getinfo(2), function(n, o) __fdebug:write(n, tostring(o) .. '\\n') end ) __fdebug:close() end,'cr')");
+			
+			int result = L.LloadString(code);
+
+			if (result != 0) {
+				
+				String s = L.toString(-1);
+				System.out.println(s);
+			}
+
+			result = L.pcall(0, 0, 0);
+			
 
 			if (result != 0) {
 				String s = L.toString(-1);
