@@ -22,8 +22,13 @@
 */
 package org.keplerproject.ldt.ui.editors;
 
+import org.eclipse.jface.internal.text.html.BrowserInformationControl;
+import org.eclipse.jface.internal.text.html.HTMLTextPresenter;
 import org.eclipse.jface.text.*;
+import org.eclipse.jface.text.information.IInformationProviderExtension2;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Shell;
 import org.keplerproject.ldt.core.luadoc.*;
 import org.keplerproject.ldt.ui.text.lua.*;
 
@@ -38,7 +43,7 @@ import org.keplerproject.ldt.ui.text.lua.*;
  * 
  */
 
-public class LuaTextHover implements ITextHover {
+public class LuaTextHover implements ITextHover, IInformationProviderExtension2 {
 
 	/* (non-Javadoc)
 	 * Method declared on ITextHover
@@ -79,4 +84,21 @@ public class LuaTextHover implements ITextHover {
 			return new Region(selection.x, selection.y);
 		return new Region(offset, 0);
 	}
+
+	/*
+    * @see IInformationProviderExtension2#getInformationPresenterControlCreator()
+    * @since 3.1
+    */
+    public IInformationControlCreator getInformationPresenterControlCreator() {
+    	return new IInformationControlCreator() {
+    		public IInformationControl createInformationControl(Shell parent) {
+    			int shellStyle= SWT.RESIZE | SWT.TOOL;
+                int style= SWT.V_SCROLL | SWT.H_SCROLL;
+                if (BrowserInformationControl.isAvailable(parent))
+                	return new BrowserInformationControl(parent, shellStyle, style);
+                else
+                	return new DefaultInformationControl(parent, shellStyle, style, new HTMLTextPresenter(false));
+    		}
+    	};
+    }
 }
