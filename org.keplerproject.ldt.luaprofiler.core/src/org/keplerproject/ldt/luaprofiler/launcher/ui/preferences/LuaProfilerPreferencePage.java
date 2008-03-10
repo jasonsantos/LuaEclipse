@@ -3,6 +3,7 @@ package org.keplerproject.ldt.luaprofiler.launcher.ui.preferences;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -34,6 +35,12 @@ import org.kepler.ldt.laucher.LauncherPlugin;
 import org.keplerproject.ldt.luaprofiler.core.LuaProfiler;
 import org.keplerproject.ldt.luaprofiler.core.LuaProfiler.LuaProfilerInfo;
 
+/**
+ * Lua Profiler page Extension.
+ * @author edgard
+ * @version $Id$
+ * @since 1.2
+ */
 public class LuaProfilerPreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
 	protected CheckboxTableViewer tableViewer;
@@ -192,7 +199,12 @@ public class LuaProfilerPreferencePage extends PreferencePage implements
 				"Profiler", null);
 		name.open();
 		FileDialog file = new FileDialog(getShell(), SWT.OPEN);
-		file.setFilterExtensions(new String[] { "*.dll", "*.so", "*.a" });
+		
+		if(Platform.getOS() == Platform.OS_WIN32) 
+			file.setFilterExtensions(new String[] { "*.dll", "*.a", "*.lib" });
+		else
+			file.setFilterExtensions(new String[] { "*.so", "*.a"});
+		
 		LuaProfilerInfo info = new LuaProfilerInfo(name.getValue(), file.open());
 		tableViewer.add(info);
 	}
