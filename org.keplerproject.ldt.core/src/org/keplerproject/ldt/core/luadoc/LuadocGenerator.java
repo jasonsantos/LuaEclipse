@@ -79,7 +79,7 @@ public class LuadocGenerator {
 			"" +CR +
 			"luadoc.main(files, options)";
 			
-			L.LdoString("debug.sethook(function(...) __fdebug = io.open([[C:\\Documents and Settings\\jasonsantos\\Desktop\\out.log]], 'a') table.foreach(debug.getinfo(2), function(n, o) __fdebug:write(n, tostring(o) .. '\\n') end ) __fdebug:close() end,'cr')");
+//			L.LdoString("debug.sethook(function(...) __fdebug = io.open([[C:\\Documents and Settings\\jasonsantos\\Desktop\\out.log]], 'a') table.foreach(debug.getinfo(2), function(n, o) __fdebug:write(n, tostring(o) .. '\\n') end ) __fdebug:close() end,'cr')");
 			
 			int result = L.LloadString(code);
 
