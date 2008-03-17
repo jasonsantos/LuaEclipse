@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
+import org.keplerproject.ldt.core.LuaScriptsSpecs;
 import org.keplerproject.ldt.internal.launching.LuaApplicationLaunchConfigurationDelegate;
 import org.keplerproject.ldt.internal.launching.LuaLaunchConfigurationAttribute;
 /**
@@ -52,15 +53,13 @@ public class LuaApplicationShortcut
     public LuaApplicationShortcut()
     {
     }
-    /**
-     * TODO hard coded lua extension
-     */
+ 
     public void launch(ISelection selection, String mode)
     {
         if(selection instanceof IStructuredSelection)
         {
             Object firstSelection = ((IStructuredSelection)selection).getFirstElement();
-            if((firstSelection instanceof IFile) && ((IFile)firstSelection).getFileExtension().equals("lua"))
+            if((firstSelection instanceof IFile) && LuaScriptsSpecs.getDefault().isValidLuaScriptFileName((IFile)firstSelection))
             {
                 ILaunchConfiguration config = findLaunchConfiguration((IFile)firstSelection, mode);
                 try

@@ -22,37 +22,182 @@
 */
 package org.keplerproject.ldt.ui.preferences;
 
+import java.util.Set;
+
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.keplerproject.ldt.core.LuaScriptsSpecs;
 import org.keplerproject.ldt.ui.LDTUIPlugin;
 /**
  * Lua Preference page Extension. The Blank root page.
  * @author guilherme
+ * @author jasonsantos
  * @version $Id$
  */
-public class LuaPreferencePage extends FieldEditorPreferencePage
-    implements IWorkbenchPreferencePage
+public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPreferencePage
 {
 
-    public LuaPreferencePage()
-    {
-        super(1);
-        setPreferenceStore(LDTUIPlugin.getDefault().getPreferenceStore());
-        setDescription(" Lua General Properties");
-        initializeDefaults();
-    }
+	private Table scriptsTable;
 
-    private void initializeDefaults()
-    {
-       // org.eclipse.jface.preference.IPreferenceStore store = getPreferenceStore();
-    }
+	private Button addButton;
 
-    public void init(IWorkbench iworkbench)
-    {
-    }
+	private Button removeButton;
 
-    protected void createFieldEditors()
-    {
-    }
+	public LuaPreferencePage() {
+		
+	}
+	
+	public void init(IWorkbench workbench) {
+		LuaScriptsSpecs.getDefault().setPreferenceStore(LDTUIPlugin.getDefault().getPreferenceStore());
+		LuaScriptsSpecs.getDefault().getLuaScriptPatterns();
+	}
+
+	@Override
+	protected Control createContents(Composite parent) {
+		createFileNamesTable(parent);
+
+		return parent;
+	}
+
+	private void createFileNamesTable(Composite parent) {
+		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		group.setText("Lua Scripts Filename Patterns");
+		GridLayout layout = new GridLayout(1, false);
+		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		group.setLayout(layout);
+
+		Composite composite = new Composite(group, SWT.NULL);
+		layout = new GridLayout();
+		layout.marginWidth = 0;
+		layout.marginHeight = 0;
+		layout.numColumns = 2;
+		composite.setLayout(layout);
+		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		Label l1 = new Label(composite, SWT.NULL);
+		l1.setText("Matching file names will be treated as lua scripts");
+		GridData data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+		data.horizontalSpan = 2;
+		l1.setLayoutData(data);
+
+		scriptsTable = new Table(composite, SWT.BORDER);
+		data = new GridData(GridData.FILL_BOTH);
+		data.heightHint = 60;
+		scriptsTable.setLayoutData(data);
+		scriptsTable.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event e) {
+				handleSelection();
+			}
+		});
+
+		Composite buttons = new Composite(composite, SWT.NULL);
+		buttons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+		layout = new GridLayout();
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		buttons.setLayout(layout);
+
+		addButton = new Button(buttons, SWT.PUSH);
+		addButton.setText("Add...");
+		addButton.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event e) {
+				addIgnore();
+			}
+		});
+
+		removeButton = new Button(buttons, SWT.PUSH);
+		removeButton.setText("Remove");
+		removeButton.setEnabled(false);
+		removeButton.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event e) {
+				removeIgnore();
+			}
+		});
+		fillTable(LuaScriptsSpecs.getDefault().getLuaScriptPatterns());
+		Dialog.applyDialogFont(group);
+		setButtonLayoutData(addButton);
+		setButtonLayoutData(removeButton);
+	}
+
+	/**
+	 * Do anything necessary because the OK button has been pressed.
+	 * 
+	 * @return whether it is okay to close the preference page
+	 */
+	@Override
+	public boolean performOk() {
+		TableItem[] items = scriptsTable.getItems();
+		for (int i = 0; i < items.length; i++) {
+			LuaScriptsSpecs.getDefault().addLuaScriptPattern(items[i].getText());		
+		}
+		
+		return true;
+	}
+
+	@Override
+	protected void performDefaults() {
+		super.performDefaults();
+		scriptsTable.removeAll();
+		LuaScriptsSpecs.getDefault().setDefaultPatterns();
+		
+		fillTable(LuaScriptsSpecs.getDefault().getLuaScriptPatterns());
+	}
+
+	/**
+	 * @param ignore
+	 */
+	private void fillTable(Set<String> patterns) {
+		for (String pattern : patterns) {
+			TableItem item = new TableItem(scriptsTable, SWT.NONE);
+			item.setText(pattern);
+		}
+	}
+
+	private void addIgnore() {
+		InputDialog dialog = new InputDialog(getShell(), "Add Extension of Lua Scripts", "Enter pattern (* = any string)",
+				null, null); // 
+		dialog.open();
+		if (dialog.getReturnCode() != Window.OK) {
+			return;
+		}
+		String pattern = dialog.getValue();
+		if (pattern.equals("")) {
+			return; //$NON-NLS-1$
+		}
+		TableItem item = new TableItem(scriptsTable, SWT.NONE);
+		item.setText(pattern);
+		item.setChecked(true);
+	}
+
+	private void removeIgnore() {
+		int[] selection = scriptsTable.getSelectionIndices();
+		scriptsTable.remove(selection);
+	}
+
+	private void handleSelection() {
+		if (scriptsTable.getSelectionCount() > 0) {
+			removeButton.setEnabled(true);
+		} else {
+			removeButton.setEnabled(false);
+		}
+	}
+	
 }

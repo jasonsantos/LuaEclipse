@@ -55,7 +55,7 @@ public class LuaRuntime {
 
 	protected static LuaRuntime runtime;
 
-	protected List installedInterpreters;
+	protected List<LuaInterpreter> installedInterpreters;
 
 	protected LuaInterpreter selectedInterpreter;
 
@@ -73,9 +73,10 @@ public class LuaRuntime {
 			loadRuntimeConfiguration();
 		return selectedInterpreter;
 	}
+	
 
 	public LuaInterpreter getInterpreter(String name) {
-		for (Iterator interpreters = getInstalledInterpreters().iterator(); interpreters
+		for (Iterator<LuaInterpreter> interpreters = getInstalledInterpreters().iterator(); interpreters
 				.hasNext();) {
 			LuaInterpreter each = (LuaInterpreter) interpreters.next();
 			if (each.getName().equals(name))
@@ -98,13 +99,13 @@ public class LuaRuntime {
 		saveRuntimeConfiguration();
 	}
 
-	public List getInstalledInterpreters() {
+	public List<LuaInterpreter> getInstalledInterpreters() {
 		if (installedInterpreters == null)
 			loadRuntimeConfiguration();
 		return installedInterpreters;
 	}
 
-	public void setInstalledInterpreters(List newInstalledInterpreters) {
+	public void setInstalledInterpreters(List<LuaInterpreter> newInstalledInterpreters) {
 		installedInterpreters = newInstalledInterpreters;
 		if (installedInterpreters.size() > 0)
 			setSelectedInterpreter((LuaInterpreter) installedInterpreters
@@ -128,7 +129,7 @@ public class LuaRuntime {
 	}
 
 	protected void loadRuntimeConfiguration() {
-		installedInterpreters = new ArrayList();
+		installedInterpreters = new ArrayList<LuaInterpreter>();
 		try {
 			XMLReader reader = SAXParserFactory.newInstance().newSAXParser()
 					.getXMLReader();
@@ -153,12 +154,11 @@ public class LuaRuntime {
 		try {
 			writer
 					.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?><runtimeconfig>");
-			for (Iterator interpretersIterator = installedInterpreters
+			for (Iterator<LuaInterpreter> interpretersIterator = installedInterpreters
 					.iterator(); interpretersIterator.hasNext(); writer
 					.write("/>")) {
 				writer.write("<interpreter name=\"");
-				LuaInterpreter entry = (LuaInterpreter) interpretersIterator
-						.next();
+				LuaInterpreter entry = interpretersIterator.next();
 				writer.write(entry.getName());
 				writer.write("\" path=\"");
 				writer.write(entry.getFileName().toString());

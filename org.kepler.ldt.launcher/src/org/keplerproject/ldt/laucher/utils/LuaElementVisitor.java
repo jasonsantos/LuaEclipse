@@ -29,6 +29,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
+import org.keplerproject.ldt.core.LuaScriptsSpecs;
 /**
  * Resource Visitor to the Lua Elements
  * @author guilherme
@@ -56,7 +57,7 @@ public class LuaElementVisitor
 
         case 1: // '\001'
             IFile fileResource = (IFile)resource;
-            if("lua".equals(fileResource.getFileExtension()))
+            if(LuaScriptsSpecs.getDefault().isValidLuaScriptFileName(fileResource))
             {
                 luaFiles.add(fileResource);
                 return true;

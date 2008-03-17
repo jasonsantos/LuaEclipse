@@ -121,6 +121,11 @@
          </action>
       </objectContribution>
    </extension>
+<extension
+      id="org.keplerproject.ldt.core.LuaScriptSpecs"
+      name="LuaSpecs"
+      point="org.eclipse.core.runtime.preferences">
+</extension>
 
 
 

@@ -85,5 +85,11 @@
 		keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration" 
 		contextId="org.eclipse.ui.globalScope"/>   	
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.keplerproject.ldt.launcher.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
 	
 </plugin>

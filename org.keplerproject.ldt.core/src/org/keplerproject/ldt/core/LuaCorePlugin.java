@@ -30,6 +30,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -59,7 +60,7 @@ public class LuaCorePlugin extends Plugin {
 		super.start(context);
 
 	}
-
+	
 	/**
 	 * This method is called when the plug-in is stopped
 	 */
