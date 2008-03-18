@@ -2,7 +2,7 @@
 <feature
       id="org.keplerproject.ldt.feature"
       label="Lua Development Tool"
-      version="1.2.0.qualifier"
+      version="1.2.1.qualifier"
       provider-name="Kepler Project "
       arch="ia64_32,PA_RISC,ppc,sparc,x86"
       colocation-affinity="org.keplerproject.ldt.feature">

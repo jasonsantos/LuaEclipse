@@ -2,7 +2,7 @@
 <feature
       id="org.keplerproject.ldt.feature_x64"
       label="Lua Development Tool"
-      version="1.2.0.qualifier"
+      version="1.2.1.qualifier"
       provider-name="Kepler Project"
       os="linux"
       arch="x86_64">
