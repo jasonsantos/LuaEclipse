@@ -9,6 +9,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.keplerproject.ldt.core.project.LuaProjectNature;
 
 public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 	public static final String PREF_DEFAULT_SCOPE = "org.keplerproject.ldt.core";
@@ -16,12 +17,14 @@ public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 	private static final String PREF_STORE_DELIM = ", ";
 
 	public static final String PREF_LUASCRIPT_NAMES = PREF_DEFAULT_SCOPE + ".luascripts.pattern";
+	public static final String PREF_LUADOC_AUTOGENERATION = PREF_DEFAULT_SCOPE + ".luadoc.autogeneration";
 
 	IPreferenceStore preferenceStore;
 
 	static LuaScriptsSpecs specs;
 	
 	private Set<String> luaScriptPatterns;
+	private boolean luaDocAutoGeneration = true;
 
 	public LuaScriptsSpecs() {
 	}
@@ -34,17 +37,22 @@ public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 	
 	public void setPreferenceStore(IPreferenceStore ip) {
 		preferenceStore = ip;
-		setDefaultPatterns();
+		luaScriptPatterns = loadPatterns();
+		if (luaScriptPatterns.size() == 0) 
+			setDefaultPatterns();
 	}
 	
-	private void savePatterns() {
+	public void savePatterns() {
 		StringBuilder store = new StringBuilder();
 		
 		for (String string : getLuaScriptPatterns()) {
 			store.append(string);
+			
 			store.append(PREF_STORE_DELIM);
 		}
 		preferenceStore.setValue(PREF_LUASCRIPT_NAMES, store.toString());
+		
+		preferenceStore.setValue(PREF_LUADOC_AUTOGENERATION, new Boolean(luaDocAutoGeneration).toString());
 	}
 	
 	private Set<String> loadPatterns() {
@@ -57,6 +65,12 @@ public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 				fileNames.add(st.nextToken());
 			}
 		}
+		
+		read = preferenceStore.getString(PREF_LUADOC_AUTOGENERATION);
+		
+		if (read != null)
+			luaDocAutoGeneration = Boolean.parseBoolean(read);
+		
 		return fileNames;
 	}
 	
@@ -66,7 +80,16 @@ public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 	
 	public void addLuaScriptPattern(String pattern) {
 		getLuaScriptPatterns().add(pattern);
-		savePatterns();
+
+	}
+
+	public boolean isLuaDocAutoGenerationActive() {
+		return luaDocAutoGeneration;
+	}
+	
+	public void setLuaDocAutoGeneration(boolean active) {
+		luaDocAutoGeneration = active;
+
 	}
 	
 	public boolean isValidLuaScriptFileName(IResource resource) {
@@ -81,7 +104,6 @@ public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 	public void setDefaultPatterns() {
 		clearLuaScriptExtensions();
 		addLuaScriptPattern("*.lua");
-		savePatterns();
 	}
 	
 	public Set<String> getLuaScriptPatterns() {
@@ -93,6 +115,7 @@ public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 	private boolean isIncluded(IPath path, IResource resource, Set<String> includedPatterns) {
 		boolean included = false;
 		// NOTE: n^2 time complexity, but should not be a bottleneck
+		// TODO: figure out a way to increase speed in this match - I believe reducing the scope will help 
 		for (String pattern : includedPatterns) {
 			if (resource != null && pattern.startsWith("file:/")) {
 				included |= isUriIncluded(resource.getLocationURI().toString(), pattern);

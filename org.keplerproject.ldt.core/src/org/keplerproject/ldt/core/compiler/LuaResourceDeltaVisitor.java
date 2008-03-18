@@ -63,7 +63,8 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 	public boolean visit(IResourceDelta delta) throws CoreException {
 		final IResource res = delta.getResource();
 		if (LuaScriptsSpecs.getDefault().isValidLuaScriptFileName(res)) {
-			updateLuadocEntries(res);
+			if(LuaScriptsSpecs.getDefault().isLuaDocAutoGenerationActive())
+				updateLuadocEntries(res);
 
 			compileFile(res, L);
 
@@ -120,7 +121,8 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 	public boolean visit(final IResource res) throws CoreException {
 
 		if (LuaScriptsSpecs.getDefault().isValidLuaScriptFileName(res)) {
-			updateLuadocEntries(res);
+			if(LuaScriptsSpecs.getDefault().isLuaDocAutoGenerationActive())
+				updateLuadocEntries(res);
 
 			compileFile(res, L);
 			return false;

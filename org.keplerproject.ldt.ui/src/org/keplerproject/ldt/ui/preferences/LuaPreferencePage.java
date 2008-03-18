@@ -60,6 +60,8 @@ public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPref
 	private Button addButton;
 
 	private Button removeButton;
+	
+	private Button luadocAutoGen;
 
 	public LuaPreferencePage() {
 		
@@ -67,7 +69,6 @@ public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPref
 	
 	public void init(IWorkbench workbench) {
 		LuaScriptsSpecs.getDefault().setPreferenceStore(LDTUIPlugin.getDefault().getPreferenceStore());
-		LuaScriptsSpecs.getDefault().getLuaScriptPatterns();
 	}
 
 	@Override
@@ -84,6 +85,11 @@ public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPref
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		group.setLayout(layout);
 
+		Group lowerGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		lowerGroup.setText("LuaDoc Integration Config");
+		lowerGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		lowerGroup.setLayout(layout);
+		
 		Composite composite = new Composite(group, SWT.NULL);
 		layout = new GridLayout();
 		layout.marginWidth = 0;
@@ -115,6 +121,19 @@ public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPref
 		layout.marginWidth = 0;
 		buttons.setLayout(layout);
 
+		
+		Composite luadocControls = new Composite(lowerGroup, SWT.NULL);
+		layout = new GridLayout();
+		layout.marginWidth = 0;
+		layout.marginHeight = 0;
+		layout.numColumns = 2;
+		luadocControls.setLayout(layout);
+		luadocControls.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		luadocAutoGen = new Button(luadocControls, SWT.CHECK);
+		luadocAutoGen.setText("Allow LuaDoc to index your sources at every save");
+		
+		
 		addButton = new Button(buttons, SWT.PUSH);
 		addButton.setText("Add...");
 		addButton.addListener(SWT.Selection, new Listener() {
@@ -132,6 +151,8 @@ public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPref
 			}
 		});
 		fillTable(LuaScriptsSpecs.getDefault().getLuaScriptPatterns());
+		luadocAutoGen.setSelection(LuaScriptsSpecs.getDefault().isLuaDocAutoGenerationActive());
+
 		Dialog.applyDialogFont(group);
 		setButtonLayoutData(addButton);
 		setButtonLayoutData(removeButton);
@@ -149,6 +170,10 @@ public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPref
 			LuaScriptsSpecs.getDefault().addLuaScriptPattern(items[i].getText());		
 		}
 		
+		LuaScriptsSpecs.getDefault().setLuaDocAutoGeneration(luadocAutoGen.getSelection());
+		
+		LuaScriptsSpecs.getDefault().savePatterns();
+		
 		return true;
 	}
 
@@ -159,6 +184,7 @@ public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPref
 		LuaScriptsSpecs.getDefault().setDefaultPatterns();
 		
 		fillTable(LuaScriptsSpecs.getDefault().getLuaScriptPatterns());
+		luadocAutoGen.setSelection(LuaScriptsSpecs.getDefault().isLuaDocAutoGenerationActive());
 	}
 
 	/**
