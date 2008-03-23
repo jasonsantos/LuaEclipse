@@ -181,7 +181,7 @@ public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPref
 	protected void performDefaults() {
 		super.performDefaults();
 		scriptsTable.removeAll();
-		LuaScriptsSpecs.getDefault().setDefaultPatterns();
+		LuaScriptsSpecs.getDefault().setDefaultSpecs();
 		
 		fillTable(LuaScriptsSpecs.getDefault().getLuaScriptPatterns());
 		luadocAutoGen.setSelection(LuaScriptsSpecs.getDefault().isLuaDocAutoGenerationActive());

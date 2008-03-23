@@ -9,7 +9,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.keplerproject.ldt.core.project.LuaProjectNature;
+import org.eclipse.ui.PlatformUI;
+
 
 public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 	public static final String PREF_DEFAULT_SCOPE = "org.keplerproject.ldt.core";
@@ -27,6 +28,7 @@ public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 	private boolean luaDocAutoGeneration = true;
 
 	public LuaScriptsSpecs() {
+		setPreferenceStore(PlatformUI.getPreferenceStore());
 	}
 	
 	public static LuaScriptsSpecs getDefault() {
@@ -36,10 +38,12 @@ public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 	}
 	
 	public void setPreferenceStore(IPreferenceStore ip) {
-		preferenceStore = ip;
+		if(preferenceStore == null)
+			preferenceStore = ip;
+		
 		luaScriptPatterns = loadPatterns();
 		if (luaScriptPatterns.size() == 0) 
-			setDefaultPatterns();
+			setDefaultSpecs();
 	}
 	
 	public void savePatterns() {
@@ -57,19 +61,23 @@ public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 	
 	private Set<String> loadPatterns() {
 		Set<String> fileNames = new HashSet<String>();
-		String read = preferenceStore.getString(PREF_LUASCRIPT_NAMES);
 		
-		if (read != null) {
-			StringTokenizer st = new StringTokenizer(read, PREF_STORE_DELIM);
-			while (st.hasMoreTokens()) {
-				fileNames.add(st.nextToken());
+		if(preferenceStore != null) {
+		
+			String read = preferenceStore.getString(PREF_LUASCRIPT_NAMES);
+			
+			if (read != null) {
+				StringTokenizer st = new StringTokenizer(read, PREF_STORE_DELIM);
+				while (st.hasMoreTokens()) {
+					fileNames.add(st.nextToken());
+				}
 			}
+			
+			read = preferenceStore.getString(PREF_LUADOC_AUTOGENERATION);
+			
+			if (read != null)
+				luaDocAutoGeneration = Boolean.parseBoolean(read);
 		}
-		
-		read = preferenceStore.getString(PREF_LUADOC_AUTOGENERATION);
-		
-		if (read != null)
-			luaDocAutoGeneration = Boolean.parseBoolean(read);
 		
 		return fileNames;
 	}
@@ -93,17 +101,17 @@ public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 	}
 	
 	public boolean isValidLuaScriptFileName(IResource resource) {
-		if(luaScriptPatterns!=null) {
-			if(resource instanceof IFile && 
-					isIncluded(resource.getProjectRelativePath(), resource, luaScriptPatterns))
-				return true;
-		}
+		if(resource instanceof IFile && 
+				isIncluded(resource.getProjectRelativePath(), resource, getLuaScriptPatterns()))
+			return true;
 		return false;
 	}
 
-	public void setDefaultPatterns() {
+	public void setDefaultSpecs() {
 		clearLuaScriptExtensions();
 		addLuaScriptPattern("*.lua");
+		
+		setLuaDocAutoGeneration(true);
 	}
 	
 	public Set<String> getLuaScriptPatterns() {
@@ -142,7 +150,7 @@ public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 
 	@Override
 	public void initializeDefaultPreferences() {
-		setDefaultPatterns();
+		setDefaultSpecs();
 	}
 
 }
