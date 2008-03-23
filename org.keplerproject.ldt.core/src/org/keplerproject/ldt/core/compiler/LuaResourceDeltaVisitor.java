@@ -145,8 +145,7 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 	private void updateLuadocEntries(final IResource res) {
 		IProject prj = res.getProject();
 
-		LuaProject lp = new LuaProject();
-		lp.setProject(prj);
+		LuaProject lp = LuaProject.getLuaProject(prj);
 
 		String resourceFileName = res.getLocation().toOSString();
 		// TODO: create a wrapper class for this map to better illustrate

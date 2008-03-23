@@ -27,10 +27,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.keplerproject.ldt.core.project.LuaProjectNature;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -40,17 +45,25 @@ import org.osgi.framework.BundleContext;
  * @author Guilherme Martins
  * @version $Id$
  */
-public class LuaCorePlugin extends Plugin {
+public class LuaCorePlugin extends Plugin implements IResourceChangeListener {
 
 	// The shared instance.
 	private static LuaCorePlugin plugin;
-
 
 	/**
 	 * The constructor.
 	 */
 	public LuaCorePlugin() {
 		plugin = this;
+
+		for(IProject prj : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
+			try {
+				if(prj.hasNature(LuaProjectNature.NATURE_ID))
+					LuaProject.getLuaProject(prj);
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -60,7 +73,7 @@ public class LuaCorePlugin extends Plugin {
 		super.start(context);
 
 	}
-	
+
 	/**
 	 * This method is called when the plug-in is stopped
 	 */
@@ -109,6 +122,50 @@ public class LuaCorePlugin extends Plugin {
 		} catch (CoreException coreexception) {
 			return false;
 		}
+	}
+
+	public void resourceChanged(IResourceChangeEvent event) {
+		System.out.println(this.getClass().getName()
+				+ "  resource  changed  event");
+		try {
+			event.getDelta().accept(new IResourceDeltaVisitor() {
+				public boolean visit(IResourceDelta delta) throws CoreException {
+					if (delta != null
+							&& delta.getResource() instanceof IProject) {
+						
+						IProject project = (IProject) delta.getResource();
+						
+						StringBuffer buf = new StringBuffer(80);
+						
+						switch (delta.getKind()) {
+						case IResourceDelta.ADDED:
+							buf.append("ADDED");
+							break;
+						case IResourceDelta.REMOVED:
+							buf.append("REMOVED");
+							break;
+						case IResourceDelta.CHANGED:
+							buf.append("CHANGED");
+							break;
+						default:
+							buf.append("[");
+							buf.append(delta.getKind());
+							buf.append("]");
+							break;
+						}
+						buf.append("  ");
+						buf.append(delta.getResource());
+						System.out.println(buf);
+						return false; // no need to descend below projects
+					} else {
+						return false;
+					}
+				}
+			});
+		} catch (CoreException e) {
+			e.printStackTrace(System.out);
+		}
+
 	}
 
 }

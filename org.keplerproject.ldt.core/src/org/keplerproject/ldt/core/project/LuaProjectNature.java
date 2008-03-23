@@ -28,6 +28,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.runtime.CoreException;
+import org.keplerproject.ldt.core.LuaProject;
 
 /**
  * The Lua Project Nature. Eclipse projects tha use Lua files 
@@ -105,6 +106,7 @@ public class LuaProjectNature implements IProjectNature {
 	 */
 	public void setProject(IProject project) {
 		this.project = project;
+		LuaProject.getLuaProject(project);
 	}
 
 }

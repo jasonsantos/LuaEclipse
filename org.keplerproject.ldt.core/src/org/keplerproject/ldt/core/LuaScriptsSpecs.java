@@ -28,7 +28,7 @@ public class LuaScriptsSpecs extends AbstractPreferenceInitializer {
 	private boolean luaDocAutoGeneration = true;
 
 	public LuaScriptsSpecs() {
-		setPreferenceStore(PlatformUI.getPreferenceStore());
+//		setPreferenceStore(PlatformUI.getPreferenceStore());
 	}
 	
 	public static LuaScriptsSpecs getDefault() {

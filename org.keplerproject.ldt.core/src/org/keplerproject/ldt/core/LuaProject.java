@@ -78,7 +78,20 @@ public class LuaProject implements IProjectNature, LuaElement {
 	protected String luaRefManualDoc;
 
 	protected Map<String, Map<String, ILuaEntry>> luaEntries;
+	
+	private static Map<String, LuaProject> luaProjects = new HashMap<String, LuaProject>();
 
+	public static LuaProject getLuaProject(IProject prj) {
+		String projectName = prj.getName();
+		LuaProject p = luaProjects.get(projectName);
+		if(p==null) {
+			p = new LuaProject();
+			p.setProject(prj);
+			luaProjects.put(projectName, p);
+		}
+		return p;
+	}
+	
 	public LuaProject() {
 	}
 
