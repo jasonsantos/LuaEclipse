@@ -169,8 +169,6 @@ public class LuadocGenerator {
 			
 			// TODO: create a way of navigating module dependencies to determine priority for selecting symbols
 			
-			// TODO: create entries for the full name (module.function).
-			// TODO: allow the word-finding logic to find those too
 			lg.getLuaEntryIndex().put(s, generatedEntries.get(s));
 		}
 	}

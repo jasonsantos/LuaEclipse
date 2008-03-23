@@ -79,7 +79,7 @@ public class LuaEditor extends TextEditor {
 		// simple editor provider to start the editor
 		// setDocumentProvider(new FileDocumentProvider());
 		setRangeIndicator(new DefaultRangeIndicator());
-		// This register a resourceChangeListener to compile de lua script and
+		// This register a resourceChangeListener to compile the lua script and
 		// get the error message
 		IResourceChangeListener listener = createResourceChangeListener(this);
 		LDTUIPlugin.getWorkspace().addResourceChangeListener(
@@ -99,7 +99,7 @@ public class LuaEditor extends TextEditor {
 
 	/**
 	 * This method must create a ResourceChangeListener to be registered at the
-	 * workspace. This listener will be notified when the la file has been
+	 * workspace. This listener will be notified when the lua file has been
 	 * saved.
 	 * 
 	 * @param editor
@@ -112,7 +112,7 @@ public class LuaEditor extends TextEditor {
 
 	/**
 	 * This method creates a Document provider to the lua editor. This document
-	 * provider must create partitions of the code. This defaul implementation
+	 * provider must create partitions of the code. This default implementation
 	 * uses a LDT extension point.
 	 * 
 	 * @param editor
