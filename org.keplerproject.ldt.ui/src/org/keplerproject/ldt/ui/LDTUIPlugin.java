@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.keplerproject.ldt.core.LuaScriptsSpecs;
 import org.keplerproject.ldt.ui.editors.ext.ILuaContentAssistExtension;
 import org.keplerproject.ldt.ui.editors.ext.ILuaContentTypeExtension;
 import org.keplerproject.ldt.ui.editors.ext.ILuaReconcilierExtension;
@@ -103,6 +104,7 @@ public class LDTUIPlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		LuaScriptsSpecs.getDefault().setPreferenceStore(getPreferenceStore());
 	}
 
 	/**

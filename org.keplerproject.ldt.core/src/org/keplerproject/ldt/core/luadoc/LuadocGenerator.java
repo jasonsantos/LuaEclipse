@@ -67,7 +67,7 @@ public class LuadocGenerator {
 			final String CR = "\n";  
 
 			String sfile = fileName.replaceAll("\\\\", "\\\\\\\\");
-			System.out.println(sfile);
+			//System.out.println(sfile);
 			
 			String code = "" +
 			"require 'luadoc' " + CR +
@@ -86,7 +86,7 @@ public class LuadocGenerator {
 			if (result != 0) {
 				
 				String s = L.toString(-1);
-				System.out.println(s);
+				//System.out.println(s);
 			}
 
 			result = L.pcall(0, 0, 0);
@@ -94,7 +94,7 @@ public class LuadocGenerator {
 
 			if (result != 0) {
 				String s = L.toString(-1);
-				System.out.println(s);
+				//System.out.println(s);
 			}
 
 			L.close();

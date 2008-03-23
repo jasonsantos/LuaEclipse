@@ -30,7 +30,7 @@ local function include(template, env)
 	prog ()
 	local sRes = table.concat(res)
 	res = {}
-	print(sRes)
+	--print(sRes)
 	return sRes
 end
 

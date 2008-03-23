@@ -49,8 +49,8 @@ public class LuaChangeListener
     public void resourceChanged(IResourceChangeEvent event)
     {
     	try{
-        	// registry the delta visitor to check the 
-            event.getDelta().accept(new LuaResourceDeltaVisitor());
+    		if (event.getType()==IResourceChangeEvent.PRE_BUILD)
+    			event.getDelta().accept(new LuaResourceDeltaVisitor());
         }
         catch(CoreException coreexception) { }
     }

@@ -91,7 +91,8 @@ public class LuaTextHover implements ITextHover, IInformationProviderExtension2 
     */
     public IInformationControlCreator getInformationPresenterControlCreator() {
     	return new IInformationControlCreator() {
-    		public IInformationControl createInformationControl(Shell parent) {
+    		@SuppressWarnings("restriction")
+			public IInformationControl createInformationControl(Shell parent) {
     			int shellStyle= SWT.RESIZE | SWT.TOOL;
                 int style= SWT.V_SCROLL | SWT.H_SCROLL;
                 if (BrowserInformationControl.isAvailable(parent))

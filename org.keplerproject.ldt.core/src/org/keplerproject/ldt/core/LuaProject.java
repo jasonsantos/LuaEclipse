@@ -24,19 +24,18 @@ package org.keplerproject.ldt.core;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.regex.MatchResult;
 
 import javax.xml.parsers.SAXParserFactory;
@@ -69,7 +68,6 @@ import org.xml.sax.XMLReader;
  * @version $Id$
  */
 public class LuaProject implements IProjectNature, LuaElement {
-	private static QualifiedName qualifiedName;
 	private static final ISynchronizer synchronizer = ResourcesPlugin
 			.getWorkspace().getSynchronizer();
 	protected IProject project;
@@ -111,42 +109,102 @@ public class LuaProject implements IProjectNature, LuaElement {
 
 	public void setProject(IProject aProject) {
 		project = aProject;
-		qualifiedName = new QualifiedName("org.keplerproject.ldt.core", project
-				.getName()
-				+ ".luadoc.projectdata");
+		loadEntries(); 
+
+	}
+
+	
+	/**
+	 * Returns moduleNames stored in workbench for this project 
+	 * @return set of strings representing the moduleNames stored
+	 */
+	private Set<String> getModulesToSave()  {
+		QualifiedName qualifiedName = new QualifiedName("org.keplerproject.ldt.core", project.getName()
+				+ ".luadoc.projectdata.moduleNames" ); 
+		
+		synchronizer.add(qualifiedName);
+		
+		byte[] syncInfo;
+		String str = "";
+		try {
+			syncInfo = synchronizer.getSyncInfo(qualifiedName,
+					project);
+			if(syncInfo!=null)
+				str = new String(syncInfo);
+		} catch (CoreException e) {
+		}
+		
+		StringTokenizer st = new StringTokenizer(str, ",");
+		
+		Set<String> moduleNamesToSave = new HashSet<String>();
+		while(st.hasMoreTokens()) {
+			String name = st.nextToken();
+			moduleNamesToSave.add(name.equals("<null>") ? null : name);
+		}
+		
+		return moduleNamesToSave;
+	}
+
+	/**
+	 * Add a module name to the workbench storage for this project 
+	 * @param moduleName
+	 */
+	private void addModule(String moduleName) {
+		Set<String> moduleNamesToSave = getModulesToSave();
+		
+		if( moduleNamesToSave.add(moduleName) )
+		 
+			saveModuleNames(moduleNamesToSave);
+	}
+
+	/**
+	 * Remove a module name from the workbench storage for this project
+	 * @param moduleName
+	 */
+	private void removeModule(String moduleName) {
+		Set<String> moduleNamesToSave = getModulesToSave();
+		if (moduleNamesToSave.remove(moduleName) ) 
+		
+			saveModuleNames(moduleNamesToSave);	
+	}
+
+	/** Stores modulenames into the workbench for this project
+	 * @param moduleNamesToSave set of strings containing the module names to be saved
+	 */
+	private void saveModuleNames(Set<String> moduleNamesToSave) {
+		QualifiedName qualifiedName = new QualifiedName("org.keplerproject.ldt.core", project.getName()
+				+ ".luadoc.projectdata.moduleNames" );
+		
+		StringBuilder renderedModuleNames = new StringBuilder();
+		
+		for(String name: moduleNamesToSave) {
+			renderedModuleNames.append(name != null ? name : "<null>");
+			renderedModuleNames.append(",");
+		}
+		
+		try {
+			synchronizer.setSyncInfo(qualifiedName, project, renderedModuleNames.toString().getBytes());
+		} catch (CoreException e) {
+		}
+	}
+	
+	/**
+	 * Loads from SynchInfo all LuaDoc entries
+	 * additionally, loads Lua Reference Manual from the control file 
+	 */
+	private void loadEntries() {
+		
 		try {
 			if (luaEntries == null)
 				luaEntries = new HashMap<String, Map<String, ILuaEntry>>();
 
-			if(luaRefManualDoc == null) {
-				URL u = ResourceUtils.findfile("doc/org.lua.www.manual", "org.keplerproject.ldt.core");
-				if(u!=null)
-					try {
-						luaRefManualDoc = ResourceUtils.getFileContents(u);
-					} catch (IOException e) {
-						luaRefManualDoc = "";
-					}
-			}
+			loadLuaRefManualEntries();
 			
-			synchronizer.add(qualifiedName);
-			{
-				byte[] syncInfo = synchronizer.getSyncInfo(qualifiedName,
-						project);
-				if (syncInfo != null) {
-					BufferedReader in
-					   = new BufferedReader(new InputStreamReader(
-							new ByteArrayInputStream(syncInfo)));
-					
-					Scanner docs = new Scanner(in);
-					
-					loadEntries(docs);
-					
-					docs = new Scanner(luaRefManualDoc);
-					
-					loadEntries(docs);
-					
-				}
-			}
+			Set<String> moduleNames = getModulesToSave();
+			
+			// for each moduleName registered in the Workbench, load the entries
+			for(String moduleName : moduleNames)
+				loadModuleEntries(moduleName);
 
 			if (luaEntries.size() > 0) {
 				LuadocGenerator lg = LuadocGenerator.getInstance();
@@ -159,12 +217,53 @@ public class LuaProject implements IProjectNature, LuaElement {
 		} catch (CoreException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-		} 
-
+		}
 	}
 
-	/**
-	 * @param docs
+	/** Load the LuaDoc entries for one given module
+	 * @param moduleName
+	 * @throws CoreException
+	 */
+	private void loadModuleEntries(String moduleName) throws CoreException {
+		QualifiedName qualifiedName = new QualifiedName("org.keplerproject.ldt.core", project.getName()
+				+ ".luadoc.projectdata." + moduleName ); 
+		synchronizer.add(qualifiedName);
+		{
+			byte[] syncInfo = synchronizer.getSyncInfo(qualifiedName,
+					project);
+			if (syncInfo != null) {
+				BufferedReader in
+				   = new BufferedReader(new InputStreamReader(
+						new ByteArrayInputStream(syncInfo)));
+				
+				Scanner docs = new Scanner(in);
+				
+				loadEntries(docs);
+				
+			}
+		}
+	}
+
+	/** Loads the LuaDoc entries for Lua Reference Manual
+	 */
+	private void loadLuaRefManualEntries() {
+		if(luaRefManualDoc == null) {
+			URL u = ResourceUtils.findfile("doc/org.lua.www.manual", "org.keplerproject.ldt.core");
+			if(u!=null)
+				try {
+					luaRefManualDoc = ResourceUtils.getFileContents(u);
+				} catch (IOException e) {
+					luaRefManualDoc = "";
+				}
+		}
+
+		Scanner docs = new Scanner(luaRefManualDoc);
+		
+		loadEntries(docs);
+	}
+
+	/** Loads LuaDoc Entries from a Scanner
+	 * @param docs Scanner from which to load the Entries
 	 */
 	private void loadEntries(Scanner docs) {
 		String moduleName;
@@ -199,44 +298,89 @@ public class LuaProject implements IProjectNature, LuaElement {
 		}
 	}
 
-	public void saveLuaDocEntries() {
+	public void saveLuaDocEntries(String moduleName) {
 		try {
-			StringBuilder docEntries = new StringBuilder();
+			Map<String, ILuaEntry> theModuleEntries = luaEntries.get(moduleName);
+		
+			saveModuleEntries(moduleName, theModuleEntries);
 			
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	
+	public void saveAllLuaDocEntries() {
+		try {
 			for(Map.Entry<String, Map<String, ILuaEntry>> moduleEntries : luaEntries.entrySet()) {
-				
 				String moduleName = moduleEntries.getKey();
+				Map<String, ILuaEntry> theModuleEntries = moduleEntries.getValue();
 				
-				for(Map.Entry<String, ILuaEntry> entry : moduleEntries.getValue().entrySet()) {
-					
-					String functionName = entry.getKey();
-					
-					LuadocEntry l = (LuadocEntry) entry.getValue();
-					
-					if(l!=null) {
-						if(moduleName != null) 
-							docEntries.append(moduleName).append('.');
-						
-						docEntries.append(functionName).append("=");	
-						
-						docEntries.append("[====[");
-						String html = l.getHtml();
-						if(html!=null)
-							docEntries.append(html.replaceAll("\\\\", "\\\\").replaceAll("\n", "\\n").replaceAll("\r", "\\r"));
-						docEntries.append("]====]\n");
-					}
-				}
-				
+				saveModuleEntries(moduleName, theModuleEntries);
+			
 			}
-			
-			synchronizer
-					.setSyncInfo(qualifiedName, project, docEntries.toString().getBytes());
-			
-			//System.out.println(docEntries.toString());
 
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * @param moduleName
+	 * @param theModuleEntries
+	 * @throws CoreException
+	 */
+	private void saveModuleEntries(String moduleName,
+			Map<String, ILuaEntry> theModuleEntries) throws CoreException {
+		if(theModuleEntries.size() > 0) {
+			addModule(moduleName);
+			
+			QualifiedName qualifiedName = new QualifiedName("org.keplerproject.ldt.core", project.getName()
+					+ ".luadoc.projectdata." + moduleName ); 
+
+			String renderedModuleEntries = renderLuaDocEntries( moduleName, theModuleEntries);
+			synchronizer.add(qualifiedName);
+			synchronizer.setSyncInfo(qualifiedName, project, renderedModuleEntries.getBytes());
+		} else {
+			removeModule(moduleName);
+		}
+	}
+	
+	
+
+	/** Renders luaDoc entries for a specific module or file 
+	 * @param docEntries StringBuilder to append entries to 
+	 * @param moduleName string with the name of the module 
+	 * @param moduleEntries Map of all entries generated for this module
+	 * @return string representing all LuaDoc Entries for the given Module 
+	 */
+	private String renderLuaDocEntries(
+			String moduleName, Map<String, ILuaEntry> moduleEntries) {
+		
+		StringBuilder docEntries = new StringBuilder();
+		
+		for(Map.Entry<String, ILuaEntry> entry : moduleEntries.entrySet()) {
+			
+			String functionName = entry.getKey();
+			
+			LuadocEntry l = (LuadocEntry) entry.getValue();
+			
+			if(l!=null) {
+				if(moduleName != null) 
+					docEntries.append(moduleName).append('.');
+				
+				docEntries.append(functionName).append("=");	
+				
+				docEntries.append("[====[");
+				String html = l.getHtml();
+				if(html!=null)
+					docEntries.append(html.replaceAll("\\\\", "\\\\").replaceAll("\n", "\\n").replaceAll("\r", "\\r"));
+				docEntries.append("]====]\n");
+			}
+		}
+		
+		return docEntries.toString();
 	}
 
 	public void addLoadPathEntry(IProject anotherLuaProject) {

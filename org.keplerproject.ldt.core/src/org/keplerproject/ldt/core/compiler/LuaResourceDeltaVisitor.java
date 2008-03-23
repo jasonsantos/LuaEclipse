@@ -165,8 +165,8 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 		// resource storage
 
 		lg.generateIndexes(generatedEntries);
-
-		lp.saveLuaDocEntries();
+		
+		lp.saveLuaDocEntries(resourceFileName);
 	}
 
 }
