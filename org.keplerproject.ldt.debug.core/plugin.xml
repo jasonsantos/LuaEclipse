@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+ <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.keplerproject.ldt.debug.core.launcher.LuaLaunchDelegate"
+            id="lua.launchType"
+            modes="run, debug"
+            name="Lua Application"
+            public="true"
+            sourceLocatorId="lua.sourceLocator"
+            sourcePathComputerId="lua.sourcePathComputer">
+      </launchConfigurationType>
+   </extension>
+ <extension
+       point="org.eclipse.debug.core.sourceLocators">
+    <sourceLocator
+          class="org.keplerproject.ldt.debug.core.source.LuaSourceLookupDirector"
+          id="lua.sourceLocator"
+          name="Lua Source Locator">
+    </sourceLocator>
+ </extension>
+ <extension
+       point="org.eclipse.debug.core.breakpoints">
+    <breakpoint
+          class="org.keplerproject.ldt.debug.core.breakpoints.LuaLineBreakpoint"
+          id="org.keplerproject.ldt.debug.core.lineBreakpoint"
+          markerType="lua.lineBreakpoint"
+          name="Lua Line Breakpoint">
+    </breakpoint>
+ </extension>
+ <extension
+       id="lua.lineBreakpoint"
+       name="Lua Line Breakpoint Marker"
+       point="org.eclipse.core.resources.markers">
+    <super
+          type="org.eclipse.debug.core.lineBreakpointMarker">
+    </super>
+    <persistent
+          value="true">
+    </persistent>
+ </extension>
+ <extension
+       point="org.eclipse.debug.core.sourcePathComputers">
+    <sourcePathComputer
+          class="org.keplerproject.ldt.debug.core.source.SourcePathComputerDelegate"
+          id="lua.sourcePathComputer">
+    </sourcePathComputer>
+ </extension>
+
+</plugin>
