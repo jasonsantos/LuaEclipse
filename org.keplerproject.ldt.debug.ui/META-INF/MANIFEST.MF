@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LDT Debugger UI Plug-in
+Bundle-SymbolicName: org.keplerproject.ldt.debug.ui; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.keplerproject.ldt.debug.ui.LuaDebugUIPlugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.debug.ui,
+ org.keplerproject.ldt.debug.core,
+ org.eclipse.ui.ide,
+ org.keplerproject.ldt.ui,
+ org.eclipse.ui.editors,
+ org.eclipse.jface.text
+Eclipse-LazyStart: true
