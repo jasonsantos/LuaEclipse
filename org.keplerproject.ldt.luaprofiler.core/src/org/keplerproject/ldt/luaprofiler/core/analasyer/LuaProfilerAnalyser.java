@@ -9,22 +9,26 @@ import org.keplerproject.luajava.LuaState;
 import org.keplerproject.luajava.LuaStateFactory;
 
 public class LuaProfilerAnalyser {
-	private static LuaProfilerAnalyser analyser = null;
-	private String filename;
-	private LuaState L;
+	private static LuaProfilerAnalyser	analyser	= null;
+	private String						filename	= null;
+	private LuaState					L;
 
-	private LuaProfilerAnalyser(String filename) {
-		if (filename == null)
+	private LuaProfilerAnalyser(String f) {
+		if (f == null)
 			return;
-		
-		L = LuaStateFactory.newLuaState();
-		L.openLibs();
-		// loads the file buffer function (FROM LUA PROFILER summary.lua)
-		L.LdoString(Messages.LuaProfilerAnalyser_ReadFileFunction);
-		L.LdoString(Messages.LuaProfilerAnalyser_CreateSummaryFunction);
-		L.LdoString(Messages.LuaProfilerAnalyser_StartAnalysisFunction);
-		this.filename = filename;
-		refreshSummary();
+		try {
+			L = LuaStateFactory.newLuaState();
+			L.openLibs();
+			// loads the file buffer function (FROM LUA PROFILER summary.lua)
+			L.LdoString(Messages.LuaProfilerAnalyser_ReadFileFunction);
+			L.LdoString(Messages.LuaProfilerAnalyser_CreateSummaryFunction);
+			L.LdoString(Messages.LuaProfilerAnalyser_StartAnalysisFunction);
+			this.filename = f;
+			refreshSummary();
+		} catch (Exception e) {
+			System.out.println("Could not initialize LuaState:"
+					+ e.getMessage());
+		}
 	}
 
 	public static LuaProfilerAnalyser create(String filename) {
@@ -37,12 +41,12 @@ public class LuaProfilerAnalyser {
 	}
 
 	public void refreshSummary() {
-		if (filename != null)
+		if (filename != null && L == null)
 			L.LdoString("return startSummary('" + filename + "')");
 	}
 
 	public Object[] getSummaryList() {
-		if (filename == null)
+		if (filename == null && L == null)
 			return new Object[] {};
 		refreshSummary();
 		List<LuaObject> summaryList = new ArrayList<LuaObject>();

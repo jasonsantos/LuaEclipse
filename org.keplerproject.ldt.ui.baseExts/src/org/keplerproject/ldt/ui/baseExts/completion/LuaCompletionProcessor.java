@@ -1,25 +1,20 @@
 /*
-* Copyright (C) 2003-2007 Kepler Project.
-*
-* Permission is hereby granted, free of charge, to any person obtaining
-* a copy of this software and associated documentation files (the
-* "Software"), to deal in the Software without restriction, including
-* without limitation the rights to use, copy, modify, merge, publish,
-* distribute, sublicense, and/or sell copies of the Software, and to
-* permit persons to whom the Software is furnished to do so, subject to
-* the following conditions:
-*
-* The above copyright notice and this permission notice shall be
-* included in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ * Copyright (C) 2003-2007 Kepler Project. Permission is hereby granted, free of
+ * charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify,
+ * merge, publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions: The above copyright notice and this permission
+ * notice shall be included in all copies or substantial portions of the
+ * Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO
+ * EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
 
 package org.keplerproject.ldt.ui.baseExts.completion;
 
@@ -46,23 +41,34 @@ import org.keplerproject.luajava.LuaStateFactory;
  * assist the programmer.
  * 
  * @author guilherme
- * @version $Id$
+ * @version $Id: LuaCompletionProcessor.java,v 1.8 2007/05/20 23:17:09 guilherme
+ *          Exp $
  */
 public class LuaCompletionProcessor implements IContentAssistProcessor,
 		ILuaSyntax {
 
-	protected ArrayList proposalList;
+	protected ArrayList	proposalList;
 
-	protected LuaState L;
+	protected LuaState	L	= null;
 
 	public LuaCompletionProcessor() {
 		proposalList = new ArrayList();
-		L = (LuaStateFactory.newLuaState());
-		L.openLibs();
+		try {
+			L = (LuaStateFactory.newLuaState());
+			L.openLibs();
+		} catch (Exception e) {
+			System.out.println("Could not initialize LuaState:"
+					+ e.getMessage());
+		} catch (Error e) {
+			System.out.println("Could not initialize LuaState:"
+					+ e.getMessage());
+		}
 	}
 
 	public ICompletionProposal[] computeCompletionProposals(
 			final ITextViewer viewer, final int documentOffset) {
+		if (L == null)
+			return new ICompletionProposal[] {};
 
 		LuaVariableDetector wordPart = new LuaVariableDetector(viewer,
 				documentOffset);
@@ -94,11 +100,10 @@ public class LuaCompletionProcessor implements IContentAssistProcessor,
 					// load function.gif, table.gif or string.gif
 					image = BaseExtsPlugin.getDefault().getImageRegistry().get(
 							strLuaType);
-					
-					//To functions, use de ().
-					if(FUNCTION_TYPE_NAME.equals(strLuaType))
-					{
-						key+="()";
+
+					// To functions, use de ().
+					if (FUNCTION_TYPE_NAME.equals(strLuaType)) {
+						key += "()";
 					}
 
 					IContextInformation info = new ContextInformation(
@@ -143,7 +148,7 @@ public class LuaCompletionProcessor implements IContentAssistProcessor,
 	}
 
 	public char[] getCompletionProposalAutoActivationCharacters() {
-		char result[] = new char[]{'.', ':'};
+		char result[] = new char[] { '.', ':' };
 		return result;
 	}
 

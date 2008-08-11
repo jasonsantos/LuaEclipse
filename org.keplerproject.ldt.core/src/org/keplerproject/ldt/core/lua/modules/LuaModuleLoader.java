@@ -1,24 +1,19 @@
 /*
- * Copyright (C) 2003-2007 Kepler Project.
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * Copyright (C) 2003-2007 Kepler Project. Permission is hereby granted, free of
+ * charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify,
+ * merge, publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions: The above copyright notice and this permission
+ * notice shall be included in all copies or substantial portions of the
+ * Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO
+ * EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package org.keplerproject.ldt.core.lua.modules;
@@ -39,9 +34,11 @@ import org.keplerproject.luajava.LuaState;
  * @version $Id$
  */
 public class LuaModuleLoader {
-	private static final Object sentinel = "Sentinel";
+	private static final Object	sentinel	= "Sentinel";
 
 	private static String dumpTable(LuaState L) {
+		if (L == null)
+			return "";
 		StringBuilder sb = new StringBuilder();
 		if (L.isTable(-1)) {
 			L.pushNil();
@@ -56,10 +53,10 @@ public class LuaModuleLoader {
 		return sb.toString();
 	}
 
-	private static int LoadFile(LuaState L, URL u)  throws IOException {
+	private static int LoadFile(LuaState L, URL u) throws IOException {
 		int res = -1;
-		
-		if (u != null) {
+
+		if (u != null && L != null) {
 			String body = ResourceUtils.getFileContents(u);
 
 			res = L.LloadString(body);
@@ -79,12 +76,13 @@ public class LuaModuleLoader {
 					LuaObject o;
 					String sFileName = (o = getParam(2)) != null ? o.toString()
 							: null;
-					
-					URL u = ResourceUtils.findmodule(sFileName, "org.keplerproject.ldt.core");
+
+					URL u = ResourceUtils.findmodule(sFileName,
+							"org.keplerproject.ldt.core");
 					try {
-						if(u!=null) {
+						if (u != null) {
 							L.pushString(ResourceUtils.getFileContents(u));
-						} else  {
+						} else {
 							String err = "error loading file " + sFileName
 									+ " from resource " + u.getPath() + ":\n\t"
 									+ L.toString(-1);
@@ -102,9 +100,9 @@ public class LuaModuleLoader {
 					return 1;
 				}
 			});
-			
+
 			L.setGlobal("getfilecontents");
-			
+
 			L.pushJavaFunction(new JavaFunction(L) {
 
 				@Override
@@ -112,11 +110,12 @@ public class LuaModuleLoader {
 					LuaObject o;
 					String sFileName = (o = getParam(2)) != null ? o.toString()
 							: null;
-					
-					URL u = ResourceUtils.findmodule(sFileName, "org.keplerproject.ldt.core");
+
+					URL u = ResourceUtils.findmodule(sFileName,
+							"org.keplerproject.ldt.core");
 					try {
 						int res = LoadFile(L, u);
-						
+
 						if (res != 0) {
 							String err = "error loading file " + sFileName
 									+ " from resource " + u.getPath() + ":\n\t"
@@ -135,9 +134,9 @@ public class LuaModuleLoader {
 					return 1;
 				}
 			});
-			
+
 			L.setGlobal("loadfile");
-			
+
 			L.pushJavaFunction(new JavaFunction(L) {
 
 				@Override
@@ -204,9 +203,9 @@ public class LuaModuleLoader {
 						if (L.isFunction(-1)) /* did it find module? */
 							break; /* module loaded successfully */
 						else if (L.isString(-1)) /*
-													 * loader returned error
-													 * message?
-													 */
+						 * loader returned error
+						 * message?
+						 */
 							L.concat(2); /* accumulate it */
 						else
 							L.pop(1);
@@ -219,15 +218,15 @@ public class LuaModuleLoader {
 
 					if (!L.isNil(-1)) /* non-nil return? */
 						L.setField(loadedTable, name); /*
-														 * _LOADED[name] =
-														 * returned value
-														 */
+						 * _LOADED[name] =
+						 * returned value
+						 */
 					L.pushValue(loadedTable);
 					L.getField(-1, name);
 					if (L.toJavaObject(-1) == sentinel) { /*
-															 * module did not
-															 * set a value?
-															 */
+					 * module did not
+					 * set a value?
+					 */
 						L.pushBoolean(true); /* use true as result */
 						L.pushValue(-1); /* extra copy to be returned */
 						L.setField(loadedTable, name); /* _LOADED[name] = true */
@@ -260,7 +259,6 @@ public class LuaModuleLoader {
 					return 0;
 				}
 
-				
 				/**
 				 * @param objModuleName
 				 * @throws IOException
@@ -268,10 +266,11 @@ public class LuaModuleLoader {
 				private int loadModule(LuaObject objModuleName)
 						throws IOException {
 					int res = -1;
-					
+
 					String sFileName = objModuleName.toString();
-					
-					URL u = ResourceUtils.findmodule(sFileName, "org.keplerproject.ldt.core");
+
+					URL u = ResourceUtils.findmodule(sFileName,
+							"org.keplerproject.ldt.core");
 					res = LoadFile(L, u);
 
 					if (res != 0) {
