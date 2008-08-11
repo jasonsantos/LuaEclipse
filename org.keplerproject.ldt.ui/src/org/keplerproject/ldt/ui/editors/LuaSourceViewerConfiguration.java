@@ -23,6 +23,7 @@
 
 package org.keplerproject.ldt.ui.editors;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -368,8 +369,14 @@ public class LuaSourceViewerConfiguration extends TextSourceViewerConfiguration 
              public IInformationControl createInformationControl(Shell parent) {
                  int shellStyle= SWT.RESIZE | SWT.TOOL;
                  int style= SWT.V_SCROLL | SWT.H_SCROLL;
-                 
-                 return new BrowserInformationControl(parent, shellStyle, style);
+             	 try {
+             		 Class BI = Class.forName("BrowserInformationControl");
+             		 Class params[] = {Shell.class, Integer.class, Integer.class};
+             		 Constructor c = BI.getConstructor(params);
+             		 return (IInformationControl) c.newInstance(parent, shellStyle, style);
+             	 } catch(Exception e) {
+             		return new DefaultInformationControl(parent, shellStyle, style, new HTMLTextPresenter(false));
+             	 }
                   
              }
          };

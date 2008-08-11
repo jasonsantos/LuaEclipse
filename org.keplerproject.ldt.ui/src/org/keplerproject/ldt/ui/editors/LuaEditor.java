@@ -1,24 +1,19 @@
 /*
- * Copyright (C) 2003-2007 Kepler Project.
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * Copyright (C) 2003-2007 Kepler Project. Permission is hereby granted, free of
+ * charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify,
+ * merge, publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions: The above copyright notice and this permission
+ * notice shall be included in all copies or substantial portions of the
+ * Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO
+ * EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  */
 
 package org.keplerproject.ldt.ui.editors;
@@ -37,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 import org.eclipse.ui.texteditor.DefaultRangeIndicator;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.keplerproject.ldt.ui.LDTUIPlugin;
@@ -49,28 +44,29 @@ import org.keplerproject.ldt.ui.LDTUIPlugin;
  * @version $Id$
  */
 
-public class LuaEditor extends TextEditor {
+public class LuaEditor extends AbstractDecoratedTextEditor {
 
-	private LuaColorManager colorManager;
+	private final LuaColorManager			colorManager;
 
-	private LuaSourceViewerConfiguration sourceViewer;
+	private LuaSourceViewerConfiguration	sourceViewer;
 
-	private ProjectionSupport projectionSupport;
+	private ProjectionSupport				projectionSupport;
 
-	private ProjectionAnnotationModel annotationModel;
+	private ProjectionAnnotationModel		annotationModel;
 
-	private String finstanceId;
+	private String							finstanceId;
 
 	public LuaEditor() {
 		super();
 		// initialize the color manager
 		colorManager = createColorManager();
-
+		setRulerContextMenuId("lua.editor.rulerMenu");
+		setEditorContextMenuId("lua.editor.editorMenu");
 	}
 
+	@Override
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
-		
 
 		this.finstanceId = getConfigurationElement().getAttribute("id");
 
@@ -144,6 +140,7 @@ public class LuaEditor extends TextEditor {
 		return new LuaColorManager();
 	}
 
+	@Override
 	public void dispose() {
 		colorManager.dispose();
 		super.dispose();
@@ -152,6 +149,7 @@ public class LuaEditor extends TextEditor {
 	/**
 	 * Unusable for now.!
 	 */
+	@Override
 	protected void createActions() {
 		super.createActions();
 
@@ -168,8 +166,8 @@ public class LuaEditor extends TextEditor {
 
 	/**
 	 * This method was re-implemented to create a code folding feature.
-	 * 
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		ProjectionViewer viewer = (ProjectionViewer) getSourceViewer();
@@ -196,8 +194,8 @@ public class LuaEditor extends TextEditor {
 
 	/**
 	 * This method was re-implemented to create a code folding feature.
-	 * 
 	 */
+	@Override
 	protected ISourceViewer createSourceViewer(Composite parent,
 			IVerticalRuler ruler, int styles) {
 		fAnnotationAccess = createAnnotationAccess();
@@ -212,17 +210,15 @@ public class LuaEditor extends TextEditor {
 		return viewer;
 	}
 
-	
 	/**
 	 * Folding update Structure
 	 * 
 	 * @param positions
 	 */
-	public void updateFoldingStructure(Map newAnnotations, Map deleteAnnotations)
-	{
+	public void updateFoldingStructure(Map newAnnotations, Map deleteAnnotations) {
 		Annotation[] old = new Annotation[deleteAnnotations.size()];
 		deleteAnnotations.keySet().toArray(old);
-		
+
 		annotationModel.modifyAnnotations(old, newAnnotations, null);
 	}
 

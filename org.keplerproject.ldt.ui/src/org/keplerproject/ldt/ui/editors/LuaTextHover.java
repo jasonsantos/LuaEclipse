@@ -22,6 +22,8 @@
 */
 package org.keplerproject.ldt.ui.editors;
 
+import java.lang.reflect.Constructor;
+
 import org.eclipse.jface.internal.text.html.BrowserInformationControl;
 import org.eclipse.jface.internal.text.html.HTMLTextPresenter;
 import org.eclipse.jface.text.*;
@@ -96,7 +98,14 @@ public class LuaTextHover implements ITextHover, IInformationProviderExtension2 
     			int shellStyle= SWT.RESIZE | SWT.TOOL;
                 int style= SWT.V_SCROLL | SWT.H_SCROLL;
                 if (BrowserInformationControl.isAvailable(parent))
-                	return new BrowserInformationControl(parent, shellStyle, style);
+                	 try {
+                 		 Class BI = Class.forName("BrowserInformationControl");
+                 		 Class params[] = {Shell.class, Integer.class, Integer.class};
+                 		 Constructor c = BI.getConstructor(params);
+                 		 return (IInformationControl) c.newInstance(parent, shellStyle, style);
+                 	 } catch(Exception e) {
+                 		return new DefaultInformationControl(parent, shellStyle, style, new HTMLTextPresenter(false));
+                 	 }
                 else
                 	return new DefaultInformationControl(parent, shellStyle, style, new HTMLTextPresenter(false));
     		}

@@ -96,7 +96,7 @@
             adaptable="true"
             objectClass="org.eclipse.core.resources.IProject"
             nameFilter="*"
-            id="org.keplerproject.ldt.core.contribution1">
+            id="lua.project.popupMenu">
          <menu
          id="org.keplerproject.ldt.ui.luaMenu"
          label="Lua Actions"
@@ -120,6 +120,14 @@
           menubarPath="org.keplerproject.ldt.ui.luaMenu/group1">
          </action>
       </objectContribution>
+      <viewerContribution
+            id="lua.editor.rulerActions"
+            targetID="lua.editor.rulerMenu">
+      </viewerContribution>
+      <viewerContribution
+            id="lua.editor.menuActions"
+            targetID="lua.editor.contextMenu">
+      </viewerContribution>
    </extension>
 <extension
       id="org.keplerproject.ldt.core.LuaScriptSpecs"
