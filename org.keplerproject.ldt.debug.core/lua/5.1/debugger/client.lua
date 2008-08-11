@@ -1,5 +1,5 @@
 -- to use my own version of remdebug
-package.path = '/home/jasonsantos/Documents/workspace/net.luaforge.remdebug/src/?.lua;;' .. package.path
+-- but the system's own luasocket
 oldrequire = require
 pcall(require, 'luarocks.require')
 require'socket'
