@@ -4,7 +4,8 @@
  <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="org.keplerproject.ldt.debug.core.launcher.LuaLaunchDelegate"
+            delegateDescription="LuaEclipse RemDebug Client"
+            delegateName="LuaEclipse RemDebug Client"
             id="lua.launchType"
             modes="run, debug"
             name="Lua Application"
@@ -47,6 +48,23 @@
           class="org.keplerproject.ldt.debug.core.source.SourcePathComputerDelegate"
           id="lua.sourcePathComputer">
     </sourcePathComputer>
+ </extension>
+ <extension
+       point="org.eclipse.debug.core.launchDelegates">
+    <launchDelegate
+          delegate="org.keplerproject.ldt.debug.core.launcher.LuaLaunchDelegate"
+          delegateDescription="LuaEclipse RemDebug Client"
+          id="lua.debug.launchDelegate"
+          modes="run, debug"
+          name="LuaEclipse Application"
+          sourceLocatorId="lua.sourceLocator"
+          sourcePathComputerId="lua.sourcePathComputer"
+          type="lua.launchType">
+       <modeCombination
+             modes="debug"
+             perspective="org.eclipse.debug.ui.DebugPerspective">
+       </modeCombination>
+    </launchDelegate>
  </extension>
 
 </plugin>

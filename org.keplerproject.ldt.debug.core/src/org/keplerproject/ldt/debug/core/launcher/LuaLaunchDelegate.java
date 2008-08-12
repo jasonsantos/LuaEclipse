@@ -77,8 +77,10 @@ public class LuaLaunchDelegate implements ILaunchConfigurationDelegate {
 
 		int controlPort = -1;
 		int eventPort = -1;
-		// TODO obtain host from configuration
+		// TODO obtain host and ports from configuration
 		String controlHost = "localhost";
+
+		commandList.add("--prefix=" + getLuaModulesPath());
 
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
 			commandList.add("--debug");
@@ -135,14 +137,28 @@ public class LuaLaunchDelegate implements ILaunchConfigurationDelegate {
 				LuaDebuggerPlugin.PLUGIN_ID, 0, msg, e));
 	}
 
+	private String getLuaModulesPath() {
+		File f = LuaDebuggerPlugin.getFileInPlugin(new Path("lua/5.1/"));
+		if (f != null)
+			return f.getAbsolutePath();
+		return null;
+
+	}
+
 	/**
 	 * Returns the absolute path of the remdebug client
 	 * 
 	 * @return absolute path of the remdebug client
 	 */
-	private String getLuaDebugClient() {
+	private String getLuaDebugClient() throws DebugException {
 		File f = LuaDebuggerPlugin.getFileInPlugin(new Path(
 				"lua/5.1/debugger/client.lua"));
+		if (f == null)
+			throw new DebugException(new Status(IStatus.ERROR, DebugPlugin
+					.getUniqueIdentifier(),
+					"Could not locate remdebug eclipse client",
+					new FileNotFoundException()));
+
 		return f.getAbsolutePath();
 	}
 

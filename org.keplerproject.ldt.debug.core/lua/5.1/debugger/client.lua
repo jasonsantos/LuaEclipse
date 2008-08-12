@@ -3,9 +3,8 @@
 oldrequire = require
 pcall(require, 'luarocks.require')
 require'socket'
-oldrequire'remdebug.engine'
 
-print('Lua Debugger Client')
+print('LuaEclipse RemDebug Client')
 
 opts = {...}
 options = {}
@@ -18,13 +17,13 @@ for k,v in pairs(opts) do
 		table.insert(files, v)
 	end 
 end
---print'files'
---table.foreach(files, print)
---print'options'
+
 table.foreach(options, function(k,v)
 	string.gsub(v, '(.*)=(.*)', function(key,value) options[key]=value end)
 end)
---table.foreach(options, print)
+
+package.path=";;"..tostring(options.prefix).."/?.lua"
+oldrequire'remdebug.engine'
 
 
 remdebug.engine.config{
@@ -33,5 +32,5 @@ remdebug.engine.config{
 }
 
 print('start', remdebug.engine.start())
-print"retornou"
+
 table.foreachi(files, function(_, file) dofile(file) end)
