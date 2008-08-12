@@ -10,7 +10,8 @@ import org.eclipse.debug.core.model.IVariable;
  * @author jasonsantos
  */
 public class LuaTable extends LuaValue {
-	private final String	fCompositeValue;
+	private final String		fCompositeValue;
+	private final LuaVariable	fVariable;
 
 	/**
 	 * @param debugTarget
@@ -18,10 +19,15 @@ public class LuaTable extends LuaValue {
 	 * @param value
 	 * @throws DebugException
 	 */
-	public LuaTable(LuaValue value) {
+	public LuaTable(LuaVariable variable, LuaValue value) {
 		super(value.getDebugTarget(), value.getReferenceTypeName(),
 				parseCompositeValue(value.getValueString()));
 		fCompositeValue = value.getValueString();
+		fVariable = variable;
+	}
+
+	public LuaVariable getVariable() {
+		return fVariable;
 	}
 
 	/**
@@ -31,7 +37,8 @@ public class LuaTable extends LuaValue {
 	private static String parseCompositeValue(String valueString) {
 		if (valueString != null) {
 			String[] words = valueString.split("#");// TODO: add escape
-													// characters support
+			// characters support
+			// TODO: check if there's a type
 			return words[0];
 		}
 		return null;
@@ -62,16 +69,12 @@ public class LuaTable extends LuaValue {
 			// characters support
 			IVariable[] variables = new IVariable[items.length];
 			for (int i = 0; i < items.length; i++) {
-				String[] pair = items[i].split("="); // TODO: add escape
 				// characters support
-				variables[i] = new LuaTableEntry(getLuaDebugTarget(), pair[0],
-						new LuaValue(getLuaDebugTarget(),
-								getReferenceTypeName(), pair[1]));
+				variables[i] = new LuaTableEntry(this, items[i]);
 			}
 			return variables;
 		}
 
 		return super.getVariables();
 	}
-
 }

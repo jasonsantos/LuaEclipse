@@ -24,8 +24,9 @@
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
             class="org.keplerproject.ldt.debug.ui.launcher.LuaLaunchShortcut"
+            icon="icons/luaeclipse.icon.small.lua.gif"
             id="lua.launchShortcut"
-            label="Debug as a Lua Script"
+            label="Debug Lua Script with RemDebug"
             modes="debug">
          <contextualLaunch>
             <enablement>
@@ -118,6 +119,16 @@
             icon="icons/luaeclipse.icon.small.lua.gif"
             id="lua.typeImage">
       </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.eclipse.debug.internal.ui.DebugPerspectiveFactory"
+            fixed="false"
+            icon="icons/luaeclipse.icon.small.lua.gif"
+            id="org.eclipse.debug.ui.DebugPerspective"
+            name="RemDebug Perspective">
+      </perspective>
    </extension>
 
 </plugin>

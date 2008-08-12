@@ -49,6 +49,21 @@ public class LuaVariable extends LuaDebugElement implements IVariable {
 		return fType;
 	}
 
+	/**
+	 * Return the name used by RemDebug to identify table members This name is
+	 * returned by the command EXAMINE when inspecting tables
+	 * 
+	 * @return
+	 * @throws DebugException
+	 */
+	protected String getInternalName() throws DebugException {
+		return getName();
+	}
+
+	LuaStackFrame getStackFrame() {
+		return fFrame;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -58,14 +73,15 @@ public class LuaVariable extends LuaDebugElement implements IVariable {
 	public IValue getValue() throws DebugException {
 		String value = "";
 		try {
-			value = sendRequest("EXAMINE " + fFrame.getId() + " " + getName());
+			value = sendRequest("EXAMINE " + fFrame.getId() + " "
+					+ getInternalName());
 
 		} catch (IOException e) {
 		}
 
 		if ("table".equals(fType))
-			return new LuaTable(new LuaValue(this.getDebugTarget(), fType,
-					value));
+			return new LuaTable(this, new LuaValue(this.getDebugTarget(),
+					fType, value));
 
 		return new LuaValue(this.getDebugTarget(), fType, value);
 	}
