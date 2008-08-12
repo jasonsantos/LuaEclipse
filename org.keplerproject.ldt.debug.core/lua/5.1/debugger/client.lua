@@ -22,9 +22,10 @@ table.foreach(options, function(k,v)
 	string.gsub(v, '(.*)=(.*)', function(key,value) options[key]=value end)
 end)
 
+local path = package.path 
 package.path=";;"..tostring(options.prefix).."/?.lua"
 oldrequire'remdebug.engine'
-
+package.path=path
 
 remdebug.engine.config{
 	host = options.host;
@@ -33,4 +34,8 @@ remdebug.engine.config{
 
 print('start', remdebug.engine.start())
 
-table.foreachi(files, function(_, file) dofile(file) end)
+table.foreachi(files, function(_, file)
+	local path = string.gsub(file, "(.-)/[^/]-$", "%1") or '.'
+	package.path = package.path .. ";" .. path .. "/?.lua"
+	dofile(file) 
+end)
