@@ -9,9 +9,9 @@ local socket = require"socket"
 local lfs = require"lfs"
 local debug = require"debug"
 
-io.open('/tmp/debug.log', 'w'):close()
+--io.open('/tmp/debug.log', 'w'):close()
 
-print = function(...) local f = io.open('/tmp/debug.log', 'a+') table.foreachi({...}, function(k,v) f:write(tostring(v)) f:write'\t' end) f:write'\n' f:close() end
+--print = function(...) local f = io.open('/tmp/debug.log', 'a+') table.foreachi({...}, function(k,v) f:write(tostring(v)) f:write'\t' end) f:write'\n' f:close() end
 
 module("remdebug.engine", package.seeall)
 
@@ -144,7 +144,7 @@ local function fill_callstack()
 	while level_info do
 		i = 1
 		key, value = debug.getlocal(level, i)
-		local locals = {}
+		local locals = {["(*globals)"]=getfenv(level)}
 		while key do
 			locals[key] = value
 			i = i + 1
@@ -391,14 +391,21 @@ table.foreach(localsstack, print)
 print(locals, #locals, variableName)
 table.foreach(locals, print)
 print(locals[variableName])
-	local value = locals[variableName]
+	local item = locals
+	string.gsub(variableName, "([^.]+)", function(o)
+		if item then
+			item = item[o] or tonumber(o) and item[tonumber(o)] 
+		end
+	end)
+	local value = item
+	
 	local s = tostring(value) 
 xpcall(function()
 
 	if type(value)=='table' then
 		s = s .. "#"
 		for key, value in pairs(value) do
-			s = s .. tostring(key) .. '=' .. tostring(value) .. "|"
+			s = s .. tostring(key) .. '=' .. type(value) .. "|"
 		end
 	end
 	s = s .. '\n'
