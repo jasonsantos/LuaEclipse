@@ -57,6 +57,7 @@ environment for the Lua programming language</div>
 				<li><a href="manual.html#run">Running a Lua file</a></li>
 				<li><a href="manual.html#luaprofiler">LuaProfiler Integration</a></li>
 				<li><a href="manual.html#luadoc">LuaDoc Integration</a></li>
+				<li><a href="manual.html#remdebug">RemDebug Integration</a></li>
 			</ul>
 		</li>
 		<li><a href="screenshots.html">Screenshots</a></li>
@@ -201,7 +202,22 @@ At Variables field, add th environment variables needed for your script.</p>
 <p><img alt="LuaElipse" src="img/LuaEclipse-luadoc-04.png" /></p>
 <p>Aditionally, Lua 5.1 reference was included as a bonus documentation - so the user now can hover standard library functions for their official documentation.</p>
 
- 
+<h2><a name="luadoc"></a>RemDebug Integration</h2>
+
+<p>Version 1.3 introduced the integrated Debugger using RemDebug -- a remote debugger for Lua.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-RemDebug-01.png" /></p>
+<p>Launching a LuaScript for debug is similar to executing a script.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-RemDebug-02.png" /></p>
+<p>The Debug perspective provides several views to help debugging your scripts. One of the main features is the <i>stack frame</i> -- a list of every call level from the launcher to the current line.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-RemDebug-03.png" /></p>
+<p>Clicking any stack level loads the file where this call was made (highlighting the current line) and shows all variables from that context into the variables view.</p> 
+<p><img alt="LuaElipse" src="img/LuaEclipse-RemDebug-04.png" /></p>
+<p>You can run your scripts step by step using either the <i>step over</i> or the <i>step into</i> buttons in toolbar over the <i>stack frame</i> (or alternatively in the 'Run' menu). When you <i>step into</i> a function the execution will step inside any function, modules or file, opening them in an editor if possible.</p>
+<p><img alt="LuaElipse" src="img/LuaEclipse-RemDebug-05.png" /></p>
+<p>it is possible to inspect the value of local or global variables. When a variable is a lua table you can expand it to inspect its values.</p>
+<p><img alt="LuaElipse" src="img/LuaEclipse-RemDebug-06.png" /></p>
+<p>The LuaEditor has been upgraded to add the capacity for setting an persisting simple breakpoints. When the execution hits a breakpoint it automatically pause, allowing the user to continue step by step from there.</p>
+<p>Remdebug communicates with LuaEclipse through a pair of socket connections. LuaEclipse chooses the communication ports and inform them to the launching engine.</p>
 </div>
 <!-- id="content" --></div>
 <!-- id="main" -->

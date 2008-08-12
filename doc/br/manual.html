@@ -54,8 +54,9 @@ integrado para a linguagem de programa&ccedil;&atilde;o Lua</div>
 		<li><a href="manual.html#project">Primeiro Projeto Lua</a></li>
 		<li><a href="manual.html#preferences">Prefer&ecirc;ncias e interpretadores</a></li>
 		<li><a href="manual.html#run">Executando um arquivo Lua</a></li>
-		<li><a href="manual.html#luaprofiler">Integração com LuaProfiler</a></li>
-		<li><a href="manual.html#luadoc">Integração com LuaDoc</a></li>
+		<li><a href="manual.html#luaprofiler">Integra&ccedil;&atilde;o com LuaProfiler</a></li>
+		<li><a href="manual.html#luadoc">Integra&ccedil;&atilde;o com LuaDoc</a></li>
+		<li><a href="manual.html#remdebug">Integra&ccedil;&atilde;o com RemDebug</a></li>
 	</ul>
 	</li>
 	<li><a href="screnshots.html">Screenshots</a></li>
@@ -214,6 +215,49 @@ No campo Variables, adicione as vari&aacute;veis de ambiente que desejar para a 
 <p><img alt="LuaElipse" src="img/LuaEclipse-luadoc-04.png" /></p>
 <p>Adicionalmente, o manual de referência do  Lua 5.1 foi incluída como uma documentação extra - de modo que o usuário agora pode sobrevoar as funções da biblioteca padrão com o mouse para visualizar sua documentação oficial.</p>
 </div>
+
+<h2><a name="remdebug"></a>Depurador integrado com o RemDebug</h2>
+
+<P>A vers&atilde;o 1.3 introduzir um depurador integrado usando
+RemDebug -- um mecanismo de depura&ccedil;&atilde;o remota para Lua.</P>
+<P><IMG SRC="img/LuaEclipse-RemDebug-01.png" NAME="graphics1" ALT="LuaElipse" ALIGN=BOTTOM WIDTH=75 HEIGHT=38 BORDER=0></P>
+<P>Disparar um script lua para depura&ccedil;&atilde;o &eacute;
+similar ao modo de execu&ccedil;&atilde;o normal de um script lua.</P>
+<P><IMG SRC="img/LuaEclipse-RemDebug-02.png" NAME="graphics2" ALT="LuaElipse" ALIGN=BOTTOM WIDTH=75 HEIGHT=38 BORDER=0></P>
+<P>A pespectiva de Debug prov&ecirc; v&aacute;rias janelas de
+visualiza&ccedil;&atilde;o para ajudar a depurar seus scripts. Uma
+das principais funcionalidades &eacute; a <I>stack frame</I> -- uma
+lista com cada um dos n&iacute;veis de chamada entre o disparador e a
+linha atual.</P>
+<P><IMG SRC="img/LuaEclipse-RemDebug-03.png" NAME="graphics3" ALT="LuaElipse" ALIGN=BOTTOM WIDTH=75 HEIGHT=38 BORDER=0></P>
+<P>Clicando em qualquer n&iacute;vel da pilha de chamadas o depurador
+carregar&aacute; o arquivo onde essa chamada foi feita (iluminando a
+linha corrente) e mostrar&aacute; todas as vari&aacute;veis daquele
+contexto na janela de visualiza&ccedil;&atilde;o de vari&aacute;veis.</P>
+<P><IMG SRC="img/LuaEclipse-RemDebug-04.png" NAME="graphics4" ALT="LuaElipse" ALIGN=BOTTOM WIDTH=75 HEIGHT=38 BORDER=0></P>
+<P>&Eacute; poss&iacute;bel executar os scripts passo-a-passo usando
+os bot&otilde;es <I>step over</I> ou <I>step into</I> , presentes na
+barra de ferramentas sobre a <I>stack frame</I> (ou alternativamente
+no menu 'Run'). Quando voc&ecirc; faz um <I>step into</I> em uma
+fun&ccedil;&atilde;o a execu&ccedil;&atilde;o entrar&aacute; na
+fun&ccedil;&atilde;o, m&oacute;dulo ou arquivo em quest&atilde;o,
+abrindo-os em um editor se for poss&iacute;vel.</P>
+<P><IMG SRC="img/LuaEclipse-RemDebug-05.png" NAME="graphics5" ALT="LuaElipse" ALIGN=BOTTOM WIDTH=75 HEIGHT=38 BORDER=0></P>
+<P>&Eacute; poss&iacute;vel inspecionar o valor de vari&aacute;veis
+locais e globais. Quando uma vari&aacute;vel &eacute; uma tabela lua
+voc&ecirc; ainda pode expandi-la para inspecionar seus valores.</P>
+<P><IMG SRC="img/LuaEclipse-RemDebug-06.png" NAME="graphics6" ALT="LuaElipse" ALIGN=BOTTOM WIDTH=75 HEIGHT=38 BORDER=0></P>
+<P>O Editor de scripts lua foi atualizada para adicionar as
+capacidades de ativar e persistir <I>breakpoints </I>simples. Quando
+a execu&ccedil;&atilde;o atinge um <I>breakpoint </I>ela p&aacute;ra
+automaticamente, permitindo ao usu&aacute;rio continuar passo-a-passo
+a partir daquele ponto.</P>
+<P>O Remdebug se comunica com o LuaEclipse atrav&eacute;s de um par
+de 'sockets' -- conex&otilde;es de rede. o LuaEclipse escolhe as
+portas para essa comunica&ccedil;&atilde;o e as informa ao mecanismo
+de disparo.</P>
+</div>
+
 <!-- id="content" --></div>
 
 
