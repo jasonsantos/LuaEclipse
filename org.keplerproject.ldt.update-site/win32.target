@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.2"?>
+
+<target name="Win32">
+
+   <environment>
+      <os>win32</os>
+   </environment>
+
+   <location useDefault="true"/>
+
+   <content useAllPlugins="true">
+      <plugins>
+      </plugins>
+      <features>
+      </features>
+   </content>
+
+</target>

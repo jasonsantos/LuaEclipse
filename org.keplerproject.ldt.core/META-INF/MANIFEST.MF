@@ -8,13 +8,14 @@ Bundle-ClassPath: LuaCore.jar,
  jluafilesystem-0.2.jar
 Bundle-Activator: org.keplerproject.ldt.core.LuaCorePlugin
 Bundle-Vendor: Kepler Project
-Bundle-Localization: plugin
-Export-Package: META-INF,
- org.keplerproject.ldt.core,
+Export-Package: org.keplerproject.ldt.core,
  org.keplerproject.ldt.core.compiler,
+ org.keplerproject.ldt.core.lua.modules,
  org.keplerproject.ldt.core.luadoc,
  org.keplerproject.ldt.core.project,
- org.keplerproject.luajava
+ org.keplerproject.ldt.core.utils,
+ org.keplerproject.luajava,
+ org.keplerproject.luajava.luafilesystem
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.ui,

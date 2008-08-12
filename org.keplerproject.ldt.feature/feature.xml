@@ -2,9 +2,8 @@
 <feature
       id="org.keplerproject.ldt.feature"
       label="Lua Development Tool"
-      version="1.2.1.qualifier"
+      version="1.3.0.qualifier"
       provider-name="Kepler Project "
-      arch="ia64_32,PA_RISC,ppc,sparc,x86"
       colocation-affinity="org.keplerproject.ldt.feature">
 
    <description url="http://luaeclipse.luaforge.net">
@@ -81,56 +80,55 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.keplerproject.ldt.core"
-         download-size="113"
-         install-size="113"
+         download-size="0"
+         install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.keplerproject.ldt.ui"
-         download-size="117"
-         install-size="117"
+         download-size="0"
+         install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.keplerproject.ldt.ui.baseExts"
-         download-size="81"
-         install-size="81"
+         download-size="0"
+         install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.keplerproject.ldt.launcher"
-         download-size="48"
-         install-size="48"
+         download-size="0"
+         install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
          id="org.keplerproject.ldt.linux"
-         os="linux,macosx,win32"
+         os="linux"
          arch="x86"
-         download-size="75"
-         install-size="75"
+         download-size="0"
+         install-size="0"
          version="0.0.0"
          fragment="true"
          unpack="false"/>
 
    <plugin
          id="org.keplerproject.ldt.win32"
-         os="linux,macosx,win32"
-         download-size="75"
-         install-size="75"
+         download-size="0"
+         install-size="0"
          version="0.0.0"
          fragment="true"
          unpack="false"/>
 
    <plugin
          id="org.keplerproject.ldt.macosx"
-         os="linux,macosx,win32"
-         download-size="86"
-         install-size="86"
+         os="macosx"
+         download-size="0"
+         install-size="0"
          version="0.0.0"
          fragment="true"
          unpack="false"/>
