@@ -96,7 +96,7 @@ public class LuaDebugThread extends LuaDebugElement implements IThread,
 	 * 
 	 * @see org.eclipse.debug.core.model.IThread#getBreakpoints()
 	 */
-	@Override
+
 	public IBreakpoint[] getBreakpoints() {
 		if (fBreakpoint == null) {
 			return new IBreakpoint[0];
@@ -120,7 +120,7 @@ public class LuaDebugThread extends LuaDebugElement implements IThread,
 	 * 
 	 * @see org.eclipse.debug.core.model.IThread#getName()
 	 */
-	@Override
+
 	public String getName() {
 		return "Lua Main Thread";
 	}
@@ -130,7 +130,7 @@ public class LuaDebugThread extends LuaDebugElement implements IThread,
 	 * 
 	 * @see org.eclipse.debug.core.model.IThread#getPriority()
 	 */
-	@Override
+
 	public int getPriority() {
 		return 0; // irrelevant
 	}
@@ -140,7 +140,7 @@ public class LuaDebugThread extends LuaDebugElement implements IThread,
 	 * 
 	 * @see org.eclipse.debug.core.model.IThread#getStackFrames()
 	 */
-	@Override
+
 	public IStackFrame[] getStackFrames() throws DebugException {
 		if (isSuspended()) {
 			System.out.println("------------------------->" + fFramesData);
@@ -158,7 +158,7 @@ public class LuaDebugThread extends LuaDebugElement implements IThread,
 	 * 
 	 * @see org.eclipse.debug.core.model.IThread#getTopStackFrame()
 	 */
-	@Override
+
 	public IStackFrame getTopStackFrame() throws DebugException {
 		IStackFrame[] frames = getStackFrames();
 		if (frames.length > 0) {
@@ -172,7 +172,7 @@ public class LuaDebugThread extends LuaDebugElement implements IThread,
 	 * 
 	 * @see org.eclipse.debug.core.model.IThread#hasStackFrames()
 	 */
-	@Override
+
 	public boolean hasStackFrames() throws DebugException {
 		return isSuspended();
 	}
@@ -345,7 +345,7 @@ public class LuaDebugThread extends LuaDebugElement implements IThread,
 	 * 
 	 * @see org.keplerproject.ldt.debug.core.model.ILuaEventListener#handleEvent(java.lang.String)
 	 */
-	@Override
+
 	public void handleEvent(String event) {
 		// clear previous state
 		fBreakpoint = null;

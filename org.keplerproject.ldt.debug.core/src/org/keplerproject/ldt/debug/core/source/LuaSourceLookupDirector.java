@@ -16,7 +16,6 @@ public class LuaSourceLookupDirector extends AbstractSourceLookupDirector {
 	 * 
 	 * @see org.eclipse.debug.core.sourcelookup.ISourceLookupDirector#initializeParticipants()
 	 */
-	@Override
 	public void initializeParticipants() {
 
 		addParticipants(new ISourceLookupParticipant[] { new LuaSourceLookupParticipant() });

@@ -21,7 +21,6 @@ public class LuaEditorAdapterFactory implements IAdapterFactory {
 	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object,
 	 *      java.lang.Class)
 	 */
-	@Override
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		if (adaptableObject instanceof LuaEditor) {
 
@@ -46,7 +45,6 @@ public class LuaEditorAdapterFactory implements IAdapterFactory {
 	 * 
 	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapterList()
 	 */
-	@Override
 	public Class[] getAdapterList() {
 		return new Class[] { IToggleBreakpointsTarget.class };
 	}

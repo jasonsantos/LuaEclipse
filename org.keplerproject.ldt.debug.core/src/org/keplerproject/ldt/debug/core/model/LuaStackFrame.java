@@ -110,7 +110,7 @@ public class LuaStackFrame extends LuaDebugElement implements IStackFrame,
 	 * 
 	 * @see org.eclipse.debug.core.model.IStackFrame#getCharEnd()
 	 */
-	@Override
+
 	public int getCharEnd() throws DebugException {
 
 		return -1;
@@ -121,7 +121,7 @@ public class LuaStackFrame extends LuaDebugElement implements IStackFrame,
 	 * 
 	 * @see org.eclipse.debug.core.model.IStackFrame#getCharStart()
 	 */
-	@Override
+
 	public int getCharStart() throws DebugException {
 
 		return -1;
@@ -132,7 +132,7 @@ public class LuaStackFrame extends LuaDebugElement implements IStackFrame,
 	 * 
 	 * @see org.eclipse.debug.core.model.IStackFrame#getLineNumber()
 	 */
-	@Override
+
 	public int getLineNumber() throws DebugException {
 		return fLine;
 	}
@@ -142,7 +142,7 @@ public class LuaStackFrame extends LuaDebugElement implements IStackFrame,
 	 * 
 	 * @see org.eclipse.debug.core.model.IStackFrame#getName()
 	 */
-	@Override
+
 	public String getName() throws DebugException {
 
 		return fShortFileName + ':' + fName;
@@ -153,7 +153,7 @@ public class LuaStackFrame extends LuaDebugElement implements IStackFrame,
 	 * 
 	 * @see org.eclipse.debug.core.model.IStackFrame#getRegisterGroups()
 	 */
-	@Override
+
 	public IRegisterGroup[] getRegisterGroups() throws DebugException {
 		return null;
 	}
@@ -163,7 +163,7 @@ public class LuaStackFrame extends LuaDebugElement implements IStackFrame,
 	 * 
 	 * @see org.eclipse.debug.core.model.IStackFrame#getThread()
 	 */
-	@Override
+
 	public IThread getThread() {
 		return fThread;
 	}
@@ -173,7 +173,7 @@ public class LuaStackFrame extends LuaDebugElement implements IStackFrame,
 	 * 
 	 * @see org.eclipse.debug.core.model.IStackFrame#getVariables()
 	 */
-	@Override
+
 	public IVariable[] getVariables() throws DebugException {
 		// TODO: return variables from this function
 		return fThread.getVariables(this);
@@ -184,7 +184,7 @@ public class LuaStackFrame extends LuaDebugElement implements IStackFrame,
 	 * 
 	 * @see org.eclipse.debug.core.model.IStackFrame#hasRegisterGroups()
 	 */
-	@Override
+
 	public boolean hasRegisterGroups() throws DebugException {
 		return false;
 	}
@@ -194,7 +194,7 @@ public class LuaStackFrame extends LuaDebugElement implements IStackFrame,
 	 * 
 	 * @see org.eclipse.debug.core.model.IStackFrame#hasVariables()
 	 */
-	@Override
+
 	public boolean hasVariables() throws DebugException {
 		return getVariables().length > 0;
 	}
@@ -345,7 +345,7 @@ public class LuaStackFrame extends LuaDebugElement implements IStackFrame,
 	 * 
 	 * @see org.keplerproject.ldt.debug.core.model.ILuaEventListener#handleEvent(java.lang.String)
 	 */
-	@Override
+
 	public void handleEvent(String event) {
 		if (event.startsWith("101")) {
 			String framesData = event.substring("101 Stack ".length());

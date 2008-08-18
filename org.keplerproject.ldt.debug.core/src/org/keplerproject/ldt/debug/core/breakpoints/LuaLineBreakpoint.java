@@ -81,7 +81,7 @@ public class LuaLineBreakpoint extends LineBreakpoint implements
 	 * 
 	 * @see org.keplerproject.ldt.debug.core.model.ILuaEventListener#handleEvent(java.lang.String)
 	 */
-	@Override
+
 	public void handleEvent(String event) {
 		// TODO verify if this breakpoint was hit
 		System.out.println(event);
@@ -93,7 +93,7 @@ public class LuaLineBreakpoint extends LineBreakpoint implements
 	 * 
 	 * @see org.eclipse.debug.core.model.IBreakpoint#getModelIdentifier()
 	 */
-	@Override
+
 	public String getModelIdentifier() {
 		return LuaDebuggerPlugin.ID_LUA_DEBUG_MODEL;
 	}

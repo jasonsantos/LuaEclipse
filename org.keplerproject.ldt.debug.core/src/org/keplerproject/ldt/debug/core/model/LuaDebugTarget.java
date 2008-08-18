@@ -98,7 +98,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * 
 	 * @see org.eclipse.debug.core.model.IDebugTarget#getName()
 	 */
-	@Override
+
 	public String getName() throws DebugException {
 		return "Lua";
 	}
@@ -108,7 +108,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * 
 	 * @see org.eclipse.debug.core.model.IDebugTarget#getProcess()
 	 */
-	@Override
+
 	public IProcess getProcess() {
 		return fProcess;
 	}
@@ -122,7 +122,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * 
 	 * @see org.eclipse.debug.core.model.IDebugTarget#getThreads()
 	 */
-	@Override
+
 	public IThread[] getThreads() throws DebugException {
 		return fThreads;
 	}
@@ -132,7 +132,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * 
 	 * @see org.eclipse.debug.core.model.DebugElement#getLaunch()
 	 */
-	@Override
+
 	public ILaunch getLaunch() {
 		return fLaunch;
 	}
@@ -142,7 +142,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * 
 	 * @see org.eclipse.debug.core.model.IDebugTarget#hasThreads()
 	 */
-	@Override
+
 	public boolean hasThreads() throws DebugException {
 		return true;
 	}
@@ -152,7 +152,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * 
 	 * @see org.eclipse.debug.core.model.IDebugTarget#supportsBreakpoint(org.eclipse.debug.core.model.IBreakpoint)
 	 */
-	@Override
+
 	public boolean supportsBreakpoint(IBreakpoint breakpoint) {
 		if (!isTerminated()
 				&& breakpoint.getModelIdentifier().equals(getModelIdentifier())) {
@@ -359,7 +359,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * @see org.eclipse.debug.core.model.IMemoryBlockRetrieval#getMemoryBlock(long,
 	 *      long)
 	 */
-	@Override
+
 	public IMemoryBlock getMemoryBlock(long startAddress, long length)
 			throws DebugException {
 		// TODO Auto-generated method stub
@@ -371,7 +371,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * 
 	 * @see org.eclipse.debug.core.model.IMemoryBlockRetrieval#supportsStorageRetrieval()
 	 */
-	@Override
+
 	public boolean supportsStorageRetrieval() {
 		// TODO Auto-generated method stub
 		return false;
@@ -417,7 +417,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * 
 	 * @see org.keplerproject.ldt.debug.core.model.ILuaEventListener#handleEvent(java.lang.String)
 	 */
-	@Override
+
 	public void handleEvent(String event) {
 		if (event.startsWith("200") && !fStarted)
 			fireCreationEvent();

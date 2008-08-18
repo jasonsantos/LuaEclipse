@@ -34,7 +34,6 @@ public class LuaRunToLineTargetAdapter implements IRunToLineTarget {
 	 *      org.eclipse.jface.viewers.ISelection,
 	 *      org.eclipse.debug.core.model.ISuspendResume)
 	 */
-	@Override
 	public boolean canRunToLine(IWorkbenchPart part, ISelection selection,
 			ISuspendResume target) {
 		return target instanceof IDebugElement
@@ -49,7 +48,6 @@ public class LuaRunToLineTargetAdapter implements IRunToLineTarget {
 	 *      org.eclipse.jface.viewers.ISelection,
 	 *      org.eclipse.debug.core.model.ISuspendResume)
 	 */
-	@Override
 	public void runToLine(IWorkbenchPart part, ISelection selection,
 			ISuspendResume target) throws CoreException {
 

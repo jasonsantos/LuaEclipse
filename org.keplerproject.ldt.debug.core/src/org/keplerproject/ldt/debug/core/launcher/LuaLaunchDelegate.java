@@ -45,7 +45,7 @@ public class LuaLaunchDelegate implements ILaunchConfigurationDelegate {
 	 *      java.lang.String, org.eclipse.debug.core.ILaunch,
 	 *      org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	@Override
+
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 

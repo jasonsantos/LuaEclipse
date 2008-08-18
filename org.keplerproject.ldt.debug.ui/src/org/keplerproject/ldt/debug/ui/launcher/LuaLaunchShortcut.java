@@ -29,7 +29,6 @@ public class LuaLaunchShortcut implements ILaunchShortcut {
 	 * @see org.eclipse.debug.ui.ILaunchShortcut#launch(org.eclipse.jface.viewers.ISelection,
 	 *      java.lang.String)
 	 */
-	@Override
 	public void launch(ISelection selection, String mode) {
 		// must be a structured selection with one file selected
 		IFile file = (IFile) ((IStructuredSelection) selection)
@@ -84,7 +83,7 @@ public class LuaLaunchShortcut implements ILaunchShortcut {
 	 * @see org.eclipse.debug.ui.ILaunchShortcut#launch(org.eclipse.ui.IEditorPart,
 	 *      java.lang.String)
 	 */
-	@Override
+
 	public void launch(IEditorPart editor, String mode) {
 	}
 

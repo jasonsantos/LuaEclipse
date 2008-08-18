@@ -31,7 +31,7 @@ public class LuaValue extends LuaDebugElement implements IValue {
 	 * 
 	 * @see org.eclipse.debug.core.model.IValue#getReferenceTypeName()
 	 */
-	@Override
+
 	public String getReferenceTypeName() {
 		return fType;
 	}
@@ -41,7 +41,7 @@ public class LuaValue extends LuaDebugElement implements IValue {
 	 * 
 	 * @see org.eclipse.debug.core.model.IValue#getValueString()
 	 */
-	@Override
+
 	public String getValueString() {
 		return fValue;
 	}
@@ -51,7 +51,7 @@ public class LuaValue extends LuaDebugElement implements IValue {
 	 * 
 	 * @see org.eclipse.debug.core.model.IValue#getVariables()
 	 */
-	@Override
+
 	public IVariable[] getVariables() throws DebugException {
 		return new IVariable[0];
 	}
@@ -61,7 +61,7 @@ public class LuaValue extends LuaDebugElement implements IValue {
 	 * 
 	 * @see org.eclipse.debug.core.model.IValue#hasVariables()
 	 */
-	@Override
+
 	public boolean hasVariables() throws DebugException {
 		return false;
 	}
@@ -71,7 +71,7 @@ public class LuaValue extends LuaDebugElement implements IValue {
 	 * 
 	 * @see org.eclipse.debug.core.model.IValue#isAllocated()
 	 */
-	@Override
+
 	public boolean isAllocated() throws DebugException {
 		return true;
 	}

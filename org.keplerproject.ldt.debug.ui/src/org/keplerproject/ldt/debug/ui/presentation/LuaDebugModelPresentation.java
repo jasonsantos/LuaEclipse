@@ -103,7 +103,7 @@ public class LuaDebugModelPresentation extends LabelProvider implements
 	 * @see org.eclipse.debug.ui.IDebugModelPresentation#computeDetail(org.eclipse.debug.core.model.IValue,
 	 *      org.eclipse.debug.ui.IValueDetailListener)
 	 */
-	@Override
+
 	public void computeDetail(IValue value, IValueDetailListener listener) {
 		String detail = "";
 		try {
@@ -122,7 +122,7 @@ public class LuaDebugModelPresentation extends LabelProvider implements
 	 * @see org.eclipse.debug.ui.IDebugModelPresentation#setAttribute(java.lang.String,
 	 *      java.lang.Object)
 	 */
-	@Override
+
 	public void setAttribute(String attribute, Object value) {
 		// TODO Auto-generated method stub
 
@@ -134,7 +134,7 @@ public class LuaDebugModelPresentation extends LabelProvider implements
 	 * @see org.eclipse.debug.ui.ISourcePresentation#getEditorId(org.eclipse.ui.IEditorInput,
 	 *      java.lang.Object)
 	 */
-	@Override
+
 	public String getEditorId(IEditorInput input, Object element) {
 		if (element instanceof IFile || element instanceof ILineBreakpoint) {
 			return "org.keplerproject.ldt.ui.editors.LuaEditor";
@@ -147,7 +147,7 @@ public class LuaDebugModelPresentation extends LabelProvider implements
 	 * 
 	 * @see org.eclipse.debug.ui.ISourcePresentation#getEditorInput(java.lang.Object)
 	 */
-	@Override
+
 	public IEditorInput getEditorInput(Object element) {
 		if (element instanceof IFile) {
 			return new FileEditorInput((IFile) element);

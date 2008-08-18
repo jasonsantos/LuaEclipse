@@ -85,17 +85,17 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 
 		}
 
-		@Override
+
 		public void modifyText(ModifyEvent e) {
 			updateLaunchConfigurationDialog();
 		}
 
-		@Override
+
 		public void widgetDefaultSelected(SelectionEvent e) {
 			System.out.println(e.detail);
 		}
 
-		@Override
+
 		public void widgetSelected(SelectionEvent e) {
 			if (e.widget == fProjButton) {
 				browseLuaProjects();
@@ -175,7 +175,7 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 	 * 
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#createControl(org.eclipse.swt.widgets.Composite)
 	 */
-	@Override
+
 	public void createControl(Composite parent) {
 		Composite comp = SWTFactory.createComposite(parent, parent.getFont(),
 				1, 1, GridData.FILL_BOTH);
@@ -192,7 +192,6 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 	 * 
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#getName()
 	 */
-	@Override
 	public String getName() {
 		return "Main";
 	}
@@ -202,7 +201,7 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 	 * 
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#initializeFrom(org.eclipse.debug.core.ILaunchConfiguration)
 	 */
-	@Override
+
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
 			String project = configuration.getAttribute(
@@ -228,7 +227,7 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 	 * 
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#performApply(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
 	 */
-	@Override
+
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		String project = fProjText.getText().trim();
 		String script = fMainText.getText().trim();
@@ -264,7 +263,7 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 	 * 
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#setDefaults(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
 	 */
-	@Override
+
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		// TODO Auto-generated method stub
 

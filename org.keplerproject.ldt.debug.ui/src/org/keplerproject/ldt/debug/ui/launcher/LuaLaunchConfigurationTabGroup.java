@@ -9,7 +9,6 @@ import org.eclipse.debug.ui.sourcelookup.SourceLookupTab;
 
 public class LuaLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
 
-	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		setTabs(new ILaunchConfigurationTab[] {
 				new LuaMainTab(),

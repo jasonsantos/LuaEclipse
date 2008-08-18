@@ -28,7 +28,7 @@ public class LuaDebugElement extends DebugElement {
 	 * 
 	 * @see org.eclipse.debug.core.model.IDebugElement#getModelIdentifier()
 	 */
-	@Override
+
 	public String getModelIdentifier() {
 		return LuaDebuggerPlugin.ID_LUA_DEBUG_MODEL;
 	}
