@@ -75,12 +75,8 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 		breakpointManager.addBreakpointListener(this);
 		breakpointManager.addBreakpointManagerListener(this);
 
-		try {
-			System.out.println(sendRequest("SETB " + scriptPath + " 1"));
-			System.out.println(sendRequest("RUN"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		installDeferredBreakpoints();
+		resume();
 
 	}
 
@@ -133,6 +129,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * @see org.eclipse.debug.core.model.DebugElement#getLaunch()
 	 */
 
+	@Override
 	public ILaunch getLaunch() {
 		return fLaunch;
 	}
@@ -173,7 +170,8 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 					}
 
 					if (resource != null) {
-						return resource.getFullPath().equals(program);
+						return resource.getFullPath().toString()
+								.equals(program);
 					}
 				}
 			} catch (CoreException e) {
