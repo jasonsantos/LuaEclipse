@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+<extension point="org.eclipse.dltk.core.sourceParsers">
+      <parserContribution
+            natureId="org.keplerproject.dltk.ldt.nature">
+         <parser
+               class="org.keplerproject.dltk.ldt.core.parser.LuaSourceParserFactory"
+               description="Lua Source parser"
+               id="org.keplerproject.dltk.ldt.sourceParser"
+               name="sourceParser.name"
+               priority="0" />
+      </parserContribution>
+</extension>
+
+<extension point="org.eclipse.dltk.core.sourceElementParsers">
+      <parser
+            class="org.keplerproject.dltk.ldt.core.parser.LuaSourceElementParser"
+            nature="org.keplerproject.dltk.ldt.nature"
+            priority="1">
+      </parser>
+</extension>
+</plugin>

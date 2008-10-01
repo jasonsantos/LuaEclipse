@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.search.searchPages">
+      <page
+      		canSearchEnclosingProjects="true"
+            class="org.keplerproject.dltk.ldt.ui.ide.search.LuaSearchPage"
+            enabled="true"
+            icon=""
+            id="org.keplerproject.dltk.ldt.ui.ide.search.LuaSearchPage"
+            label="Lua Search"
+            showScopeSection="true"
+            sizeHint="460, 160"
+            />
+   </extension>
+	<extension
+	      point="org.eclipse.dltk.core.search">
+	      <seachFactory
+             class="org.keplerproject.dltk.ldt.ui.ide.search.LuaSearchFactory"
+             nature="org.keplerproject.dltk.ldt.nature"
+             priority="0" />
+	</extension>
+	<extension
+	      point="org.eclipse.dltk.core.selectionEngine">
+	      <selectionEngine
+             class="org.keplerproject.dltk.ldt.ui.ide.selection.LuaSelectionEngine"
+             nature="org.keplerproject.dltk.ldt.nature"
+             priority="0">
+	      </selectionEngine>
+	</extension>
+</plugin>

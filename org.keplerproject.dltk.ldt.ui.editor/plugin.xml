@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="org.keplerproject.dltk.ldt.ui.editor"
+            icon=""
+            default="false"
+            class="org.keplerproject.dltk.ldt.ui.editor.LuaEditor"
+            name="Lua Editor">
+            <contentTypeBinding
+                  contentTypeId="org.keplerproject.dltk.ldt.content-type">
+            </contentTypeBinding>
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+         <initializer
+               class="org.keplerproject.dltk.ldt.ui.LuaUIPreferenceInitializer">
+         </initializer>
+   </extension>
+
+</plugin>

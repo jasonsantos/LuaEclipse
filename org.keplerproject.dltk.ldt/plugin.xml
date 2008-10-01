@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         id="nature"
+         name="Lua Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.keplerproject.dltk.ldt.core.LuaNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.contentTypes">
+         <content-type
+			base-type="org.eclipse.core.runtime.text"
+            describer="org.keplerproject.dltk.ldt.core.LuaContentTypeDescriber"
+            file-extensions="lua"
+            id="org.keplerproject.dltk.ldt.content-type"
+            name="Lua Content Type"
+            priority="high"
+            />
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.language">
+      <language
+            class="org.keplerproject.dltk.ldt.core.LuaLanguageToolkit"
+            nature="org.keplerproject.dltk.ldt.nature"
+            priority="0"/>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.ui.language">
+         <language
+         	class="org.keplerproject.dltk.ldt.ui.LuaUILanguageToolkit"
+         	nature="org.keplerproject.dltk.ldt.nature"
+         	priority="0" />
+   </extension>
+
+   <extension point="org.eclipse.dltk.core.sourceElementParsers">
+      <parser
+            class="org.keplerproject.dltk.ldt.core.parser.StubLuaSourceElementParser"
+            nature="org.keplerproject.dltk.ldt.nature"
+            priority="0">
+      </parser>
+</extension>
+
+	<extension point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.keplerproject.dltk.ldt.category"
+            class="org.eclipse.dltk.ui.wizards.GenericDLTKProjectWizard:org.keplerproject.dltk.ldt.nature"
+            icon=""
+            id="org.keplerproject.dltk.ldt.wizard"
+            name="Lua Project"
+            project="true">
+      </wizard>
+      <category
+            id="org.keplerproject.dltk.ldt.category"
+            name="Lua">
+      </category>
+   </extension>
+ <extension
+       point="org.eclipse.dltk.launching.interpreterInstallTypes">
+    <interpreterInstallType
+          class="org.keplerproject.dltk.ldt.interpreter.LuaInterpreterInstallType"
+          id="org.keplerproject.dltk.ldt.debug.ui.LuaInterpreterInstallType">
+    </interpreterInstallType>
+ </extension>
+ <extension
+       point="org.eclipse.ui.preferencePages">
+    <page
+          class="org.keplerproject.dltk.ldt.interpreter.ui.LuaInterpreterPreferencePage"
+          id="org.keplerproject.dltk.ldt.preferences.interpreters"
+          name="Lua Interpreter">
+    </page>
+ </extension>
+</plugin>

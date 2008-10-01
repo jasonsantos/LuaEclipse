@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LuaEclipse Parser
+Bundle-SymbolicName: org.keplerproject.dltk.ldt.core.parser;singleton:=true
+Bundle-Version: 2.0.0.M1
+Bundle-Activator: org.keplerproject.dltk.ldt.core.parser.LuaEclipseParserPlugin
+Require-Bundle: org.keplerproject.dltk.ldt,
+ org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.dltk.core
+Eclipse-LazyStart: true
+Export-Package: org.keplerproject.dltk.ldt.core.parser;
+  uses:="org.eclipse.dltk.ast.parser,
+   org.eclipse.dltk.ast.declarations,
+   org.osgi.framework,
+   org.eclipse.ui.plugin,
+   org.eclipse.dltk.compiler.problem,
+   org.eclipse.dltk.core",
+ org.keplerproject.dltk.ldt.core.parser.ast;uses:="org.eclipse.dltk.ast.declarations",
+ org.keplerproject.dltk.ldt.core.parser.ast.declarations,
+ org.keplerproject.dltk.ldt.core.parser.ast.expressions;uses:="org.eclipse.dltk.ast.expressions,org.eclipse.dltk.ast",
+ org.keplerproject.dltk.ldt.core.parser.ast.references,
+ org.keplerproject.dltk.ldt.core.parser.ast.statements;uses:="org.eclipse.dltk.ast,org.eclipse.dltk.ast.statements",
+ org.keplerproject.dltk.ldt.core.parser.visitors;uses:="org.eclipse.dltk.compiler"

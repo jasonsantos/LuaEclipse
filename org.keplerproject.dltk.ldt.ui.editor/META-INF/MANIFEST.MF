@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LuaEclipse Editor Plug-in
+Bundle-SymbolicName: org.keplerproject.dltk.ldt.ui.editor;singleton:=true
+Bundle-Version: 2.0.0.M1
+Bundle-Activator: org.keplerproject.dltk.ldt.ui.editor.LuaEditorUIPlugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.ide,
+ org.eclipse.dltk.ui,
+ org.eclipse.dltk.core,
+ org.keplerproject.dltk.ldt,
+ org.keplerproject.dltk.ldt.core.parser
+Eclipse-LazyStart: true
