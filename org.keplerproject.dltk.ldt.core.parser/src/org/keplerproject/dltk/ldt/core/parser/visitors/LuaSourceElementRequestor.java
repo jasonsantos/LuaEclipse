@@ -5,6 +5,7 @@ import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
 
 public class LuaSourceElementRequestor extends SourceElementRequestVisitor {
 
+	// stub comment
 	public LuaSourceElementRequestor(ISourceElementRequestor requesor) {
 		super(requesor);
 	}
