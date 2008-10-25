@@ -1,6 +1,5 @@
 package org.keplerproject.dltk.ldt.core.parser.ast.expressions;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTVisitor;

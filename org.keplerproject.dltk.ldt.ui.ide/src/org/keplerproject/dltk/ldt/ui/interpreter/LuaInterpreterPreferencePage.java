@@ -1,4 +1,4 @@
-package org.keplerproject.dltk.ldt.interpreter.ui;
+package org.keplerproject.dltk.ldt.ui.interpreter;
 
 import org.eclipse.dltk.internal.debug.ui.interpreters.InterpretersBlock;
 import org.eclipse.dltk.internal.debug.ui.interpreters.ScriptInterpreterPreferencePage;

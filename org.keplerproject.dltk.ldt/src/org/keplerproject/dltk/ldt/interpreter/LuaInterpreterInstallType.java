@@ -12,7 +12,7 @@ import org.keplerproject.dltk.ldt.core.LuaCorePlugin;
 import org.keplerproject.dltk.ldt.core.LuaNature;
 
 public class LuaInterpreterInstallType extends AbstractInterpreterInstallType {
-	private static final String[] INTERPRETER_NAMES = { "lua" };
+	private static final String[] INTERPRETER_NAMES = {"lua", "lua50", "lua5.1", "lua51", "lua.exe", "lua50.exe","lua5.1.exe", "lua51.exe"};
 	
 	protected File createPathFile() throws IOException {
 		return storeToMetadata(LuaCorePlugin.getDefault(), "path.lua", "scripts/path.lua");
@@ -41,6 +41,7 @@ public class LuaInterpreterInstallType extends AbstractInterpreterInstallType {
 
 	@Override
 	protected String[] getPossibleInterpreterNames() {
+		// TODO: obtain from configuration 
 		return INTERPRETER_NAMES;
 	}
 

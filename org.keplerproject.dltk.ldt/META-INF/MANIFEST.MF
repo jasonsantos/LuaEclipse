@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LuaEclipse 2.0
 Bundle-SymbolicName: org.keplerproject.dltk.ldt;singleton:=true
-Bundle-Version: 2.0.0.M1
+Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: org.keplerproject.dltk.ldt.core.LuaCorePlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -19,6 +19,4 @@ Require-Bundle: org.eclipse.ui,
 Eclipse-LazyStart: true
 Export-Package: org.keplerproject.dltk.ldt.core,
  org.keplerproject.dltk.ldt.core.parser,
- org.keplerproject.dltk.ldt.interpreter,
- org.keplerproject.dltk.ldt.interpreter.ui,
- org.keplerproject.dltk.ldt.ui
+ org.keplerproject.dltk.ldt.interpreter

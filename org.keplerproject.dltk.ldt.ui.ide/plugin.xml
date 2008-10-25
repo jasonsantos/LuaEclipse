@@ -29,4 +29,43 @@
              priority="0">
 	      </selectionEngine>
 	</extension>
+ <extension
+       point="org.eclipse.ui.perspectives">
+    <perspective
+          class="org.keplerproject.dltk.ldt.ui.ide.perspectives.LuaPerspective"
+          icon="icons/luaeclipse.icon.small.lua.gif"
+          id="org.keplerproject.dltk.ldt.ui.ide.perspectives.LuaPerspective"
+          name="Lua">
+    </perspective>
+ </extension>
+ <extension
+       point="org.eclipse.ui.newWizards">
+    <wizard
+          category="org.keplerproject.dltk.ldt.category"
+          class="org.eclipse.dltk.ui.wizards.GenericDLTKProjectWizard:org.keplerproject.dltk.ldt.nature"
+          id="org.keplerproject.dltk.ldt.wizard"
+          name="Lua Project"
+          project="true">
+    </wizard>
+    <category
+          id="org.keplerproject.dltk.ldt.category"
+          name="Lua">
+    </category>
+ </extension>
+ <extension
+       point="org.eclipse.ui.preferencePages">
+    <page
+          class="org.keplerproject.dltk.ldt.ui.interpreter.LuaInterpreterPreferencePage"
+          id="org.keplerproject.dltk.ldt.preferences.interpreters"
+          name="Lua Interpreter">
+    </page>
+ </extension>
+ <extension
+       point="org.eclipse.dltk.ui.language">
+    <language
+          class="org.keplerproject.dltk.ldt.ui.LuaUILanguageToolkit"
+          nature="org.keplerproject.dltk.ldt.nature"
+          priority="0">
+    </language>
+ </extension>
 </plugin>

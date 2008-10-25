@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LuaEclipse IDE
 Bundle-SymbolicName: org.keplerproject.dltk.ldt.ui.ide;singleton:=true
-Bundle-Version: 2.0.0.M1
+Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: org.keplerproject.dltk.ldt.ui.ide.LuaEclipseIDEPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -14,5 +14,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.editors,
  org.keplerproject.dltk.ldt,
  org.keplerproject.dltk.ldt.core.parser,
- org.keplerproject.dltk.ldt.ui.editor
+ org.keplerproject.dltk.ldt.ui.editor,
+ org.eclipse.ui.console,
+ org.eclipse.jdt.ui,
+ org.eclipse.dltk.debug.ui,
+ org.eclipse.dltk.launching
 Eclipse-LazyStart: true
+Export-Package: org.keplerproject.dltk.ldt.ui,
+ org.keplerproject.dltk.ldt.ui.interpreter
