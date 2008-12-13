@@ -40,17 +40,43 @@
  </extension>
  <extension
        point="org.eclipse.ui.newWizards">
-    <wizard
-          category="org.keplerproject.dltk.ldt.category"
-          class="org.eclipse.dltk.ui.wizards.GenericDLTKProjectWizard:org.keplerproject.dltk.ldt.nature"
-          id="org.keplerproject.dltk.ldt.wizard"
-          name="Lua Project"
-          project="true">
-    </wizard>
     <category
           id="org.keplerproject.dltk.ldt.category"
           name="Lua">
     </category>
+    <wizard
+          category="org.keplerproject.dltk.ldt.category"
+          class="org.eclipse.dltk.ui.wizards.GenericDLTKProjectWizard:org.keplerproject.dltk.ldt.nature"
+          finalPerspective="org.keplerproject.dltk.ldt.ui.ide.perspectives.LuaPerspective"
+          icon="icons/luaeclipse.newproject.icon.png"
+          id="org.keplerproject.dltk.ldt.wizard"
+          name="Simple Lua Project"
+          preferredPerspectives="org.keplerproject.dltk.ldt.ui.ide.perspectives.LuaPerspective"
+          project="true">
+       <description>
+          A simple Lua project is a project comprised of Lua scripts. This kind of project can use both lua and binary modules, and can be configured to select a distinct launcher if necessary.
+       </description>
+    </wizard>
+    <wizard
+          category="org.keplerproject.dltk.ldt.category"
+          class="org.keplerproject.dltk.ldt.ui.wizards.LuaNewFileWizard"
+          icon="icons/luaeclipse.icon.small.file.gif.png"
+          id="org.keplerproject.dltk.ldt.ui.ide.wizards.newfile"
+          name="New Lua File">
+       <description>
+          New lua script file
+       </description>
+    </wizard>
+    <wizard
+          category="org.keplerproject.dltk.ldt.category"
+          class="org.keplerproject.dltk.ldt.ui.wizards.LuaNewModuleWizard"
+          icon="icons/luaeclipse.icon.small.module.gif.png"
+          id="org.keplerproject.dltk.ldt.ui.ide.wizards.newmodule"
+          name="New Lua Module">
+       <description>
+          Create a new lua module. A module is useable by several projects.
+       </description>
+    </wizard>
  </extension>
  <extension
        point="org.eclipse.ui.preferencePages">

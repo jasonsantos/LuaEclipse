@@ -58,6 +58,15 @@ public class LuaPerspective implements IPerspectiveFactory {
 		
 		topLeft.addView(IPageLayout.ID_RES_NAV);
 		
+		IFolderLayout topRight =
+			factory.createFolder(
+				"topRight", //NON-NLS-1
+				IPageLayout.RIGHT,
+				0.75f,
+				factory.getEditorArea());
+		
+		topRight.addView(IPageLayout.ID_OUTLINE);
+		
 		factory.addFastView("org.eclipse.team.ccvs.ui.RepositoriesView",0.50f); //NON-NLS-1
 		factory.addFastView("org.eclipse.team.sync.views.SynchronizeView", 0.50f); //NON-NLS-1
 	}
