@@ -45,4 +45,12 @@
           id="org.keplerproject.dltk.ldt.debug.ui.LuaInterpreterInstallType">
     </interpreterInstallType>
  </extension>
+ <extension
+       point="org.eclipse.dltk.core.completionEngine">
+    <completionEngine
+          class="org.keplerproject.dltk.ldt.LuaCompletionEngine"
+          nature="org.keplerproject.dltk.ldt.LuaCompletionEngine"
+          priority="0">
+    </completionEngine>
+ </extension>
 </plugin>
