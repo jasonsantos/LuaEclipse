@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.BadLocationException;
@@ -43,6 +45,7 @@ import org.eclipse.swt.widgets.Display;
 import org.keplerproject.ldt.ui.editors.lex.Scanner;
 import org.keplerproject.ldt.ui.editors.lex.Symbol;
 import org.keplerproject.ldt.ui.editors.lex.sym;
+
 
 /**
  * A embeded Folding Reconcilier. One day a put it out of here. for now fold
@@ -99,6 +102,28 @@ public class LuaFoldingReconcilingStrategy implements IReconcilingStrategy,
 	private Map deleteAnnotations;
 	private Map newAnnotations;
 
+	
+	protected void registerFunction(String line) {
+		Pattern p1 = Pattern.compile("function\\s+(\\w+)\\s*?[(]([^)]*?)[)]");
+		Pattern p2 = Pattern.compile("(\\w+)\\s*?[=]\\s*?function\\s*?[(]([^)]*?)[)]");
+		Matcher m = p1.matcher(line);	
+		Matcher n = p2.matcher(line);	
+
+		boolean foundStraight=false;
+		boolean foundLambda=false;
+		foundLambda = n.find() || (foundStraight = m.find());
+				
+		while(foundStraight || foundLambda) { 
+			String functionName = foundStraight ? m.group(1) : n.group(1);
+			String parameters = foundStraight ? m.group(2) : n.group(2);
+			
+			System.out.println("Function:"+functionName);
+			System.out.println("Parameters:"+parameters);
+			
+			foundLambda = n.find() || (foundStraight = m.find());
+		} 
+	}
+	
 	protected void calculatePositions() {
 //		if (reditor.isDirty())
 //			return;
@@ -176,6 +201,13 @@ public class LuaFoldingReconcilingStrategy implements IReconcilingStrategy,
 		while (symbol.sym != sym.EOF) {
 			//symbol.left -1 (because jflex return line starting at 1 instead of 0)
 			IRegion lineRegion = doc.getLineInformation(symbol.left -1);
+			
+			if (symbol.sym == sym.FUNCTION) {
+				String functionName = doc.get(lineRegion.getOffset(), lineRegion.getLength());
+				registerFunction(functionName);
+			}
+			
+			
 			if (onMultStr == 0) {
 				if (symbol.sym == sym.DO || symbol.sym == sym.FUNCTION) {
 					stk.push(new Object[] { lineRegion, symbol });

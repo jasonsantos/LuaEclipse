@@ -37,11 +37,10 @@
             canFinishEarly="true"
             category="org.keplerproject.ldt.ui.luaCategory"
             class="org.keplerproject.ldt.ui.wizards.LuaProjectWizard"
-            finalPerspective="all"
+            finalPerspective="org.keplerproject.ldt.ui.LuaPerspective"
             hasPages="true"
             id="org.keplerproject.ldt.ui.luaProject.Wizard"
             name="New Lua Project"
-            preferredPerspectives="all"
             project="true"
             icon="icons/project.gif">
          <description>
@@ -133,6 +132,15 @@
       id="org.keplerproject.ldt.core.LuaScriptSpecs"
       name="LuaSpecs"
       point="org.eclipse.core.runtime.preferences">
+</extension>
+<extension
+      point="org.eclipse.ui.perspectives">
+   <perspective
+         class="org.keplerproject.ldt.ui.LuaPerspective"
+         icon="icons/luaeclipse.icon.small.lua.gif"
+         id="org.keplerproject.ldt.ui.LuaPerspective"
+         name="Lua">
+   </perspective>
 </extension>
 
 

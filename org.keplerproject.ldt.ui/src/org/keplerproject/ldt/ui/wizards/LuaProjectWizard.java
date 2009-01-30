@@ -47,6 +47,9 @@ import org.keplerproject.ldt.ui.LDTUIPlugin;
  * @version $Id$
  */
 public class LuaProjectWizard extends Wizard implements INewWizard {
+	
+	public static final String WIZARD_ID = "org.keplerproject.ldt.ui.luaProject.Wizard"; //$NON-NLS-1$
+	
 	protected WizardNewProjectCreationPage prjCreationPage;
 	protected IProject newProject;
 	protected IWorkbench workbench;

@@ -58,6 +58,9 @@ import org.keplerproject.ldt.ui.LDTUIPlugin;
  * @version $Id$
  */
 public class LuaFileWizard extends Wizard implements INewWizard {
+	
+	public static final String WIZARD_ID = "org.keplerproject.ldt.ui.luaFile.Wizard"; //$NON-NLS-1$
+	
 	private WizardNewFileCreationPage page;
 	private IStructuredSelection selection;
 

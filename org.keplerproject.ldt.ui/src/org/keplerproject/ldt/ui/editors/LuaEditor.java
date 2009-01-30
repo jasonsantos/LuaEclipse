@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
@@ -35,6 +36,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 import org.eclipse.ui.texteditor.DefaultRangeIndicator;
 import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.keplerproject.ldt.ui.LDTUIPlugin;
 
 /**
@@ -55,6 +57,8 @@ public class LuaEditor extends AbstractDecoratedTextEditor {
 	private ProjectionAnnotationModel		annotationModel;
 
 	private String							finstanceId;
+
+	private LuaOutlinePage luaOutlinePage;
 
 	public LuaEditor() {
 		super();
@@ -139,6 +143,8 @@ public class LuaEditor extends AbstractDecoratedTextEditor {
 	protected LuaColorManager createColorManager() {
 		return new LuaColorManager();
 	}
+	
+	
 
 	@Override
 	public void dispose() {
@@ -229,5 +235,31 @@ public class LuaEditor extends AbstractDecoratedTextEditor {
 	public String getInstanceId() {
 		return finstanceId;
 	}
+	
+	public LuaOutlinePage getContentOutline() {
+		 if (luaOutlinePage == null  ) {
+	            luaOutlinePage = new LuaOutlinePage(getDocumentProvider(), this);
+	            
+	            luaOutlinePage.setInput(getEditorInput());
+	         }
+		 
+		 return luaOutlinePage;
+	}
+	
 
+	@Override
+	public Object getAdapter(Class adapter) {
+		
+		if (IContentOutlinePage.class.equals(adapter)) {
+	        
+	         return getContentOutline();
+	      }
+
+		
+		return super.getAdapter(adapter);
+	}
+	
 }
+
+ 
+ 
