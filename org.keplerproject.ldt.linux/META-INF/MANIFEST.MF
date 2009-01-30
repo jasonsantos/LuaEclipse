@@ -7,3 +7,4 @@ Bundle-Vendor: Kepler Project
 Fragment-Host: org.keplerproject.ldt.core;bundle-version="1.2.0"
 Eclipse-LazyStart: true
 Eclipse-ExtensibleAPI: true
+Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=x86))
