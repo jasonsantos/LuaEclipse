@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Lua Interpreter Extensions Plug-in
+Bundle-SymbolicName: org.keplerproject.dltk.ldt.interpreter.extensions
+Bundle-Version: 1.0.0
+Bundle-Activator: org.keplerproject.dltk.ldt.interpreter.extensions.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
