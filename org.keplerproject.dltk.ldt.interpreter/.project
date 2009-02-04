@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.keplerproject.dltk.ldt.interpreter.luajava</name>
+	<name>org.keplerproject.dltk.ldt.interpreter</name>
 	<comment></comment>
 	<projects>
 	</projects>
