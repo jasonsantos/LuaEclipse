@@ -9,10 +9,14 @@ public class LuaSourceParser extends AbstractSourceParser {
 
 	public ModuleDeclaration parse(char[] fileName, char[] source,
 			IProblemReporter reporter) {
-		
+
+		// TODO: remove
 		LuaLexer lexer = new LuaLexer(source);
-		LuaParser parser = new LuaParser(lexer, true);
-		
+		LuaParser parser = new LuaParser(lexer, false);
+
+		// TODO: add
+		// MetaLuaParser parser = new MetaLuaParser(fileName, source, reporter);
+
 		LuaModuleDeclaration moduleDeclaration = parser.parse();
 		moduleDeclaration.rebuild();
 		return moduleDeclaration;
