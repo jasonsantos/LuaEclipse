@@ -4,10 +4,10 @@
    <extension point="org.eclipse.ui.editors">
       <editor
             id="org.keplerproject.dltk.ldt.ui.editor"
-            icon=""
+            icon="icon/luaeclipse.icon.small.file.editor.png"
             default="false"
             class="org.keplerproject.dltk.ldt.ui.editor.LuaEditor"
-            name="Lua Editor">
+            name="Lua Source Editor">
             <contentTypeBinding
                   contentTypeId="org.keplerproject.dltk.ldt.content-type">
             </contentTypeBinding>
