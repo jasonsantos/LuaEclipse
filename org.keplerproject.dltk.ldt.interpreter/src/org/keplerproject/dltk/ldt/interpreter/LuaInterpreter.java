@@ -5,12 +5,10 @@ import org.keplerproject.luajava.LuaStateFactory;
 
 public class LuaInterpreter {
 	LuaState L;
+	boolean valid = false;
 
 	private LuaInterpreter(String description) {
-		if (L == null) {
-			L = LuaStateFactory.newLuaState();
-			L.openLibs();
-		}
+		open(true);
 	}
 
 	static LuaInterpreter interpreter;
@@ -22,8 +20,68 @@ public class LuaInterpreter {
 		return interpreter;
 	}
 
+	public boolean isValid() {
+		return valid;
+	}
+
+	protected void open(boolean withLibraries) {
+		if (L == null) {
+			L = LuaStateFactory.newLuaState();
+
+			if (withLibraries) {
+				loadStandardLibraries();
+			}
+
+			valid = true;
+		}
+	}
+
+	protected void close() {
+		if (L != null) {
+			L.close();
+			L = null;
+		}
+	}
+
+	public void reset() {
+		close();
+		open(false);
+	}
+
+	public void reset(boolean withLibraries) {
+		close();
+		open(withLibraries);
+	}
+
 	public void loadStandardLibraries() {
-		L.openLibs();
+		if (L == null) {
+			throw new IllegalStateException();
+		}
+		// TODO: stub
+	}
+
+	public boolean loadModule(String moduleName) {
+		if (L == null) {
+			throw new IllegalStateException();
+		}
+		// TODO: stub
+		return false;
+	}
+
+	public Object doFile(String fileName) {
+		if (L == null) {
+			throw new IllegalStateException();
+		}
+		// TODO: stub
+		return null;
+	}
+
+	public Object doString(String chunk) {
+		if (L == null) {
+			throw new IllegalStateException();
+		}
+		// TODO: stub
+		return null;
 	}
 
 }
