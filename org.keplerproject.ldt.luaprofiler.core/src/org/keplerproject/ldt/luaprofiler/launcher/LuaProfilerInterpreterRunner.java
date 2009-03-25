@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IProcess;
 import org.keplerproject.ldt.internal.launching.InterpreterRunner;
@@ -23,7 +24,7 @@ public class LuaProfilerInterpreterRunner extends InterpreterRunner {
 	private static final Logger log = Logger.getLogger("profiler");
 
 	@Override
-	protected String renderLabel(InterpreterRunnerConfiguration configuration) {
+	protected String renderLabel(InterpreterRunnerConfiguration configuration) throws CoreException {
 		// TODO Auto-generated method stub
 		return super.renderLabel(configuration);
 	}
@@ -77,7 +78,7 @@ public class LuaProfilerInterpreterRunner extends InterpreterRunner {
 	}
 
 	@Override
-	public IProcess run(InterpreterRunnerConfiguration configuration, ILaunch launch) {
+	public IProcess run(InterpreterRunnerConfiguration configuration, ILaunch launch) throws CoreException {
 		IProcess process = super.run(configuration, launch);
 		LuaProfilerContentProvider.getContentProvider().fireChange(process);
 		return process;

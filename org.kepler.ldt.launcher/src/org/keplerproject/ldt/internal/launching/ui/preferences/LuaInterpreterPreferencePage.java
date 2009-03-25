@@ -25,6 +25,7 @@ package org.keplerproject.ldt.internal.launching.ui.preferences;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -79,8 +80,13 @@ public class LuaInterpreterPreferencePage extends PreferencePage implements
 		createButtonGroup(composite);
 		tableViewer
 				.setInput(LuaRuntime.getDefault().getInstalledInterpreters());
-		LuaInterpreter selectedInterpreter = LuaRuntime.getDefault()
-				.getSelectedInterpreter();
+		LuaInterpreter selectedInterpreter = null;
+		try {
+			selectedInterpreter = LuaRuntime.getDefault()
+					.getSelectedInterpreter();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 		if (selectedInterpreter != null)
 			tableViewer.setChecked(selectedInterpreter, true);
 		enableButtons();

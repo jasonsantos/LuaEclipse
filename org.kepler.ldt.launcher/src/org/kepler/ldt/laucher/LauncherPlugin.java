@@ -31,6 +31,7 @@ import org.osgi.framework.BundleContext;
  * @version <code>$Id$</code>
  */
 public class LauncherPlugin extends AbstractUIPlugin {
+	public static final String PLUGIN_ID = "org.keplerproject.ldt.launcher";
 
 	//The shared instance.
 	private static LauncherPlugin plugin;
@@ -72,6 +73,6 @@ public class LauncherPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.keplerproject.ldt.launcher", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 }

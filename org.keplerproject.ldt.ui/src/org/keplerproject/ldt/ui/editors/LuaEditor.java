@@ -22,7 +22,6 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
@@ -262,4 +261,4 @@ public class LuaEditor extends AbstractDecoratedTextEditor {
 }
 
  
- 
+  

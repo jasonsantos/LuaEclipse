@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.keplerproject.ldt.core;bundle-version="1.1.0";visibility:=reexport,
  org.eclipse.ui.console,
  org.eclipse.ui.views
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Export-Package: org.keplerproject.ldt.ui,
  org.keplerproject.ldt.ui.editors,
  org.keplerproject.ldt.ui.editors.ext,

@@ -5,6 +5,6 @@ Bundle-SymbolicName: org.keplerproject.ldt.linux; singleton:=true
 Bundle-Version: 1.2.1.qualifier
 Bundle-Vendor: Kepler Project
 Fragment-Host: org.keplerproject.ldt.core;bundle-version="1.2.0"
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=x86))

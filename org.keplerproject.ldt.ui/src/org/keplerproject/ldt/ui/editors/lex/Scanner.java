@@ -202,9 +202,7 @@ public class Scanner implements sym {
 
   /* error codes */
   private static final int YY_UNKNOWN_ERROR = 0;
-  private static final int YY_ILLEGAL_STATE = 1;
   private static final int YY_NO_MATCH = 2;
-  private static final int YY_PUSHBACK_2BIG = 3;
 
   /* error messages for the codes above */
   private static final String YY_ERROR_MSG[] = {
@@ -262,19 +260,11 @@ public class Scanner implements sym {
   /** number of newlines encountered up to the start of the matched text */
   private int yyline;
 
-  /** the number of characters up to the start of the matched text */
-  private int yychar;
-
   /**
    * the number of characters from the last newline up to the start of the 
    * matched text
    */
   private int yycolumn; 
-
-  /** 
-   * yy_atBOL == true <=> the scanner is currently at the beginning of a line
-   */
-  private boolean yy_atBOL = true;
 
   /** yy_atEOF == true <=> the scanner is at the EOF */
   private boolean yy_atEOF;
@@ -432,11 +422,9 @@ public class Scanner implements sym {
   public final void yyreset(java.io.Reader reader) throws java.io.IOException {
     yyclose();
     yy_reader = reader;
-    yy_atBOL  = true;
     yy_atEOF  = false;
     yy_endRead = yy_startRead = 0;
     yy_currentPos = yy_markedPos = yy_pushbackPos = 0;
-    yyline = yychar = yycolumn = 0;
     yy_lexical_state = YYINITIAL;
   }
 
@@ -519,22 +507,6 @@ public class Scanner implements sym {
 
 
   /**
-   * Pushes the specified amount of characters back into the input stream.
-   *
-   * They will be read again by then next call of the scanning method
-   *
-   * @param number  the number of characters to be read again.
-   *                This number must not be greater than yylength()!
-   */
-  private void yypushback(int number)  {
-    if ( number > yylength() )
-      yy_ScanError(YY_PUSHBACK_2BIG);
-
-    yy_markedPos -= number;
-  }
-
-
-  /**
    * Resumes scanning until the next regular expression is matched,
    * the end of input is encountered or an I/O-Error occurs.
    *
@@ -547,7 +519,6 @@ public class Scanner implements sym {
 
     // cached fields:
     int yy_currentPos_l;
-    int yy_startRead_l;
     int yy_markedPos_l;
     int yy_endRead_l = yy_endRead;
     char [] yy_buffer_l = yy_buffer;
@@ -611,9 +582,6 @@ public class Scanner implements sym {
         if (yy_peek) yyline--;
       }
       yy_action = -1;
-
-      yy_startRead_l = yy_currentPos_l = yy_currentPos = 
-                       yy_startRead = yy_markedPos_l;
 
       yy_state = yy_lexical_state;
 

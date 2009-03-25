@@ -37,7 +37,9 @@ import java.util.List;
 
 import javax.xml.parsers.SAXParserFactory;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Status;
 import org.kepler.ldt.laucher.LauncherPlugin;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -68,17 +70,22 @@ public class LuaRuntime {
 		return runtime;
 	}
 
-	public LuaInterpreter getSelectedInterpreter() {
+	public LuaInterpreter getSelectedInterpreter() throws CoreException {
 		if (selectedInterpreter == null)
 			loadRuntimeConfiguration();
+		if (selectedInterpreter == null)
+			throw new CoreException(new Status(Status.ERROR, LauncherPlugin.PLUGIN_ID, "No Lua interpreters have been defined."));
 		return selectedInterpreter;
 	}
 	
 
-	public LuaInterpreter getInterpreter(String name) {
-		for (Iterator<LuaInterpreter> interpreters = getInstalledInterpreters().iterator(); interpreters
-				.hasNext();) {
-			LuaInterpreter each = (LuaInterpreter) interpreters.next();
+	public LuaInterpreter getInterpreter(String name) throws CoreException {
+		List<LuaInterpreter> interpreters = getInstalledInterpreters();
+		if (interpreters == null || interpreters.isEmpty()) {
+			throw new CoreException(new Status(Status.ERROR, LauncherPlugin.PLUGIN_ID, "No Lua interpreters have been defined."));
+		}
+		for (Iterator<LuaInterpreter> intIt = interpreters.iterator(); intIt.hasNext();) {
+			LuaInterpreter each = (LuaInterpreter) intIt.next();
 			if (each.getName().equals(name))
 				return each;
 		}

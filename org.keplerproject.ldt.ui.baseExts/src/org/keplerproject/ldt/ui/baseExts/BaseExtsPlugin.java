@@ -86,7 +86,7 @@ public class BaseExtsPlugin extends AbstractUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#initializeImageRegistry(org.eclipse.jface.resource.ImageRegistry)
 	 */
 	protected void initializeImageRegistry(ImageRegistry reg) {
-		String[] images = { "function", "table", "string", "userdata" };
+		String[] images = { "function", "table", "string", "userdata", "nil" };
 
 		for (int i = 0; i < images.length; i++) {
 			ImageDescriptor image = null;

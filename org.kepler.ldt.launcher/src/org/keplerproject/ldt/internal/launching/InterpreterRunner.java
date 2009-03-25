@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -48,8 +49,9 @@ public class InterpreterRunner
      * @param configuration
      * @param launch
      * @return
+     * @throws CoreException 
      */
-    public IProcess run(InterpreterRunnerConfiguration configuration, ILaunch launch)
+    public IProcess run(InterpreterRunnerConfiguration configuration, ILaunch launch) throws CoreException
     {
         String commandLine = renderCommandLine(configuration);
         java.io.File workingDirectory = configuration.getAbsoluteWorkingDirectory();
@@ -70,7 +72,7 @@ public class InterpreterRunner
         return process;
     }
 
-    protected String renderLabel(InterpreterRunnerConfiguration configuration)
+    protected String renderLabel(InterpreterRunnerConfiguration configuration) throws CoreException
     {
         LuaInterpreter interpreter = configuration.getInterpreter();
         return interpreter.getCommand() + " " + configuration.getFileName();

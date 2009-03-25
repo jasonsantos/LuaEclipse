@@ -3,21 +3,21 @@
    <description url="http://luaeclipse.luaforge.net/update-site">
       Lua IDE based on the Eclipse Platform.
    </description>
-   <feature url="features/org.keplerproject.ldt.debug.feature_1.0.1.200808181807.jar" id="org.keplerproject.ldt.debug.feature" version="1.0.1.200808181807">
-      <category name="LuaEclipse 1.3"/>
-   </feature>
-   <feature url="features/org.keplerproject.ldt.feature_1.3.0.200808181807.jar" id="org.keplerproject.ldt.feature" version="1.3.0.200808181807">
-      <category name="LuaEclipse 1.3"/>
-   </feature>
    <feature url="features/org.keplerproject.ldt.feature_x64_1.3.0.200808181807.jar" id="org.keplerproject.ldt.feature_x64" version="1.3.0.200808181807" os="linux" arch="x86_64">
-      <category name="LuaEclipse 1.3"/>
+      <category name="LuaEclipse 1.3.1"/>
    </feature>
-   <feature url="features/org.keplerproject.ldt.luaprofiler.feature_1.0.2.200808181807.jar" id="org.keplerproject.ldt.luaprofiler.feature" version="1.0.2.200808181807">
-      <category name="LuaEclipse 1.3"/>
+   <feature url="features/org.keplerproject.ldt.luaprofiler.feature_1.0.2.200903231334.jar" id="org.keplerproject.ldt.luaprofiler.feature" version="1.0.2.200903231334">
+      <category name="LuaEclipse 1.3.1"/>
    </feature>
-   <category-def name="LuaEclipse 1.3" label="LuaEclipse 1.3">
+   <feature url="features/org.keplerproject.ldt.debug.feature_1.3.3.200903231334.jar" id="org.keplerproject.ldt.debug.feature" version="1.3.3.200903231334">
+      <category name="LuaEclipse 1.3.1"/>
+   </feature>
+   <feature url="features/org.keplerproject.ldt.feature_1.3.1.200903231334.jar" id="org.keplerproject.ldt.feature" version="1.3.1.200903231334">
+      <category name="LuaEclipse 1.3.1"/>
+   </feature>
+   <category-def name="LuaEclipse 1.3.1" label="LuaEclipse 1.3.1">
       <description>
-         LuaEclipse 1.3 works for Eclipse 3.3 and supports Lua 5.1,
+         LuaEclipse 3.0 works for Eclipse 3.4 and supports Lua 5.1,
 Remdebug 2.0, Luadoc 3.0 and LuaProfiler 1.2
       </description>
    </category-def>

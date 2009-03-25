@@ -80,34 +80,39 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 	private void compileFile(IResource res, LuaState L) {
 
 		try {
-			res.deleteMarkers("org.eclipse.core.resources.problemmarker", true,
-					2);
-		} catch (CoreException coreexception) {
-
-		}
-		String code = readFile(res);
-
-		// Comment out the 'shabang' (#!) from the beginning of file if found
-		code = code.replaceAll("^(\\s*)#!", "$1--#!");
-
-		// enclose code in a function to avoid error
-		// -- extra line break before 'end' avoids error when last line of code
-		// is a -- comment
-		code = "return function(...) " + code + " \nend";
-
-		LuaAlert alert = new LuaAlert(res);
-
-		if (L != null) {
-
-			int result = L.LdoString(code);
-
-			if (result != 0) {
-				String s = L.toString(-1);
-				alert.reportLuaError(s);
+			try {
+				res.deleteMarkers("org.eclipse.core.resources.problemmarker", true,
+						2);
+			} catch (CoreException coreexception) {
+	
 			}
-		} else {
-			alert
-					.reportLuaError("*:1:Could not compile file (LuaState not loaded)");
+			String code = readFile(res);
+	
+			// Comment out the 'shabang' (#!) from the beginning of file if found
+			code = code.replaceAll("^(\\s*)#!", "$1--#!");
+	
+			// enclose code in a function to avoid error
+			// -- extra line break before 'end' avoids error when last line of code
+			// is a -- comment
+			code = "return function(...) " + code + " \nend";
+	
+			LuaAlert alert = new LuaAlert(res);
+	
+			if (L != null) {
+	
+				int result = L.LdoString(code);
+	
+				if (result != 0) {
+					String s = L.toString(-1);
+					alert.reportLuaError(s);
+				}
+			} else {
+				alert
+						.reportLuaError("*:1:Could not compile file (LuaState not loaded)");
+			}
+		} catch (Exception e) {
+			// buggy code catch-all
+			e.printStackTrace();
 		}
 	}
 

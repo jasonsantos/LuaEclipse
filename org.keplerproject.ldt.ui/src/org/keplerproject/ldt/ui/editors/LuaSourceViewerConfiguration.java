@@ -193,7 +193,7 @@ public class LuaSourceViewerConfiguration extends TextSourceViewerConfiguration 
 	 * Source Reconcilier to the folding feature
 	 */
 	public IReconciler getReconciler(ISourceViewer sourceViewer) {
-		if (strategy == null) {
+		/*if (strategy == null) {
 			strategy = new LuaFoldingReconcilingStrategy();
 			strategy.setEditor(editor);
 		}
@@ -202,11 +202,12 @@ public class LuaSourceViewerConfiguration extends TextSourceViewerConfiguration 
 		//XXX we can this in brazil as BACALHAU.. 'saltfish'
 		//reconciler.setDelay(5000);
 		//reconciler.setIsIncrementalReconciler(true);
-		/*
+		
 		 * reconciler.setReconcilingStrategy(strategy,
 		 * IDocument.DEFAULT_CONTENT_TYPE);
-		 */
-		return reconciler;
+		 
+		return reconciler;*/
+		return null;
 	}
 
 

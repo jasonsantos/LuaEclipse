@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
-<plugin 
-   id="org.keplerproject.ldt.core"
-   name="LDT Core Plug-in"
-   version="1.0.0.qualifier"
-   provider-name="Kepler Project">
-   <runtime>
+<plugin> 
+   <!--<runtime>
       <library name="luajava-1.1.jar">
          <export name="org.keplerproject.luajava.*"/>
       </library>
@@ -21,7 +17,7 @@
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.debug.ui"/>
-   </requires>
+   </requires>-->
 
      <extension
          id="luaProjectBuilder"

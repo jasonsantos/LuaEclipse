@@ -98,7 +98,7 @@ public class InterpreterRunnerConfiguration implements
 		}
 	}
 
-	public LuaInterpreter getInterpreter() {
+	public LuaInterpreter getInterpreter() throws CoreException {
 		String selectedInterpreter = null;
 		try {
 			selectedInterpreter = configuration.getAttribute(

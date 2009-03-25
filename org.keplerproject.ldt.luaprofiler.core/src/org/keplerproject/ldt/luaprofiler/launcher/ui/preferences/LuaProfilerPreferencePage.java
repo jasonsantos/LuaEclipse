@@ -228,7 +228,6 @@ public class LuaProfilerPreferencePage extends PreferencePage implements
 				.getFirstElement();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean performOk() {
 		TableItem[] itens = tableViewer.getTable().getItems();

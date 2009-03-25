@@ -68,7 +68,11 @@ public class LuaEnvironmentTab extends AbstractLaunchConfigurationTab implements
         (new Label(composite, 0)).setText("&Interpreter:");
         interpreterCombo = new Combo(composite, 8);
         interpreterCombo.setLayoutData(new GridData(768));
-        initializeInterpreterCombo(interpreterCombo);
+        try {
+			initializeInterpreterCombo(interpreterCombo);
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
         interpreterCombo.addModifyListener(getEnvironmentModifyListener());
         Button interpreterAddButton = new Button(composite, 8);
         interpreterAddButton.setText("N&ew...");
@@ -153,7 +157,7 @@ public class LuaEnvironmentTab extends AbstractLaunchConfigurationTab implements
             interpreterCombo.select(interpreterCombo.indexOf(interpreterName));
     }
 
-    protected void initializeInterpreterCombo(Combo interpreterCombo)
+    protected void initializeInterpreterCombo(Combo interpreterCombo) throws CoreException
     {
         installedInterpretersWorkingCopy = new ArrayList();
         installedInterpretersWorkingCopy.addAll(LuaRuntime.getDefault().getInstalledInterpreters());

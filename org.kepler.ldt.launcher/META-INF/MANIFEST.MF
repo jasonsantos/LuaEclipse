@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LDT Interpreter Launcher
 Bundle-SymbolicName: org.keplerproject.ldt.launcher; singleton:=true
-Bundle-Version: 1.2.1.qualifier
+Bundle-Version: 1.2.2.qualifier
 Bundle-Activator: org.kepler.ldt.laucher.LauncherPlugin
 Bundle-Vendor: KeplerProject
 Bundle-Localization: plugin
@@ -14,10 +14,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.ide,
  org.keplerproject.ldt.core,
  org.keplerproject.ldt.ui
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: LDTLaunching.jar
 Export-Package: org.kepler.ldt.laucher;uses:="org.eclipse.jface.resource,org.eclipse.ui.plugin,org.osgi.framework",
- org.keplerproject.ldt.internal.launching;x-friends:="org.keplerproject.ldt.luaprofiler.core";
+ org.keplerproject.ldt.internal.launching;
   uses:="org.eclipse.debug.core,
    org.eclipse.core.runtime,
    org.keplerproject.ldt.core,

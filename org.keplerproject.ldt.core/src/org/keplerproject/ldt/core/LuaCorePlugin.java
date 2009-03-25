@@ -34,7 +34,6 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.keplerproject.ldt.core.project.LuaProjectNature;
 import org.osgi.framework.BundleContext;
 
@@ -58,7 +57,7 @@ public class LuaCorePlugin extends Plugin implements IResourceChangeListener {
 
 		for(IProject prj : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
 			try {
-				if(prj.hasNature(LuaProjectNature.NATURE_ID))
+				if(prj.isOpen() && prj.hasNature(LuaProjectNature.NATURE_ID))
 					LuaProject.getLuaProject(prj);
 			} catch (CoreException e) {
 				e.printStackTrace();

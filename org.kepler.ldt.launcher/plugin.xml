@@ -9,10 +9,10 @@
             modes="run"
             name="Lua Standalone Application"
             sourceLocatorId="org.keplerproject.ldt.launching.ui.luaSourceLocator">
-         <fileExtension
+         <!--<fileExtension
                default="true"
                extension="lua">
-         </fileExtension>
+         </fileExtension>-->
       </launchConfigurationType>
    </extension>
    <extension
@@ -49,10 +49,10 @@
 		</with>
 		</enablement>
 		</contextualLaunch>
-         <perspective id="org.eclipse.jdt.ui.JavaPerspective"/>
+         <!--<perspective id="org.eclipse.jdt.ui.JavaPerspective"/>
          <perspective id="org.eclipse.jdt.ui.JavaHierarchyPerspective"/>
          <perspective id="org.eclipse.jdt.ui.JavaBrowsingPerspective"/>
-         <perspective id="org.eclipse.debug.ui.DebugPerspective"/>
+         <perspective id="org.eclipse.debug.ui.DebugPerspective"/>-->
       </shortcut>
    </extension>
 	<extension
@@ -79,17 +79,17 @@
 		description="Run Lua Script" 
 		id="org.keplerproject.ldt.launching.ui.luaShortcut.run" 
 		name="Rua Lua" />
-	<keyBinding 
+	<!--<keyBinding 
 		commandId="org.keplerproject.ldt.launching.ui.luaShortcut.run" 
 		keySequence="M2+M3+X L"  
 		keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration" 
-		contextId="org.eclipse.ui.globalScope"/>   	
+		contextId="org.eclipse.ui.globalScope"/-->   	
    </extension>
-   <extension
+   <!--<extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
             class="org.keplerproject.ldt.launcher.preferences.PreferenceInitializer">
       </initializer>
-   </extension>
+   </extension>-->
 	
 </plugin>

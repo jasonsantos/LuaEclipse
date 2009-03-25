@@ -9,10 +9,10 @@
             modes="run"
             name="Lua Profiler"
             sourceLocatorId="org.keplerproject.ldt.launching.ui.luaSourceLocator">
-         <fileExtension
+         <!--<fileExtension
                default="true"
                extension="lua">
-         </fileExtension>
+         </fileExtension>-->
       </launchConfigurationType>
    </extension>
 
@@ -73,11 +73,11 @@
 		</with>
 		</enablement>
 		</contextualLaunch>
-         <perspective id="org.eclipse.jdt.ui.JavaPerspective"/>
+         <!--<perspective id="org.eclipse.jdt.ui.JavaPerspective"/>
          <perspective id="org.eclipse.jdt.ui.JavaHierarchyPerspective"/>
          <perspective id="org.eclipse.jdt.ui.JavaBrowsingPerspective"/>
          <perspective id="org.eclipse.debug.ui.DebugPerspective"/>
-         <perspective id="org.keplerproject.ldt.luaprofiler.launcher.ui.LuaProfilerPerspective"/>
+         <perspective id="org.keplerproject.ldt.luaprofiler.launcher.ui.LuaProfilerPerspective"/>-->
       </shortcut>
    </extension>
 
@@ -87,11 +87,11 @@
 		description="Profile Lua Script" 
 		id="org.keplerproject.ldt.luaprofiler.launcher.ui.luaShortcut.run" 
 		name="Profile Lua" />
-	<keyBinding 
+	<!--<keyBinding 
 		commandId="org.keplerproject.ldt.luaprofiler.launcher.ui.luaShortcut.run" 
 		keySequence="M2+M3+X P"
 		keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration" 
-		contextId="org.eclipse.ui.globalScope"/>   	
+		contextId="org.eclipse.ui.globalScope"/>-->   	
    </extension>
    
 	<extension point="org.eclipse.ui.preferencePages">

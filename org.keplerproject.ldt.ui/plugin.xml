@@ -51,7 +51,7 @@
             canFinishEarly="true"
             category="org.keplerproject.ldt.ui.luaCategory"
             class="org.keplerproject.ldt.ui.wizards.LuaFileWizard"
-            finalPerspective="all"
+            finalPerspective="org.keplerproject.ldt.ui.LuaPerspective"
             hasPages="true"
             id="org.keplerproject.ldt.ui.luaFile.Wizard"
             name="New Lua File"

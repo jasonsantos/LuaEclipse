@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.keplerproject.ldt.luaprofiler.feature"
-      label="LuaProfiler Support for LuaEclipse"
+      label="LuaEclipse Profiler"
       version="1.0.2.qualifier"
       provider-name="Kepler Project">
 

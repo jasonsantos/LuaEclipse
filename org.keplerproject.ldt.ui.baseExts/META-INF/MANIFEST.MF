@@ -15,4 +15,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.jface.text,
  org.keplerproject.ldt.ui;bundle-version="[1.0.1,2.0.0)";visibility:=reexport
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy

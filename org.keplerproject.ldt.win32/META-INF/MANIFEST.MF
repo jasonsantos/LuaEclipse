@@ -6,7 +6,7 @@ Bundle-SymbolicName: org.keplerproject.ldt.win32; singleton:=true
 Bundle-Version: 1.2.1.qualifier
 Bundle-Vendor: Kepler Project
 Bundle-Localization: fragment
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Eclipse-PlatformFilter: (& (osgi.os=win32))
 
