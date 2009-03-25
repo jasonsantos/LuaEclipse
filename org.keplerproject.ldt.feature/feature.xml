@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.keplerproject.ldt.feature"
-      label="Lua Development Tool"
-      version="1.3.0.qualifier"
+      label="LuaEclipse"
+      version="1.3.1.qualifier"
       provider-name="Kepler Project "
       colocation-affinity="org.keplerproject.ldt.feature">
 
@@ -118,6 +118,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.keplerproject.ldt.win32"
+         os="win32"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -126,6 +127,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="org.keplerproject.ldt.macosx"
+         os="macosx"
          download-size="0"
          install-size="0"
          version="0.0.0"

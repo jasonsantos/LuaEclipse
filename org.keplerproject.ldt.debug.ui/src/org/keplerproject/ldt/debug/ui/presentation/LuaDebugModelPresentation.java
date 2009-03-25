@@ -4,15 +4,20 @@
 package org.keplerproject.ldt.debug.ui.presentation;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.ILineBreakpoint;
 import org.eclipse.debug.core.model.IValue;
+import org.eclipse.debug.core.sourcelookup.containers.LocalFileStorage;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.FileEditorInput;
+import org.keplerproject.ldt.debug.core.LuaDebuggerPlugin;
 import org.keplerproject.ldt.debug.core.breakpoints.LuaLineBreakpoint;
 import org.keplerproject.ldt.debug.core.model.LuaDebugTarget;
 import org.keplerproject.ldt.debug.core.model.LuaDebugThread;
@@ -136,7 +141,7 @@ public class LuaDebugModelPresentation extends LabelProvider implements
 	 */
 
 	public String getEditorId(IEditorInput input, Object element) {
-		if (element instanceof IFile || element instanceof ILineBreakpoint) {
+		if (element instanceof IFile || element instanceof ILineBreakpoint || element instanceof LocalFileStorage) {
 			return "org.keplerproject.ldt.ui.editors.LuaEditor";
 		}
 		return null;
@@ -156,8 +161,34 @@ public class LuaDebugModelPresentation extends LabelProvider implements
 			return new FileEditorInput((IFile) ((ILineBreakpoint) element)
 					.getMarker().getResource());
 		}
+		
+//		Status status = new Status(Status.WARNING, LuaDebuggerPlugin.PLUGIN_ID,	"An error in lua reached the top of a coroutine or the main thread.");
+//		throw new DebugException(status);
+//		throw new RuntimeException("FooBar");
+		
+		/*if (element instanceof LocalFileStorage) {
+			LocalFileStorage lfs = (LocalFileStorage) element;
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			if (workspace instanceof Workspace) {
+				Workspace ws = (Workspace) workspace;
+				IProject p = LuaDebuggerPlugin.getDefault().getCurrentProject();
+				IFile file = p.getFile(lfs.getName());
+				if (file.exists()) {
+					try {
+						file.delete(true, new NullProgressMonitor());
+					} catch (CoreException e1) { }
+				}
+				try {
+					file.setReadOnly(true);
+					file.createLink(lfs.getFullPath(), 0, new NullProgressMonitor());
+					file.setHidden(true);
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
+				return new FileEditorInput(file);
+			}
+		}*/
 
 		return null;
 	}
-
 }

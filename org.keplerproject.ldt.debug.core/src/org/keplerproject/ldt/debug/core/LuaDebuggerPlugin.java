@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Plugin;
@@ -25,6 +26,15 @@ public class LuaDebuggerPlugin extends Plugin {
 
 	public static final String			LUA_SCRIPT_ATTRIBUTE				= ID_LUA_DEBUG_MODEL
 																					+ ".LUA_SCRIPT_ATTRIBUTE";
+	
+	public static final String			LUA_ARGS_ATTRIBUTE					= ID_LUA_DEBUG_MODEL
+																					+ ".LUA_ARGS_ATTRIBUTE";
+
+	public static final String			LUA_REMOTE_DBG_ENABLED_ATTRIBUTE	= ID_LUA_DEBUG_MODEL
+																					+ ".LUA_REMOTE_DBG_ENABLED_ATTRIBUTE";
+	
+	public static final String			LUA_REMOTE_DBG_PORT_ATTRIBUTE		= ID_LUA_DEBUG_MODEL
+																					+ ".LUA_REMOTE_DBG_PORT_ATTRIBUTE";
 
 	public static final String			LUA_PROJECT_ATTRIBUTE				= ID_LUA_DEBUG_MODEL
 																					+ ".LUA_PROJECT_ATTRIBUTE";
@@ -86,5 +96,4 @@ public class LuaDebuggerPlugin extends Plugin {
 			return null;
 		}
 	}
-
 }

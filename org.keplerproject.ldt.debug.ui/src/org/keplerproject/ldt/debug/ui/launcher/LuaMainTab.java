@@ -5,7 +5,9 @@ package org.keplerproject.ldt.debug.ui.launcher;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -68,7 +70,6 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 				fTextField.setText(file.getFullPath().toString());
 				fProject = (IContainer) files[0];
 			}
-
 		}
 
 		public void browseLuaScripts() {
@@ -82,7 +83,6 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 				IFile file = (IFile) files[0];
 				fTextField.setText(file.getFullPath().toString());
 			}
-
 		}
 
 
@@ -95,19 +95,27 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 			System.out.println(e.detail);
 		}
 
-
+		public void remoteDbgSelected(boolean isEnabled) {
+			mainGroup.setEnabled(!isEnabled);
+			argsGroup.setEnabled(!isEnabled);
+			remoteDbgText.setEnabled(isEnabled);
+		}
+		
 		public void widgetSelected(SelectionEvent e) {
 			if (e.widget == fProjButton) {
 				browseLuaProjects();
+			} else if (e.widget == remoteDbgBox) {
+				remoteDbgSelected(remoteDbgBox.getSelection());
+				updateLaunchConfigurationDialog();
 			} else {
 				browseLuaScripts();
 			}
-
 		}
-
 	}
 
 	protected static final String	MSG_PROJECT_TITLE		= "&Project:";
+	protected static final String	MSG_ARGS_TITLE			= "&Command-line Arguments:";
+	protected static final String	REMOTE_DBG_TITLE		= "&Remote Debug:";
 	protected static final String	MSG_PROJECT_BUTTON		= "&Browse...";
 
 	protected static final String	MSG_PROJECT_DLG_TITLE	= "Lua Project";
@@ -117,30 +125,41 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 
 	// Project UI widgets
 	protected Text					fProjText;
+	
+	protected Text					fArgsText;
 
 	private Button					fProjButton;
 
+	private Button 					remoteDbgBox;
+	
+	private Text 					remoteDbgText;
+	
+	private Group projectGroup;
+	private Group mainGroup;
+	private Group argsGroup;
+	private Group remoteDbgGroup;
+	
 	private final WidgetListener	fProjectListener		= new WidgetListener(
 																	fProjText);
 
 	protected void createProjectEditor(Composite parent) {
 		Font font = parent.getFont();
-		Group group = new Group(parent, SWT.NONE);
-		group.setText(MSG_PROJECT_TITLE);
+		projectGroup = new Group(parent, SWT.NONE);
+		projectGroup.setText(MSG_PROJECT_TITLE);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		group.setLayoutData(gd);
+		projectGroup.setLayoutData(gd);
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
-		group.setLayout(layout);
-		group.setFont(font);
+		projectGroup.setLayout(layout);
+		projectGroup.setFont(font);
+		
 		gd = new GridData(GridData.FILL_HORIZONTAL);
-
-		fProjText = new Text(group, SWT.SINGLE | SWT.BORDER);
+		fProjText = new Text(projectGroup, SWT.SINGLE | SWT.BORDER);
 		fProjText.setLayoutData(gd);
 		fProjText.setFont(font);
 		fProjText.addModifyListener(fProjectListener);
-
-		fProjButton = createPushButton(group, MSG_PROJECT_BUTTON, null);
+		
+		fProjButton = createPushButton(projectGroup, MSG_PROJECT_BUTTON, null);
 		fProjButton.addSelectionListener(fProjectListener);
 	}
 
@@ -152,12 +171,15 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 	protected Text					fMainText;
 	private Button					fSearchButton;
 
-	private final WidgetListener	fMainListener			= new WidgetListener(
-																	fMainText);
+	private final WidgetListener	fMainListener			= new WidgetListener(fMainText);
+	
+	private final WidgetListener	fArgsListener			= new WidgetListener(fArgsText);
+	
+	private WidgetListener			fRemoteDbgListener;
 
 	protected void createMainTypeEditor(Composite parent, String text) {
 		Font font = parent.getFont();
-		Group mainGroup = SWTFactory.createGroup(parent, text, 2, 1,
+		mainGroup = SWTFactory.createGroup(parent, text, 2, 1,
 				GridData.FILL_HORIZONTAL);
 		Composite comp = SWTFactory.createComposite(mainGroup, font, 2, 2,
 				GridData.FILL_BOTH, 0, 0);
@@ -168,6 +190,18 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 		fSearchButton = createPushButton(comp, MSG_SEARCH_BUTTON, null);
 		fSearchButton.addSelectionListener(fMainListener);
 		// createMainTypeExtensions(comp);
+		
+		argsGroup = SWTFactory.createGroup(parent, MSG_ARGS_TITLE, 1, 1, GridData.FILL_HORIZONTAL);
+		fArgsText = SWTFactory.createSingleText(argsGroup, 1);
+		fArgsText.addModifyListener(fArgsListener);
+		
+		remoteDbgGroup = SWTFactory.createGroup(parent, REMOTE_DBG_TITLE, 1, 1, GridData.FILL_HORIZONTAL);
+		remoteDbgBox = SWTFactory.createCheckButton(remoteDbgGroup, "Enable remote debug", null, false, 0);
+		SWTFactory.createLabel(remoteDbgGroup, "TCP Port", 1);
+		remoteDbgText = SWTFactory.createSingleText(remoteDbgGroup, 1);
+		fRemoteDbgListener = new WidgetListener(remoteDbgText);
+		remoteDbgBox.addSelectionListener(fRemoteDbgListener);
+		fArgsText.addModifyListener(fArgsListener);
 	}
 
 	/*
@@ -210,16 +244,31 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 			String script = configuration.getAttribute(
 					LuaDebuggerPlugin.LUA_SCRIPT_ATTRIBUTE, (String) null);
 
+			String args = configuration.getAttribute(
+					LuaDebuggerPlugin.LUA_ARGS_ATTRIBUTE, (String) null);
+
+			boolean remoteDbgEnabled = configuration.getAttribute(
+					LuaDebuggerPlugin.LUA_REMOTE_DBG_ENABLED_ATTRIBUTE, false);
+			
+			int remoteDbgPort = configuration.getAttribute(
+					LuaDebuggerPlugin.LUA_REMOTE_DBG_PORT_ATTRIBUTE, 8171);
+			
 			if (project != null) {
 				fProjText.setText(project);
 			}
 			if (script != null) {
 				fMainText.setText(script);
 			}
+			if (args != null) {
+				fArgsText.setText(args);
+			}
+			remoteDbgBox.setSelection(remoteDbgEnabled);
+			remoteDbgText.setText(""+remoteDbgPort);
+			fRemoteDbgListener.remoteDbgSelected(remoteDbgEnabled);
+			
 		} catch (CoreException e) {
 			setErrorMessage(e.getMessage());
 		}
-
 	}
 
 	/*
@@ -231,6 +280,10 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		String project = fProjText.getText().trim();
 		String script = fMainText.getText().trim();
+		String args = fArgsText.getText().trim();
+		boolean remoteDbgEnabled = remoteDbgBox.getSelection();
+		String remoteDbgPortString = remoteDbgText.getText();
+		int remoteDbgPort = Integer.parseInt(remoteDbgPortString);
 
 		if (project.length() == 0) {
 			project = null;
@@ -238,12 +291,22 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 		if (script.length() == 0) {
 			script = null;
 		}
+		if (args.length() == 0) {
+			args = null;
+		}
 		configuration.setAttribute(LuaDebuggerPlugin.LUA_PROJECT_ATTRIBUTE,
 				project);
 
 		configuration.setAttribute(LuaDebuggerPlugin.LUA_SCRIPT_ATTRIBUTE,
 				script);
 
+		configuration.setAttribute(LuaDebuggerPlugin.LUA_ARGS_ATTRIBUTE,
+				args);
+		
+		configuration.setAttribute(LuaDebuggerPlugin.LUA_REMOTE_DBG_ENABLED_ATTRIBUTE, remoteDbgEnabled);
+
+		configuration.setAttribute(LuaDebuggerPlugin.LUA_REMOTE_DBG_PORT_ATTRIBUTE, remoteDbgPort);
+		
 		// perform resource mapping for contextual launch
 		IResource[] resources = null;
 		if (script != null) {
@@ -265,8 +328,8 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 	 */
 
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		// TODO Auto-generated method stub
-
+		configuration.setAttribute(LuaDebuggerPlugin.LUA_REMOTE_DBG_PORT_ATTRIBUTE, false);
+		configuration.setAttribute(LuaDebuggerPlugin.LUA_REMOTE_DBG_PORT_ATTRIBUTE, 8171);
 	}
 
 	/*
@@ -280,7 +343,14 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 		setMessage(null);
 		String text = fMainText.getText();
 
-		if (text.length() > 0) {
+		if (remoteDbgBox.getSelection() && remoteDbgText.getText().length() > 0) {
+			try {
+				Integer.parseInt(remoteDbgText.getText());
+			} catch (NumberFormatException e) {
+				setErrorMessage("Invalid TCP port - must be a valid number");
+				return false;
+			}
+		} else if (text.length() > 0) {
 			IPath path = new Path(text);
 			if (ResourcesPlugin.getWorkspace().getRoot().findMember(path) == null) {
 				setErrorMessage("Specified script does not exist");
@@ -289,6 +359,27 @@ public class LuaMainTab extends AbstractLaunchConfigurationTab implements
 		} else {
 			setMessage("Specify a script");
 		}
+		
+		IWorkspaceRoot myWorkspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+		String projectString = fProjText.getText();
+		if (projectString == null || projectString.length() == 0) {
+			setErrorMessage("Project must be specified");
+			return false;
+		}
+		
+		boolean badProject = false;
+		try {
+			IProject project = myWorkspaceRoot.getProject(projectString);
+			if (project == null || !project.exists())
+				badProject = true;
+		} catch (Exception e) {
+			badProject = true;
+		}
+		if (badProject) {
+			setErrorMessage("Specified project cannot be found");
+			return false;
+		}
+			
 		return true;
 	}
 }

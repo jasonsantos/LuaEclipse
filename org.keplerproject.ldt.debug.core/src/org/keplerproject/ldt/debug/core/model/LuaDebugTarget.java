@@ -10,6 +10,7 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.IBreakpointManager;
 import org.eclipse.debug.core.IBreakpointManagerListener;
@@ -49,6 +50,8 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	// event listeners
 	private final Vector<ILuaEventListener>	fEventListeners	= new Vector<ILuaEventListener>();
 
+	private boolean fStarting;
+
 	/**
 	 * @param launch
 	 * @param proc
@@ -56,8 +59,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public LuaDebugTarget(ILaunch launch, IProcess proc, String scriptPath,
-			LuaDebugServer server) throws CoreException {
+	public LuaDebugTarget(ILaunch launch, IProcess proc, LuaDebugServer server) throws CoreException {
 		super(null);
 		fLaunch = launch;
 		fProcess = proc;
@@ -151,35 +153,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 */
 
 	public boolean supportsBreakpoint(IBreakpoint breakpoint) {
-		if (!isTerminated()
-				&& breakpoint.getModelIdentifier().equals(getModelIdentifier())) {
-			try {
-				String program = getLaunch().getLaunchConfiguration()
-						.getAttribute(LuaDebuggerPlugin.LUA_SCRIPT_ATTRIBUTE,
-								(String) null);
-				if (program != null) {
-					IResource resource = null;
-					if (breakpoint instanceof LuaRunToLineBreakpoint) {
-						LuaRunToLineBreakpoint rtlb = (LuaRunToLineBreakpoint) breakpoint;
-						resource = rtlb.getSourceFile();
-					} else {
-						IMarker marker = breakpoint.getMarker();
-						if (marker != null)
-							resource = marker.getResource();
-
-					}
-
-					if (resource != null) {
-						return resource.getFullPath().toString()
-								.equals(program);
-					}
-				}
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-			return true;
-		}
-		return false;
+		return !isTerminated() && breakpoint.getModelIdentifier().equals(getModelIdentifier());
 	}
 
 	/**
@@ -189,9 +163,16 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	private void installDeferredBreakpoints() {
 		IBreakpoint[] breakpoints = getBreakpointManager().getBreakpoints(
 				getModelIdentifier());
-		for (int i = 0; i < breakpoints.length; i++) {
-			breakpointAdded(breakpoints[i]);
+		
+		fStarting = true;
+		try {
+			for (int i = 0; i < breakpoints.length; i++) {
+				breakpointAdded(breakpoints[i]);
+			}
+		} finally {
+			fStarting = false;
 		}
+		
 	}
 
 	/*
@@ -200,11 +181,10 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * @see org.eclipse.debug.core.IBreakpointListener#breakpointAdded(org.eclipse.debug.core.model.IBreakpoint)
 	 */
 	public void breakpointAdded(IBreakpoint breakpoint) {
-		if (supportsBreakpoint(breakpoint)) {
+		if (supportsBreakpoint(breakpoint) && isSuspended()) {
 			try {
 				if ((breakpoint.isEnabled() && getBreakpointManager()
-						.isEnabled())
-						|| !breakpoint.isRegistered()) {
+						.isEnabled()) || !breakpoint.isRegistered()) {
 					LuaLineBreakpoint luaBreakpoint = (LuaLineBreakpoint) breakpoint;
 					luaBreakpoint.install(this);
 				}
@@ -220,7 +200,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 *      org.eclipse.core.resources.IMarkerDelta)
 	 */
 	public void breakpointRemoved(IBreakpoint breakpoint, IMarkerDelta delta) {
-		if (supportsBreakpoint(breakpoint)) {
+		if (supportsBreakpoint(breakpoint) && isSuspended()) {
 			try {
 				LuaLineBreakpoint pdaBreakpoint = (LuaLineBreakpoint) breakpoint;
 				pdaBreakpoint.remove(this);
@@ -236,7 +216,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 *      org.eclipse.core.resources.IMarkerDelta)
 	 */
 	public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) {
-		if (supportsBreakpoint(breakpoint)) {
+		if (supportsBreakpoint(breakpoint) && isSuspended()) {
 			try {
 				if (breakpoint.isEnabled()
 						&& getBreakpointManager().isEnabled()) {
@@ -255,7 +235,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * @see org.eclipse.debug.core.model.ITerminate#canTerminate()
 	 */
 	public boolean canTerminate() {
-		return getProcess().canTerminate();
+		return !fTerminated || getProcess().canTerminate();
 	}
 
 	/*
@@ -273,9 +253,15 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * @see org.eclipse.debug.core.model.ITerminate#terminate()
 	 */
 	public void terminate() throws DebugException {
-		for (IThread thread : fThreads)
-			if (thread != null)
-				thread.terminate();
+		if (!fTerminated) {
+			fTerminated = true;
+			fLaunch.terminate();
+			fServer.terminate();
+			for (IThread thread : fThreads)
+				if (thread != null)
+					thread.terminate();
+			fireTerminateEvent();
+		}
 	}
 
 	/*
@@ -302,7 +288,7 @@ public class LuaDebugTarget extends LuaDebugElement implements IDebugTarget,
 	 * @see org.eclipse.debug.core.model.ISuspendResume#isSuspended()
 	 */
 	public boolean isSuspended() {
-		return !isTerminated() && getMainThread().isSuspended();
+		return !isTerminated() && (fStarting || getMainThread().isSuspended());
 	}
 
 	/*

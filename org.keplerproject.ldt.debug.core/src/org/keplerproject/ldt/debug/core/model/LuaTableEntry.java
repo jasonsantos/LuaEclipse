@@ -3,6 +3,9 @@
  */
 package org.keplerproject.ldt.debug.core.model;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IVariable;
 
@@ -27,8 +30,11 @@ public class LuaTableEntry extends LuaVariable implements IVariable {
 	 */
 	@Override
 	protected String getInternalName() throws DebugException {
-
-		return fTable.getVariable().getInternalName() + "." + super.getName();
+		String name = super.getName();
+		try {
+			name = URLEncoder.encode(name, "UTF-8");
+		} catch (UnsupportedEncodingException e) { }
+		return fTable.getVariable().getInternalName() + ":" + name;
 	}
 
 	/*

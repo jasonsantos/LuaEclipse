@@ -2,11 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LDT Debugger Plug-in
 Bundle-SymbolicName: org.keplerproject.ldt.debug.core;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.3.4.qualifier
 Bundle-Activator: org.keplerproject.ldt.debug.core.LuaDebuggerPlugin
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.debug.core
-Eclipse-LazyStart: true
+ org.eclipse.debug.core,
+ org.keplerproject.ldt.launcher;bundle-version="1.2.1"
+Bundle-ActivationPolicy: lazy
 Export-Package: org.keplerproject.ldt.debug.core;uses:="org.eclipse.core.runtime,org.osgi.framework",
  org.keplerproject.ldt.debug.core.breakpoints;uses:="org.keplerproject.ldt.debug.core.model,org.eclipse.core.resources,org.eclipse.debug.core.model",
  org.keplerproject.ldt.debug.core.launcher;uses:="org.eclipse.debug.core,org.eclipse.core.runtime,org.eclipse.debug.core.model",

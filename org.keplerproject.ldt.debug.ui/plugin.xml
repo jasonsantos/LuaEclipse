@@ -5,11 +5,15 @@
    <extension
          point="org.eclipse.ui.propertyPages">
       <page
-            objectClass="org.eclipse.core.resources.IFile"
             name="Lua Debug"
             nameFilter="*.lua"
             class="org.keplerproject.ldt.debug.ui.properties.LuaDebugProperties"
             id="org.keplerproject.ldt.debug.ui.properties.samplePropertyPage">
+            <enabledWhen>
+            	<instanceof
+                   value="org.eclipse.core.resources.IFile">
+            	</instanceof>
+            </enabledWhen>
       </page>
    </extension>
    <extension

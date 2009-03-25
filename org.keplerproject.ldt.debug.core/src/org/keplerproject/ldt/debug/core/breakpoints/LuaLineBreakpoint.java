@@ -4,12 +4,15 @@
 package org.keplerproject.ldt.debug.core.breakpoints;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IThread;
@@ -26,6 +29,7 @@ public class LuaLineBreakpoint extends LineBreakpoint implements
 		ILuaEventListener {
 
 	protected IFile	fSourceFile;
+	protected Integer fLineNumber;
 	LuaDebugTarget	fTarget;
 
 	/**
@@ -46,9 +50,9 @@ public class LuaLineBreakpoint extends LineBreakpoint implements
 				marker.setAttribute(IBreakpoint.ENABLED, Boolean.TRUE);
 				marker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
 				marker.setAttribute(IBreakpoint.ID, getModelIdentifier());
-				marker.setAttribute(IMarker.MESSAGE, "Line Breakpoint: "
-						+ resource.getName() + " [line: " + lineNumber + "]");
+				marker.setAttribute(IMarker.MESSAGE, resource.getName() + " [line: " + lineNumber + "]");
 				fSourceFile = resource;
+				fLineNumber = lineNumber;
 			}
 		};
 		run(getMarkerRule(resource), runnable);
@@ -60,7 +64,21 @@ public class LuaLineBreakpoint extends LineBreakpoint implements
 	 * @return the source file this breakpoint is contained in
 	 */
 	public IFile getSourceFile() {
+		if (fSourceFile == null)
+		{
+			fSourceFile = (IFile)this.getMarker().getResource();
+		}
+		
 		return fSourceFile;
+	}
+
+	public int getLineNumber() {
+		if (fLineNumber == null)
+		{
+			fLineNumber = this.getMarker().getAttribute(IMarker.LINE_NUMBER, -1);
+		}
+		
+		return fLineNumber;
 	}
 
 	protected void notifyThread() {
@@ -114,12 +132,19 @@ public class LuaLineBreakpoint extends LineBreakpoint implements
 	}
 
 	protected void createRequest(LuaDebugTarget target) throws CoreException {
+		String fileName = null;
 		try {
-			target.sendRequest("SETB "
-					+ fSourceFile.getLocation().toPortableString() + " "
-					+ (getLineNumber() - 1));
+			fileName = URLEncoder.encode(getSourceFile().getLocation()
+					.toPortableString(), "UTF-8");
+		} catch (UnsupportedEncodingException e1) { }
+		
+		try {
+			target.sendRequest("SETB " + fileName + " " + getLineNumber());
 		} catch (IOException e) {
-			// TODO: throw something
+			Status status = new Status(Status.ERROR, "",
+					DebugException.REQUEST_FAILED,
+					"Error sending set-breakpoint request", e);
+			throw new DebugException(status);
 		}
 	}
 
@@ -132,12 +157,24 @@ public class LuaLineBreakpoint extends LineBreakpoint implements
 
 	protected void clearRequest(LuaDebugTarget target) throws CoreException {
 
+		String fileName = null;
 		try {
-			target.sendRequest("DELB "
-					+ fSourceFile.getLocation().toPortableString() + " "
-					+ (getLineNumber() - 1));
+			fileName = URLEncoder.encode(getSourceFile().getLocation()
+					.toPortableString(), "UTF-8");
+		} catch (UnsupportedEncodingException e1) { }
+		
+		try {
+			target.sendRequest("DELB " + fileName + " " + getLineNumber());
 		} catch (IOException e) {
-			// TODO: throw something
+			Status status = new Status(Status.ERROR, "",
+					DebugException.REQUEST_FAILED,
+					"Error sending remove-breakpoint request", e);
+			throw new DebugException(status);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return this.getMarker().getAttribute(IMarker.MESSAGE, this.fSourceFile + " : " + this.fLineNumber);
 	}
 }

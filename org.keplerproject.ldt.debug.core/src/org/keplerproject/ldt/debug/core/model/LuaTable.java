@@ -3,6 +3,8 @@
  */
 package org.keplerproject.ldt.debug.core.model;
 
+import java.util.Arrays;
+
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IVariable;
 
@@ -72,6 +74,7 @@ public class LuaTable extends LuaValue {
 				// characters support
 				variables[i] = new LuaTableEntry(this, items[i]);
 			}
+			Arrays.sort(variables, LuaVariable.getComparator());
 			return variables;
 		}
 

@@ -142,15 +142,9 @@ public class LuaDebugThread extends LuaDebugElement implements IThread,
 	 */
 
 	public IStackFrame[] getStackFrames() throws DebugException {
-		if (isSuspended()) {
-			System.out.println("------------------------->" + fFramesData);
-			if (fFramesData != null && fFramesData.startsWith("101")) {
-				fStackFrames = parseFramesData(fFramesData);
-				return fStackFrames;
-			}
-
-		}
-		return new IStackFrame[0];
+		if (fStackFrames == null)
+			return new IStackFrame[0];
+		return fStackFrames;
 	}
 
 	/*
@@ -266,7 +260,7 @@ public class LuaDebugThread extends LuaDebugElement implements IThread,
 	 * @see org.eclipse.debug.core.model.IStep#canStepReturn()
 	 */
 	public boolean canStepReturn() {
-		return false;
+		return true;
 	}
 
 	/*
@@ -308,6 +302,10 @@ public class LuaDebugThread extends LuaDebugElement implements IThread,
 	 * @see org.eclipse.debug.core.model.IStep#stepReturn()
 	 */
 	public void stepReturn() throws DebugException {
+		try {
+			System.out.println(sendRequest("OUT"));
+		} catch (IOException e) {
+		}
 	}
 
 	/*
@@ -334,9 +332,12 @@ public class LuaDebugThread extends LuaDebugElement implements IThread,
 	 * @see org.eclipse.debug.core.model.ITerminate#terminate()
 	 */
 	public void terminate() throws DebugException {
-		try {
-			System.out.println(sendRequest("EXIT"));
-		} catch (IOException e) {
+		if (getDebugTarget().canTerminate()) {
+			try {
+				System.out.println(sendRequest("EXIT"));
+			} catch (IOException e) {
+			}
+			getDebugTarget().terminate();
 		}
 	}
 
@@ -351,27 +352,33 @@ public class LuaDebugThread extends LuaDebugElement implements IThread,
 		fBreakpoint = null;
 		setStepping(false);
 
-		// handle events
-		if (event.startsWith("200")) {
+		// Running event
+		if (event.startsWith("210")) {
 			setSuspended(false);
+			setStepping(false);
+			resumed(DebugEvent.RESUME);
+			
+		// Stepping event
+		} else if (event.startsWith("211")) {
+			setSuspended(false);
+			setStepping(true);
 			resumed(DebugEvent.STEP_OVER);
 
+		// Break event
 		} else if (event.startsWith("202")) {
 			setSuspended(true);
-			suspended(DebugEvent.STEP_END);
+			setStepping(false);
 			try {
-				fFramesData = sendRequest("STACK");
+				String framesData = sendRequest("STACK");
+				fStackFrames = parseFramesData(framesData);
 			} catch (Exception e) {
 			}
-		} else if (event.startsWith("101")) {
-			if (!event.equals(fStackData)) {
-				fStackFrames = parseFramesData(event);
-			}
-			fStackData = event;
+			suspended(DebugEvent.STEP_END);
 
 		} else if (event.equals("started")) {
 			fireCreationEvent();
-		} else {
+			
+		} else if (event.matches("^4\\d\\d.*$")) {
 			setError(event);
 		}
 	}
@@ -386,14 +393,11 @@ public class LuaDebugThread extends LuaDebugElement implements IThread,
 			String[] frames = framesData.split("#");
 			IStackFrame[] theFrames = new IStackFrame[frames.length];
 			for (int i = 0; i < frames.length; i++) {
-				String data = frames[i];
-				theFrames[frames.length - i - 1] = new LuaStackFrame(this,
-						data, i);
+				theFrames[i] = new LuaStackFrame(this, frames[i], i);
 			}
 			return theFrames;
 		} else
 			return new IStackFrame[0];
-
 	}
 
 	/**

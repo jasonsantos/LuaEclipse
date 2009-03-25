@@ -3,6 +3,10 @@
  */
 package org.keplerproject.ldt.debug.core.source;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -13,6 +17,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.sourcelookup.ISourceContainer;
 import org.eclipse.debug.core.sourcelookup.ISourcePathComputerDelegate;
+import org.eclipse.debug.core.sourcelookup.containers.DirectorySourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.FolderSourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.ProjectSourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.WorkspaceSourceContainer;
@@ -33,28 +38,22 @@ public class SourcePathComputerDelegate implements ISourcePathComputerDelegate {
 			ILaunchConfiguration configuration, IProgressMonitor monitor)
 			throws CoreException {
 
-		String path = configuration.getAttribute(
-				LuaDebuggerPlugin.LUA_SCRIPT_ATTRIBUTE, (String) null);
-		ISourceContainer sourceContainer = null;
-		if (path != null) {
-			IResource resource = ResourcesPlugin.getWorkspace().getRoot()
-					.findMember(new Path(path));
-			if (resource != null) {
-				IContainer container = resource.getParent();
-				if (container.getType() == IResource.PROJECT) {
-					sourceContainer = new ProjectSourceContainer(
-							(IProject) container, false);
-				} else if (container.getType() == IResource.FOLDER) {
-					sourceContainer = new FolderSourceContainer(container,
-							false);
-				}
-
-			}
+		List<ISourceContainer> containers = new ArrayList<ISourceContainer>();
+		
+		String project = configuration.getAttribute(
+				LuaDebuggerPlugin.LUA_PROJECT_ATTRIBUTE, (String) null);
+		if (project != null) {
+			ISourceContainer sourceContainer = null;
+			IProject projectObj = ResourcesPlugin.getWorkspace().getRoot().getProject(project);
+			if (projectObj.exists())
+				sourceContainer = new ProjectSourceContainer(projectObj, false);
+			else
+				sourceContainer = new FolderSourceContainer(projectObj, false);
+			containers.add(sourceContainer);
 		}
-		if (sourceContainer == null) {
-			sourceContainer = new WorkspaceSourceContainer();
-		}
-		return new ISourceContainer[] { sourceContainer };
+		containers.add(new WorkspaceSourceContainer());
+		containers.add(new DirectorySourceContainer(File.listRoots()[0], true));
+		return containers.toArray(new ISourceContainer[]{});
 	}
 
 }
