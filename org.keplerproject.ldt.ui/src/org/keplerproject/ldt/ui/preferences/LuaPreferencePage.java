@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.keplerproject.ldt.core.LuaScriptsSpecs;
@@ -62,6 +63,8 @@ public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPref
 	private Button removeButton;
 	
 	private Button luadocAutoGen;
+	
+	private Text initializeText;
 
 	public LuaPreferencePage() {
 		
@@ -85,8 +88,13 @@ public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPref
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		group.setLayout(layout);
 
+		Group middleGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		middleGroup.setText("LuaDoc Integration Config");
+		middleGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		middleGroup.setLayout(layout);
+		
 		Group lowerGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		lowerGroup.setText("LuaDoc Integration Config");
+		lowerGroup.setText("Code Completion");
 		lowerGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		lowerGroup.setLayout(layout);
 		
@@ -122,7 +130,7 @@ public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPref
 		buttons.setLayout(layout);
 
 		
-		Composite luadocControls = new Composite(lowerGroup, SWT.NULL);
+		Composite luadocControls = new Composite(middleGroup, SWT.NULL);
 		layout = new GridLayout();
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
@@ -156,6 +164,28 @@ public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPref
 		Dialog.applyDialogFont(group);
 		setButtonLayoutData(addButton);
 		setButtonLayoutData(removeButton);
+		
+		Composite codeCompleteControls = new Composite(lowerGroup, SWT.NULL);
+		layout = new GridLayout();
+		layout.marginWidth = 0;
+		layout.marginHeight = 0;
+		layout.numColumns = 1;
+
+		codeCompleteControls.setLayout(layout);
+		codeCompleteControls.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		
+		data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		
+		Label l2 = new Label(codeCompleteControls, SWT.NULL);
+		l2.setText("Code to be executed before loading Code Completion LuaState");
+		l2.setLayoutData(data);
+		
+		data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		data.heightHint = 100;
+		initializeText = new Text(codeCompleteControls, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		initializeText.setText(LuaScriptsSpecs.getDefault().getInitialScript());
+		initializeText.setLayoutData(data);
+		
 	}
 
 	/**
@@ -171,6 +201,8 @@ public class LuaPreferencePage extends  PreferencePage implements IWorkbenchPref
 		}
 		
 		LuaScriptsSpecs.getDefault().setLuaDocAutoGeneration(luadocAutoGen.getSelection());
+		
+		LuaScriptsSpecs.getDefault().setInitialScript(initializeText.getText());
 		
 		LuaScriptsSpecs.getDefault().savePatterns();
 		

@@ -47,28 +47,18 @@ import org.keplerproject.luajava.LuaStateFactory;
  */
 public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 		IResourceVisitor {
-	protected static LuaState	L	= null;
-
-	static {
-		try {
-			L = LuaStateFactory.newLuaState();
-			L.openLibs();
-		} catch (Exception e) {
-			System.out
-					.println("Error initializing LuaState: " + e.getMessage());
-		}
-	}
 
 	public LuaResourceDeltaVisitor() {
 		return;
 	}
 
 	public boolean visit(IResourceDelta delta) throws CoreException {
+		
 		final IResource res = delta.getResource();
 		if (LuaScriptsSpecs.getDefault().isValidLuaScriptFileName(res)) {
 			if (LuaScriptsSpecs.getDefault().isLuaDocAutoGenerationActive())
 				updateLuadocEntries(res);
-
+			LuaState L = LuaScriptsSpecs.getDefault().getLuaState();
 			compileFile(res, L);
 
 			return false;
@@ -134,11 +124,11 @@ public class LuaResourceDeltaVisitor implements IResourceDeltaVisitor,
 	}
 
 	public boolean visit(final IResource res) throws CoreException {
-
+		
 		if (LuaScriptsSpecs.getDefault().isValidLuaScriptFileName(res)) {
 			if (LuaScriptsSpecs.getDefault().isLuaDocAutoGenerationActive())
 				updateLuadocEntries(res);
-
+			LuaState L = LuaScriptsSpecs.getDefault().getLuaState();
 			compileFile(res, L);
 			return false;
 		} else {

@@ -30,6 +30,7 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.swt.graphics.Image;
+import org.keplerproject.ldt.core.LuaScriptsSpecs;
 import org.keplerproject.ldt.ui.baseExts.BaseExtsPlugin;
 import org.keplerproject.ldt.ui.baseExts.scanner.ILuaSyntax;
 import org.keplerproject.ldt.ui.baseExts.scanner.LuaVariableDetector;
@@ -49,24 +50,15 @@ public class LuaCompletionProcessor implements IContentAssistProcessor,
 
 	protected ArrayList	proposalList;
 
-	protected LuaState	L	= null;
-
 	public LuaCompletionProcessor() {
 		proposalList = new ArrayList();
-		try {
-			L = (LuaStateFactory.newLuaState());
-			L.openLibs();
-		} catch (Exception e) {
-			System.out.println("Could not initialize LuaState:"
-					+ e.getMessage());
-		} catch (Error e) {
-			System.out.println("Could not initialize LuaState:"
-					+ e.getMessage());
-		}
 	}
 
 	public ICompletionProposal[] computeCompletionProposals(
 			final ITextViewer viewer, final int documentOffset) {
+		
+		LuaState L = LuaScriptsSpecs.getDefault().getLuaState();
+		
 		if (L == null)
 			return new ICompletionProposal[] {};
 
