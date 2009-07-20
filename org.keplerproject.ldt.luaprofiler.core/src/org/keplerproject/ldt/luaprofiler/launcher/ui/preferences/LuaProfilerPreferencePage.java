@@ -200,7 +200,7 @@ public class LuaProfilerPreferencePage extends PreferencePage implements
 		name.open();
 		FileDialog file = new FileDialog(getShell(), SWT.OPEN);
 		
-		if(Platform.getOS() == Platform.OS_WIN32) 
+		if(Platform.getOS().equals(Platform.OS_WIN32)) 
 			file.setFilterExtensions(new String[] { "*.dll", "*.a", "*.lib" });
 		else
 			file.setFilterExtensions(new String[] { "*.so", "*.a"});
@@ -242,6 +242,6 @@ public class LuaProfilerPreferencePage extends PreferencePage implements
 				.getSelection()).getFirstElement();
 		LuaProfiler.getDefault().setSelectedProfiler(selected);
 
-		return super.performOk();
+		return true;
 	}
 }
