@@ -238,7 +238,7 @@ public class LuaEditor extends AbstractDecoratedTextEditor {
 	public LuaOutlinePage getContentOutline() {
 		 if (luaOutlinePage == null  ) {
 	            luaOutlinePage = new LuaOutlinePage(getDocumentProvider(), this);
-                   luaOutlinePage.setInput(this);
+                   luaOutlinePage.setInput((IEditorInput) this);
 	         }
 		 
 		 return luaOutlinePage;
