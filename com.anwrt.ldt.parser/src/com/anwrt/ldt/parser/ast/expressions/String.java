@@ -9,15 +9,11 @@ package com.anwrt.ldt.parser.ast.expressions;
 import org.eclipse.dltk.ast.expressions.Literal;
 
 import com.anwrt.ldt.parser.LuaExpressionConstants;
-
-import com.anwrt.ldt.internal.parser.Index;
 // TODO: Auto-generated Javadoc
 /**
  * The Class String.
  */
-public class String extends Literal implements Index {
-
-	private long id;
+public class String extends Literal {
 
 	/**
 	 * Instantiates a new string.
@@ -36,14 +32,5 @@ public class String extends Literal implements Index {
 	@Override
 	public int getKind() {
 		return LuaExpressionConstants.STRING_LITERAL;
-	}
-
-	public long getID() {
-		return id;
-	}
-
-
-	public void setID(long id) {
-		this.id = id;
 	}
 }

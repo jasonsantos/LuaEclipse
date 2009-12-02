@@ -10,13 +10,11 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Statement;
 
-import com.anwrt.ldt.internal.parser.Index;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class If.
  */
-public class If extends Statement implements LuaStatementConstants, Index {
+public class If extends Statement implements LuaStatementConstants{
 
 	/** The condition. */
 	private Expression condition;
@@ -26,8 +24,6 @@ public class If extends Statement implements LuaStatementConstants, Index {
 
 	/** The alternative. */
 	private Chunk alternative;
-
-	private long id;
 
 	/**
 	 * Instantiates a new if.
@@ -106,14 +102,6 @@ public class If extends Statement implements LuaStatementConstants, Index {
 	@Override
 	public int getKind() {
 		return S_IF;
-	}
-
-	public long getID() {
-		return id;
-	}
-
-	public void setID(long id) {
-		this.id = id;
 	}
 
 	/*

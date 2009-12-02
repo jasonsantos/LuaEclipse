@@ -16,7 +16,6 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.utils.CorePrinter;
 
-import com.anwrt.ldt.internal.parser.Index;
 import com.anwrt.ldt.internal.parser.NameFinder;
 import com.anwrt.ldt.parser.LuaExpressionConstants;
 import com.anwrt.ldt.parser.ast.statements.Chunk;
@@ -25,95 +24,86 @@ import com.anwrt.ldt.parser.ast.statements.Chunk;
 /**
  * The Class Function.
  */
-public class Function extends Block implements Index {
+public class Function extends Block {
 
-    /** The parameters. */
-    private ArrayList<Argument> arguments;
-    private long id;
+	/** The parameters. */
+	private ArrayList<Argument> arguments;
 
-    /**
-     * Instantiates a new function.
-     * 
-     * @param start
-     *            the start
-     * @param end
-     *            the end
-     * @param parameters
-     *            the parameters
-     * @param body
-     *            the body
-     */
-    public Function(int start, int end, Chunk parameters, Chunk body) {
-	super(start, end, body.getStatements());
-	// Declare parameters as arguments
-	int argCount = parameters.getStatements().size();
-	this.arguments = new ArrayList<Argument>(argCount);
-	for (int k = 0; k < argCount; k++) {
-	    Expression expr = (Expression) parameters.getStatements().get(k);
-	    SimpleReference ref = NameFinder.getReference(expr);
-	    Argument arg = new Argument(ref, ref.matchStart(), ref.matchStart()
-		    + ref.matchStart(), expr, Declaration.AccFinal);
-	    arg.setModifiers(Declaration.D_ARGUMENT);
-	    this.arguments.add(arg);
+	/**
+	 * Instantiates a new function.
+	 * 
+	 * @param start
+	 *            the start
+	 * @param end
+	 *            the end
+	 * @param parameters
+	 *            the parameters
+	 * @param body
+	 *            the body
+	 */
+	public Function(int start, int end, Chunk parameters, Chunk body) {
+		super(start, end, body.getStatements());
+		// Declare parameters as arguments
+		int argCount = parameters.getStatements().size();
+		this.arguments = new ArrayList<Argument>(argCount);
+		for (int arg = 0; arg < argCount; arg++) {
+			Expression expr = (Expression) parameters.getStatements().get(arg);
+			SimpleReference ref = NameFinder.getReference(expr);
+			Argument param = new Argument(ref, ref.matchStart(), ref.matchStart()
+					+ ref.matchStart(), expr, Declaration.AccFinal);
+			param.setModifiers(Declaration.D_ARGUMENT);
+			this.arguments.add(param);
+		}
 	}
-    }
 
-    public ArrayList<Argument> getArguments() {
-	return arguments;
-    }
-
-    /**
-     * Gets the parameters.
-     * 
-     * @return the parameters
-     * 
-     *         public Chunk getParameters() { return parameters; }
-     */
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.dltk.ast.statements.Block#getKind()
-     */
-    @Override
-    public int getKind() {
-	return LuaExpressionConstants.E_FUNCTION;
-    }
-
-    public long getID() {
-	return id;
-    }
-
-    public void printNode(CorePrinter output) {
-    
-        // Arguments
-        output.indent();
-        output.indent();
-        for (Argument arg : getArguments()) {
-            arg.printNode(output);
-        }
-        output.dedent();
-        output.dedent();
-        super.printNode(output);
-    }
-
-    public void setID(long id) {
-	this.id = id;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.eclipse.dltk.ast.statements.Block#traverse(org.eclipse.dltk.ast.
-     * ASTVisitor)
-     */
-    public void traverse(ASTVisitor visitor) throws Exception {
-	if (visitor.visit(this)) {
-	    super.traverse(visitor);
-	    for (Argument arg : this.arguments) {
-		arg.traverse(visitor);
-	    }
-	    visitor.endvisit(this);
+	public ArrayList<Argument> getArguments() {
+		return arguments;
 	}
-    }
+
+	/**
+	 * Gets the parameters.
+	 * 
+	 * @return the parameters
+	 * 
+	 *         public Chunk getParameters() { return parameters; }
+	 */
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.dltk.ast.statements.Block#getKind()
+	 */
+	@Override
+	public int getKind() {
+		return LuaExpressionConstants.E_FUNCTION;
+	}
+
+	public void printNode(CorePrinter output) {
+
+		// Arguments
+		output.indent();
+		output.indent();
+		for (Argument arg : getArguments()) {
+			arg.printNode(output);
+		}
+		output.dedent();
+		output.dedent();
+		super.printNode(output);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.dltk.ast.statements.Block#traverse(org.eclipse.dltk.ast.
+	 * ASTVisitor)
+	 */
+	public void traverse(ASTVisitor visitor) throws Exception {
+		if (visitor.visit(this)) {
+			super.traverse(visitor);
+			for (Argument arg : this.arguments) {
+				arg.traverse(visitor);
+			}
+			visitor.endvisit(this);
+		}
+	}
 }

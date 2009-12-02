@@ -16,92 +16,82 @@ import com.anwrt.ldt.parser.LuaExpressionConstants;
  * The Class Index.
  */
 public class Index extends Expression implements LeftHandSide,
-	LuaExpressionConstants, com.anwrt.ldt.internal.parser.Index {
+		LuaExpressionConstants {
 
-    /** The index. */
-    private Expression value;
+	/** The index. */
+	private Expression value;
 
-    /** The table. */
-    private Expression key;
+	/** The table. */
+	private Expression key;
 
-    private long id;
-
-    /**
-     * Instantiates a new index.
-     * 
-     * @param start
-     *            the start
-     * @param end
-     *            the end
-     * @param key
-     *            the table
-     * @param value
-     *            the index
-     */
-    public Index(int start, int end, Expression key, Expression value) {
-	super(start, end);
-	this.value = value;
-	this.key = key;
-    }
-
-    /**
-     * Gets the index.
-     * 
-     * @return the index
-     */
-    public Expression getValue() {
-	return value;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.dltk.ast.statements.Statement#getKind()
-     */
-    @Override
-    public int getKind() {
-	return E_INDEX;
-    }
-
-    public long getID() {
-	return id;
-    }
-
-    public void setID(long id) {
-	this.id = id;
-    }
-
-    /**
-     * Gets the table.
-     * 
-     * @return the table
-     */
-    public Expression getKey() {
-	return key;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.anwrt.ldt.parser.ast.expressions.LeftHandSide#isLeftHandSide()
-     */
-    @Override
-    public boolean isLeftHandSide() {
-	return true;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.dltk.ast.statements.Statement#traverse(org.eclipse.dltk.ast
-     * .ASTVisitor)
-     */
-    public void traverse(ASTVisitor visitor) throws Exception {
-	if (visitor.visit(this)) {
-	    value.traverse(visitor);
-	    key.traverse(visitor);
-	    visitor.endvisit(this);
+	/**
+	 * Instantiates a new index.
+	 * 
+	 * @param start
+	 *            the start
+	 * @param end
+	 *            the end
+	 * @param key
+	 *            the table
+	 * @param value
+	 *            the index
+	 */
+	public Index(int start, int end, Expression key, Expression value) {
+		super(start, end);
+		this.value = value;
+		this.key = key;
 	}
-    }
+
+	/**
+	 * Gets the index.
+	 * 
+	 * @return the index
+	 */
+	public Expression getValue() {
+		return value;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.dltk.ast.statements.Statement#getKind()
+	 */
+	@Override
+	public int getKind() {
+		return E_INDEX;
+	}
+
+	/**
+	 * Gets the table.
+	 * 
+	 * @return the table
+	 */
+	public Expression getKey() {
+		return key;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.anwrt.ldt.parser.ast.expressions.LeftHandSide#isLeftHandSide()
+	 */
+	@Override
+	public boolean isLeftHandSide() {
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.dltk.ast.statements.Statement#traverse(org.eclipse.dltk.ast
+	 * .ASTVisitor)
+	 */
+	public void traverse(ASTVisitor visitor) throws Exception {
+		if (visitor.visit(this)) {
+			value.traverse(visitor);
+			key.traverse(visitor);
+			visitor.endvisit(this);
+		}
+	}
 }

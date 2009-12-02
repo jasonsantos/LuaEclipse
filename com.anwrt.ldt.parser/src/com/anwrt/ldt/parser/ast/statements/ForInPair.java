@@ -9,21 +9,17 @@ package com.anwrt.ldt.parser.ast.statements;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.statements.Block;
 
-import com.anwrt.ldt.internal.parser.Index;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class ForInPair.
  */
-public class ForInPair extends Block implements Index {
+public class ForInPair extends Block {
 
 	/** The identifiers. */
 	private Chunk identifiers;
 
 	/** The expressions. */
 	private Chunk expressions;
-
-	private long id;
 
 	/**
 	 * Instantiates a new for in pair.
@@ -62,14 +58,6 @@ public class ForInPair extends Block implements Index {
 	 */
 	public Chunk getExpressions() {
 		return expressions;
-	}
-
-	public long getID() {
-		return id;
-	}
-
-	public void setID(long id) {
-		this.id = id;
 	}
 
 	/*

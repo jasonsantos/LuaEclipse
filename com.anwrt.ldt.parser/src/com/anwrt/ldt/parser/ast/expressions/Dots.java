@@ -9,15 +9,12 @@ package com.anwrt.ldt.parser.ast.expressions;
 import org.eclipse.dltk.ast.expressions.Expression;
 
 import com.anwrt.ldt.parser.LuaExpressionConstants;
-import com.anwrt.ldt.internal.parser.Index;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class Dots.
  */
-public class Dots extends Expression implements LuaExpressionConstants, Index {
-
-	private long id;
+public class Dots extends Expression implements LuaExpressionConstants {
 
 	/**
 	 * Instantiates a new dots.
@@ -39,13 +36,5 @@ public class Dots extends Expression implements LuaExpressionConstants, Index {
 	@Override
 	public int getKind() {
 		return E_DOTS;
-	}
-
-	public long getID() {
-		return id;
-	}
-
-	public void setID(long id) {
-		this.id = id;
 	}
 }

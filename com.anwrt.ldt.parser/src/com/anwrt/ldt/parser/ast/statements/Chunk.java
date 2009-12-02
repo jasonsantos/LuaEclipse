@@ -12,15 +12,11 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
 
-import com.anwrt.ldt.internal.parser.Index;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class Chunk.
  */
-public class Chunk extends Block implements Index {
-
-	private long id;
+public class Chunk extends Block {
 
 	/**
 	 * Instantiates a new chunk.
@@ -53,14 +49,6 @@ public class Chunk extends Block implements Index {
 	 */
 	public Chunk(int start, int end) {
 		super(start, end);
-	}
-
-	public long getID() {
-		return id;
-	}
-
-	public void setID(long id) {
-		this.id = id;
 	}
 
 	@Override

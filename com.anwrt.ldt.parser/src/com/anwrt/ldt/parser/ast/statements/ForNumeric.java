@@ -10,14 +10,13 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Block;
 
-import com.anwrt.ldt.internal.parser.Index;
 import com.anwrt.ldt.parser.ast.expressions.Identifier;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ForNumeric.
  */
-public class ForNumeric extends Block implements LuaStatementConstants, Index{
+public class ForNumeric extends Block implements LuaStatementConstants{
 
 	/** The optionnal. */
 	private Expression optionnal;

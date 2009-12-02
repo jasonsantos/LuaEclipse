@@ -10,104 +10,92 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.ast.statements.StatementConstants;
 
-import com.anwrt.ldt.internal.parser.Index;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class Local.
  */
-public class Local extends Statement implements StatementConstants, Index {
+public class Local extends Statement implements StatementConstants {
 
-    /** The identifiers. */
-    private Chunk identifiers;
+	/** The identifiers. */
+	private Chunk identifiers;
 
-    /** The expressions. */
-    private Chunk expressions;
+	/** The expressions. */
+	private Chunk expressions;
 
-    private long id;
-
-    /**
-     * Instantiates a new local.
-     * 
-     * @param start
-     *            the start
-     * @param end
-     *            the end
-     * @param identifiers
-     *            the identifiers
-     * @param expressions
-     *            the expressions
-     */
-    public Local(int start, int end, Chunk identifiers, Chunk expressions) {
-	super(start, end);
-	this.expressions = expressions;
-	this.identifiers = identifiers;
-    }
-
-    /**
-     * Instantiates a new local.
-     * 
-     * @param start
-     *            the start
-     * @param end
-     *            the end
-     * @param identifiers
-     *            the identifiers
-     */
-    public Local(int start, int end, Chunk identifiers) {
-	this(start, end, identifiers, null);
-    }
-
-    /**
-     * Gets the identifiers.
-     * 
-     * @return the identifiers
-     */
-    public Chunk getIdentifiers() {
-	return identifiers;
-    }
-
-    /**
-     * Gets the expressions.
-     * 
-     * @return the expressions
-     */
-    public Chunk getExpressions() {
-	return expressions;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.dltk.ast.statements.Statement#getKind()
-     */
-    @Override
-    public int getKind() {
-	return D_VAR_DECL;
-    }
-
-    public long getID() {
-	return id;
-    }
-
-    public void setID(long id) {
-	this.id = id;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.dltk.ast.statements.Statement#traverse(org.eclipse.dltk.ast
-     * .ASTVisitor)
-     */
-    public void traverse(ASTVisitor visitor) throws Exception {
-	if (visitor.visit(this)) {
-	    if (expressions != null) {
-		expressions.traverse(visitor);
-	    }
-	    identifiers.traverse(visitor);
-	    visitor.endvisit(this);
+	/**
+	 * Instantiates a new local.
+	 * 
+	 * @param start
+	 *            the start
+	 * @param end
+	 *            the end
+	 * @param identifiers
+	 *            the identifiers
+	 * @param expressions
+	 *            the expressions
+	 */
+	public Local(int start, int end, Chunk identifiers, Chunk expressions) {
+		super(start, end);
+		this.expressions = expressions;
+		this.identifiers = identifiers;
 	}
-    }
+
+	/**
+	 * Instantiates a new local.
+	 * 
+	 * @param start
+	 *            the start
+	 * @param end
+	 *            the end
+	 * @param identifiers
+	 *            the identifiers
+	 */
+	public Local(int start, int end, Chunk identifiers) {
+		this(start, end, identifiers, null);
+	}
+
+	/**
+	 * Gets the identifiers.
+	 * 
+	 * @return the identifiers
+	 */
+	public Chunk getIdentifiers() {
+		return identifiers;
+	}
+
+	/**
+	 * Gets the expressions.
+	 * 
+	 * @return the expressions
+	 */
+	public Chunk getExpressions() {
+		return expressions;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.dltk.ast.statements.Statement#getKind()
+	 */
+	@Override
+	public int getKind() {
+		return D_VAR_DECL;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.dltk.ast.statements.Statement#traverse(org.eclipse.dltk.ast
+	 * .ASTVisitor)
+	 */
+	public void traverse(ASTVisitor visitor) throws Exception {
+		if (visitor.visit(this)) {
+			if (expressions != null) {
+				expressions.traverse(visitor);
+			}
+			identifiers.traverse(visitor);
+			visitor.endvisit(this);
+		}
+	}
 }
