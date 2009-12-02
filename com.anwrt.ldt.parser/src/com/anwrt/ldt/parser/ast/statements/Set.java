@@ -64,7 +64,7 @@ public class Set extends BinaryExpression {
 					.get(n);
 
 			// Get variable name
-			String varName = NameFinder.getName(declaredVar);
+			String varName = NameFinder.extractName(declaredVar);
 
 			// Declare Identifier as Arguments
 			int idStart = declaredVar.matchStart() - 1;

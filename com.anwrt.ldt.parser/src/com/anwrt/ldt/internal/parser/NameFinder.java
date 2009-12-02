@@ -5,65 +5,78 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 
 import com.anwrt.ldt.parser.ast.expressions.Identifier;
 import com.anwrt.ldt.parser.ast.expressions.Index;
+import com.anwrt.ldt.parser.ast.expressions.String;
 
 /**
  * In an AST from Lua code sometimes you need a name or a reference for a node,
  * but most of the time the name is hidden in the child nodes. This class seek
  * for name in AST.
  * 
- * @author	Kevin KIN-FOO <kkinfoo@anyware-tech.com>
- * @date $Date$
- * $Author$
- * $Id$
+ * @author Kevin KIN-FOO <kkinfoo@anyware-tech.com>
+ * @date $Date$ $Author$ $Id$
  */
 public class NameFinder {
 
-    /**
-     * @see NameFinder#getReference(Expression)
-     * @param node
-     * @return {@link String} name from reference
-     */
-    public static String getName(Expression node) {
-	return getReference(node).getName();
-
-    }
-
-    /**
-     * Extract an identifier name from {@link Expression} when possible
-     * 
-     * @param Expression
-     *            var {@link Expression} for name extraction
-     * @return {@link SimpleReference} in code, or "..." when not available
-     */
-    public static SimpleReference getReference(Expression node) {
-	
-	// Set default name
-	String name = "...";
-	int start = node.matchStart();
-	int end = node.matchStart() + node.matchLength();
-
-	// Search name in Identifier
-	if (node instanceof Identifier) {
-	    Identifier id = (Identifier) node;
-	    name = id.getValue();
-	} else if (node instanceof Index) {
-
-	    /*
-	     * Compose name from index
-	     */
-	    Index index = (Index) node;
-	    if (index.getKey() instanceof Identifier
-		    && index.getValue() instanceof com.anwrt.ldt.parser.ast.expressions.String) {
-		// Table name
-		name = ((Identifier) index.getKey()).getValue() + ".";
-		// Function name
-		name += ((com.anwrt.ldt.parser.ast.expressions.String) index
-			.getValue()).getValue();
-	    }
-	} else if (node instanceof com.anwrt.ldt.parser.ast.expressions.String) {
-	    name = ((com.anwrt.ldt.parser.ast.expressions.String) node)
-		    .getValue();
+	/**
+	 * Extract an identifier name from {@link Expression} when possible
+	 * 
+	 * @param Expression
+	 *            var {@link Expression} for name extraction
+	 * @return {@link SimpleReference} in code, or "..." when not available
+	 */
+	public static SimpleReference getReference(Expression node) {
+		// Set default name
+		int start = node.matchStart();
+		int end = node.matchStart() + node.matchLength();
+		return new SimpleReference(start, end, extractName(node));
 	}
-	return new SimpleReference(start, end, name);
-    }
+
+
+	/**
+	 * @see NameFinder#getReference(Expression)
+	 * @param node
+	 * @return {@link String} name from reference
+	 */
+	public static java.lang.String extractName(Expression expr) {
+		/*
+		 * Some function declarations look like : function table:method() end
+		 * Those ones use an index as name.
+		 *		`Set{ { `Index{ `Id "table", `String "method" } }, 
+       	 * 			{ `Function{ { `Id "self" }, { } } } }
+       	 * So let's use a composed name, as instance: table.method()
+		 */
+		java.lang.String name;
+		if (expr instanceof Index) {
+			// First part of name, before the dot
+			Index index = (Index) expr;
+			if ( index.getKey() instanceof Identifier ){
+				name = ((Identifier)index.getKey()).getValue();
+			}else{
+				name = index.getKey().toString();
+			}
+
+			// After the dot
+			name +='.';
+			if ( index.getValue() instanceof String ){
+				name += ((String)index.getValue()).getValue();
+			}else{
+				name += index.getKey().toString();
+			}
+		} else if (expr instanceof Identifier) {
+			/*
+			 * When call is designed by an identifier, just name the function
+			 * after it.
+			 */
+			name = ((Identifier) expr).getValue();
+		} else if (expr instanceof com.anwrt.ldt.parser.ast.expressions.String) {
+			name = ((com.anwrt.ldt.parser.ast.expressions.String) expr).getValue();
+		}else{
+			/*
+			 * When expression does not match any of previous types, just go
+			 * with "...". 
+			 */
+			name = "...";
+		}
+		return name;
+	}
 }

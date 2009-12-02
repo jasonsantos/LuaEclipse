@@ -50,16 +50,6 @@ public class Identifier extends Literal implements LeftHandSide, Index {
 	}
 
 	/**
-	 * Instantiates a new identifier.
-	 * 
-	 * @param value
-	 *            the value
-	 */
-	public Identifier(String value) {
-		this(0, 0, value);
-	}
-
-	/**
 	 * Gets the kind.
 	 * 
 	 * @return Parser's token value

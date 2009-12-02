@@ -6,39 +6,19 @@
  */
 package com.anwrt.ldt.parser.ast.expressions;
 
-import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.CallArgumentsList;
 import org.eclipse.dltk.ast.expressions.CallExpression;
+import org.eclipse.dltk.ast.expressions.Expression;
 
-import com.anwrt.ldt.internal.parser.Index;
+import com.anwrt.ldt.internal.parser.NameFinder;
 import com.anwrt.ldt.parser.LuaExpressionConstants;
-
-;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class Call.
  */
-public class Call extends CallExpression/* Expression */implements
-		LuaExpressionConstants, Index {
-
-	private long id;
-
-	private static ASTNode receiver(int start, int end) {
-		ASTNode node = new ASTNode() {
-
-			@Override
-			public void traverse(ASTVisitor visitor) throws Exception {
-				if (visitor.visit(this)) {
-					visitor.endvisit(this);
-				}
-			}
-		};
-		node.setStart(start);
-		node.setEnd(end);
-		return node;
-	}
+public class Call extends CallExpression implements LuaExpressionConstants {
 
 	/**
 	 * Instantiates a new call.
@@ -52,12 +32,12 @@ public class Call extends CallExpression/* Expression */implements
 	 * @param params
 	 *            the params
 	 */
-	public Call(int start, int end, Identifier name, CallArgumentsList args) {
-		super(start, end, receiver(start, end), name.getValue(), args);
+	public Call(int start, int end, Expression name, CallArgumentsList args) {
+		super(start, end, name, NameFinder.extractName(name), args);
 	}
 
-	public Call(int start, int end, Identifier name) {
-		super(start, end, receiver(start, end), name.getValue(),
+	public Call(int start, int end, Expression name) {
+		super(start, end, name, NameFinder.extractName(name),
 				new CallArgumentsList(start, end));
 	}
 
@@ -84,13 +64,4 @@ public class Call extends CallExpression/* Expression */implements
 			visitor.endvisit(this);
 		}
 	}
-
-	public long getID() {
-		return id;
-	}
-
-	public void setID(long id) {
-		this.id = id;
-	}
-
 }
