@@ -406,7 +406,7 @@ public class NodeFactory implements LuaExpressionConstants,
 		case E_CALL:
 			// Allocate function with its name
 			assert childCount > 0 : "No name given for function call.";
-			altExpression = (Identifier) getNode(childNodes.get(0));
+			altExpression = (Expression) getNode(childNodes.get(0));
 
 			// Append parameters for call
 			if (childCount > 1) {
@@ -424,9 +424,9 @@ public class NodeFactory implements LuaExpressionConstants,
 					}
 				}
 
-				node = new Call(start, end, (Identifier) altExpression, args);
+				node = new Call(start, end, altExpression, args);
 			} else {
-				node = new Call(start, end, (Identifier) altExpression);
+				node = new Call(start, end, altExpression);
 			}
 			break;
 		/*
@@ -464,16 +464,7 @@ public class NodeFactory implements LuaExpressionConstants,
 			node = new Dots(start, end);
 			break;
 		}
-		/*
-		 * Index node
-		 */
-		// Type check
-		com.anwrt.ldt.internal.parser.Index nodeToIndex;
-		nodeToIndex = (com.anwrt.ldt.internal.parser.Index) node;
-		boolean defined = node != null
-				&& node instanceof com.anwrt.ldt.internal.parser.Index;
-		assert defined : "Null return. Node type: " + kindOfNode;
-		nodeToIndex.setID(id);
+
 		return node;
 	}
 
