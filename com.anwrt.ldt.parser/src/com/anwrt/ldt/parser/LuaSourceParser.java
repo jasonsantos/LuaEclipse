@@ -21,7 +21,7 @@ public class LuaSourceParser extends AbstractSourceParser {
     /**
      * AST cache, allow to keep previous AST in mind when syntax errors occurs
      */
-    private ModuleDeclaration _cache = null;
+    private static ModuleDeclaration _cache = null;
 
     /**
      * Provide DLTK compliant AST
