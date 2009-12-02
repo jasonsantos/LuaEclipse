@@ -1,39 +1,35 @@
 package org.keplerproject.ldt.ui.editors.outline;
 
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
+import org.keplerproject.ldt.ui.LDTUIPlugin;
 
-public class LuaOutlineLabelProvider implements ILabelProvider {
-
-	public void addListener(ILabelProviderListener listener) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void dispose() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public boolean isLabelProperty(Object element, String property) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void removeListener(ILabelProviderListener listener) {
-		// TODO Auto-generated method stub
-
-	}
+public class LuaOutlineLabelProvider extends LabelProvider {
+	public static String FUNCTION_ICON_PATH = "icons/lua_function.gif";
+	Image functionImage = null;
 	
 	public Image getImage(Object element) {
-		// TODO Auto-generated method stub
-		return null;
+		if(functionImage == null) {
+			functionImage = LDTUIPlugin.getImageDescriptor(FUNCTION_ICON_PATH).createImage();			
+		}
+		return functionImage;
 	}
 	
 	public String getText(Object element) {
-		// TODO Auto-generated method stub
-		return null;
+		return super.getText(element);
 	}
-
+		
+	public boolean isLabelProperty(Object element, String property) {
+		if(LuaOutlineContentProvider.OFFSET_PROPERTY.equals(property)) {
+			return false;
+		}
+        return super.isLabelProperty(element, property);
+    }
+	
+	public void dispose() {
+		if(functionImage != null) {
+			functionImage.dispose();
+			functionImage = null;
+		}
+	}
 }

@@ -30,12 +30,12 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.keplerproject.ldt.core.ILuaEntry;
 import org.keplerproject.ldt.core.LuaProject;
 import org.keplerproject.ldt.core.LuaScriptsSpecs;
 import org.keplerproject.ldt.core.luadoc.LuadocGenerator;
 import org.keplerproject.luajava.LuaState;
-import org.keplerproject.luajava.LuaStateFactory;
 
 /**
  * The Lua Code DeltaVisitor remade to fit Lua 5.1 API

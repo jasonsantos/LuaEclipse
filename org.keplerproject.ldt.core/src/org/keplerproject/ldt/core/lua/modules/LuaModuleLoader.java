@@ -21,6 +21,7 @@ package org.keplerproject.ldt.core.lua.modules;
 import java.io.IOException;
 import java.net.URL;
 
+import org.keplerproject.ldt.core.LuaCorePlugin;
 import org.keplerproject.ldt.core.utils.ResourceUtils;
 import org.keplerproject.luajava.JavaFunction;
 import org.keplerproject.luajava.LuaException;
@@ -53,6 +54,13 @@ public class LuaModuleLoader {
 		return sb.toString();
 	}
 
+       /**
+        * Attempt to load the file specified by the URL
+        * @param L The lua state to use for the loader
+        * @param u The URL to load
+        * @return 0 if there are no errors loading the string
+        * @throws IOException If there is a problem acessing the URL content
+        */
 	private static int LoadFile(LuaState L, URL u) throws IOException {
 		int res = -1;
 
@@ -61,6 +69,7 @@ public class LuaModuleLoader {
 
 			res = L.LloadString(body);
 		}
+
 		return res;
 	}
 
