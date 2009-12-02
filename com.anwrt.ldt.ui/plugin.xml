@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.dltk.launching.interpreterInstallTypes">
+      <interpreterInstallType
+            class="com.anwrt.ldt.ui.internal.interpreter.LuaInterpreterInstallType"
+            id="com.anwrt.ldt.interpreterInstallType">
+      </interpreterInstallType>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="com.anwrt.ldt.ui.interpreter.preferences.LuaInterpreterPreferencePage"
+            id="com.anwrt.ldt.ui.interpreter.preferences"
+            name="Lua interpreters">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="com.anwrt.ldt.category"
+            name="Lua">
+      </category>
+      <wizard
+            category="com.anwrt.ldt.category"
+            class="org.eclipse.dltk.ui.wizards.GenericDLTKProjectWizard:com.anwrt.ldt.nature"
+            icon="img/lua.gif"
+            id="com.anwrt.ldt.wizard"
+            name="Lua project wizard"
+            project="true">
+      </wizard>
+   </extension>
+</plugin>

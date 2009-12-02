@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ldt
+Bundle-SymbolicName: com.anwrt.ldt;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: com.anwrt.ldt.Activator
+Bundle-Vendor: ANWRT
+Require-Bundle: org.eclipse.ui;bundle-version="3.5.0",
+ org.eclipse.core.resources;bundle-version="3.5.0",
+ org.eclipse.core.runtime,
+ org.eclipse.dltk.core;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: com.anwrt.ldt.core
