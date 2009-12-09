@@ -6,8 +6,14 @@
  */
 package com.anwrt.metalua;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
 import org.keplerproject.luajava.LuaException;
 import org.keplerproject.luajava.LuaState;
+import org.osgi.framework.Bundle;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -25,12 +31,38 @@ public class Metalua {
 	 */
 	/** The state. */
 	private static LuaState state;
+	private static String sourcePath = null;
 	static {
 		try {
 			state = MetaluaStateFactory.newLuaState();
 		} catch (LuaException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static LuaState get() {
+		return state;
+	}
+
+	public static String sourcesPath() {
+
+		// Define source path at first call
+		if (sourcePath == null) {
+			/**
+			 * Locate plug-in root, it will be Metalua's include path
+			 */
+			Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
+			// Ensure to have source available on disk, not from jar or anykind of archive
+			bundle.getEntry("/");
+
+			// Stop when plug-in's root can't be located
+			try {
+				sourcePath = FileLocator.getBundleFile(bundle).getPath();
+			} catch (IOException e) {
+				return new String();
+			}
+		}
+		return sourcePath + File.separator;
 	}
 
 	/**
@@ -60,6 +92,7 @@ public class Metalua {
 	 */
 	public static void run(String code) throws LuaException {
 		if (state.LdoString(code) != 0) {
+			refreshState();
 			MetaluaStateFactory.raise(state);
 		}
 	}
@@ -79,6 +112,7 @@ public class Metalua {
 	 */
 	public static void runFile(String fileURI) throws LuaException {
 		if (state.LdoFile(fileURI) != 0) {
+			refreshState();
 			MetaluaStateFactory.raise(state);
 		}
 	}

@@ -7,6 +7,6 @@ Bundle-Vendor: ANWRT
 Fragment-Host: com.anwrt.ldt.lua
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-PlatformFilter: (&(osgi.os=linux)(osgi.arch=x86))
+Bundle-NativeCode: lib/libluajava-1.1.so
 Bundle-ClassPath: .,
  lib/
-Bundle-NativeCode: lib/libluajava-1.1.so

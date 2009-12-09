@@ -6,15 +6,9 @@
  */
 package com.anwrt.metalua;
 
-import java.io.IOException;
-import java.net.URL;
-
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
 import org.keplerproject.luajava.LuaException;
 import org.keplerproject.luajava.LuaState;
 import org.keplerproject.luajava.LuaStateFactory;
-import org.osgi.framework.Bundle;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -39,21 +33,6 @@ public class MetaluaStateFactory {
 	 */
 	public static LuaState newLuaState() throws LuaException {
 
-		/**
-		 * Locate plug-in root, it will be Metalua's include path
-		 */
-		String metaluaPath;
-		Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
-		URL url = bundle.getEntry("/");
-
-		// Stop when plug-in's root can't be located
-		try {
-			metaluaPath = FileLocator.toFileURL(url).getPath();
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new LuaException("Unable to locate plugin root");
-		}
-
 		/*
 		 * Create a regular LuaState, then enable it to run Metalua
 		 */
@@ -63,8 +42,9 @@ public class MetaluaStateFactory {
 		l.openLibs();
 
 		// Update path in order to be able to load Metalua
-		String path = "package.path = package.path  .. ';" + metaluaPath
-				+ "?.luac;" + metaluaPath + "?.lua'";
+		String metaluaPath = Metalua.sourcesPath();
+		String path = "package.path = package.path  .. [[;" + metaluaPath
+				+ "?.luac;" + metaluaPath + "?.lua]]";
 
 		// Load Metalua's byte code
 		String require = "require 'metalua.compiler'";

@@ -1,6 +1,8 @@
 package com.anwrt.metalua.tests.internal.cases;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import junit.framework.TestCase;
 
@@ -25,9 +27,9 @@ public class TestMetalua extends TestCase {
 	}
 
 	/** Make sure that syntax errors are catchable by Lua exception */
-	public void testHandleErrors(){
+	public void testHandleErrors() {
 		boolean error = false;
-		String message = new String(); 
+		String message = new String();
 		try {
 			Metalua.run("for");
 		} catch (LuaException e) {
@@ -36,7 +38,7 @@ public class TestMetalua extends TestCase {
 		}
 		assertTrue(message, error);
 	}
-	
+
 	/** Run from source */
 	public void testRunLuaCode() {
 
@@ -74,15 +76,21 @@ public class TestMetalua extends TestCase {
 			success = true;
 		} catch (LuaException e) {
 			message = e.getMessage();
+		} catch (IOException e) {
+			message = e.getMessage();
 		}
 		assertTrue("Single assignment from a file does not work: " + message,
 				success);
 
 		// Proofing wrong file
+		success = false;
 		try {
 			Metalua.runFile(path("/scripts/john.doe"));
+			success = true;
 		} catch (LuaException e) {
-			success = false;
+			message = e.getMessage();
+		} catch (IOException e) {
+			message = e.getMessage();
 		}
 		assertFalse("Inexistant file call works.", success);
 	}
@@ -114,19 +122,26 @@ public class TestMetalua extends TestCase {
 		} catch (LuaException e) {
 			message = e.getMessage();
 			success = false;
+		} catch (IOException e) {
+			message = e.getMessage();
+			success = false;
 		}
 		assertTrue("Code from a file does not work: " + message, success);
 	}
 
-	/** Ensure access to  portable file locations */
-	private String path(String uri) throws LuaException {
+	/** Ensure access to portable file locations */
+	private String path(String uri) throws IOException {
+		/*
+		 * Ensure to have source available on disk, not from jar or any kind of
+		 * archive
+		 */
+		URL url = BUNDLE.getEntry(uri);
+
+		// Stop when plug-in's root can't be located
 		try {
-			return FileLocator.toFileURL( BUNDLE.getEntry(uri) ).getPath();
-		} catch (IOException e) {
-			throw new LuaException("Unable to provide URI for: " + uri);
-		} catch (NullPointerException npe) {
-			throw new LuaException("File not found: " + uri + ". "
-					+ npe.getMessage());
+			return new File(FileLocator.toFileURL(url).getFile()).getPath();
+		} catch (NullPointerException e) {
+			throw new IOException(uri + " not found.");
 		}
 	}
 }

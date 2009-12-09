@@ -6,6 +6,7 @@
  */
 package com.anwrt.ldt.internal.parser;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,13 +18,12 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.Declaration;
-import org.keplerproject.luajava.LuaException;
 import org.keplerproject.luajava.LuaState;
 
 import com.anwrt.ldt.parser.Activator;
 import com.anwrt.ldt.parser.LuaExpressionConstants;
 import com.anwrt.ldt.parser.ast.statements.LuaStatementConstants;
-import com.anwrt.metalua.MetaluaStateFactory;
+import com.anwrt.metalua.Metalua;
 
 /**
  * All Lua tools for parsing Lua code are available from here.
@@ -47,13 +47,20 @@ public class NodeFactoryHelper implements LuaExpressionConstants,
 	 */
 	private NodeFactoryHelper() {
 		try {
-			state = MetaluaStateFactory.newLuaState();
+			/*
+			 *  Define path to source file
+			 */
+			
+			// Make sure that file is available on disk
 			URL url = Platform.getBundle(Activator.PLUGIN_ID).getEntry(
 					"/scripts/ast_to_table.mlua");
-			String path = FileLocator.toFileURL(url).getPath();
+			
+			// Retrieve absolute URI of file
+			String path = new File(FileLocator.toFileURL(url).getFile()).getPath();
+			
+			// Run file
+			state = Metalua.get();
 			state.LdoFile(path);
-		} catch (LuaException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
