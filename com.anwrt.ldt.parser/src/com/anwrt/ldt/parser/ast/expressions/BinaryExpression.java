@@ -11,11 +11,13 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
+import com.anwrt.ldt.internal.parser.Index;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class BinaryExpression.
  */
-public class BinaryExpression extends Expression {
+public class BinaryExpression extends Expression implements Index {
 
 	/** Left parent of the expression. */
 	private Statement left;
@@ -25,6 +27,8 @@ public class BinaryExpression extends Expression {
 
 	/** Kind of expression's operator. */
 	protected int kind;
+
+	protected long id;
 
 	/**
 	 * Defines a two operands expression.
@@ -137,5 +141,15 @@ public class BinaryExpression extends Expression {
 			}
 			visitor.endvisit(this);
 		}
+	}
+
+	@Override
+	public long getID() {
+		return id;
+	}
+
+	@Override
+	public void setID(long id) {
+		this.id = id;
 	}
 }

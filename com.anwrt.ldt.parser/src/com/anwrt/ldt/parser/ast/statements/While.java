@@ -10,26 +10,25 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Block;
 
+import com.anwrt.ldt.internal.parser.Index;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class While.
  */
-public class While extends Block implements LuaStatementConstants {
+public class While extends Block implements LuaStatementConstants, Index {
 
 	/** The expression. */
 	private Expression expression;
+	private long id;
 
 	/**
 	 * Instantiates a new while.
 	 * 
-	 * @param start
-	 *            the start
-	 * @param end
-	 *            the end
-	 * @param expr
-	 *            the expr
-	 * @param block
-	 *            the block
+	 * @param start the start
+	 * @param end the end
+	 * @param expr the expr
+	 * @param block the block
 	 */
 	public While(int start, int end, Expression expr, Chunk block) {
 		super(start, end, block.getStatements());
@@ -45,9 +44,7 @@ public class While extends Block implements LuaStatementConstants {
 		return expression;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see org.eclipse.dltk.ast.statements.Block#getKind()
 	 */
 	@Override
@@ -55,11 +52,15 @@ public class While extends Block implements LuaStatementConstants {
 		return S_WHILE;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.dltk.ast.statements.Block#traverse(org.eclipse.dltk.ast.
-	 * ASTVisitor)
+	public long getID() {
+		return id;
+	}
+
+	public void setID(long id) {
+		this.id = id;
+	}
+	/* (non-Javadoc)
+	 * @see org.eclipse.dltk.ast.statements.Block#traverse(org.eclipse.dltk.ast.ASTVisitor)
 	 */
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {

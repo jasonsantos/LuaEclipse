@@ -10,14 +10,17 @@ import org.eclipse.dltk.ast.expressions.Literal;
 
 import com.anwrt.ldt.parser.LuaExpressionConstants;
 
+import com.anwrt.ldt.internal.parser.Index;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class Number.
  */
-public class Number extends Literal implements LuaExpressionConstants{
+public class Number extends Literal implements LuaExpressionConstants, Index {
 
 	/** Number's value. */
 	private Double fNumberValue;
+	private long id;
 
 	/**
 	 * Instantiates a new number.
@@ -42,6 +45,14 @@ public class Number extends Literal implements LuaExpressionConstants{
 	@Override
 	public int getKind() {
 		return NUMBER_LITERAL;
+	}
+
+	public long getID() {
+		return id;
+	}
+
+	public void setID(long id) {
+		this.id = id;
 	}
 
 	/*

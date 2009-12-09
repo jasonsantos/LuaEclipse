@@ -9,13 +9,16 @@ package com.anwrt.ldt.parser.ast.expressions;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 
+import com.anwrt.ldt.internal.parser.Index;
+
 /**
  * The Class LogicalValue.
  */
-public class LogicalValue extends Expression {
+public class LogicalValue extends Expression implements Index {
 
 	/** The kind. */
 	private int kind;
+	private long id;
 
 	/**
 	 * Instantiates a new logical value.
@@ -37,6 +40,14 @@ public class LogicalValue extends Expression {
 	@Override
 	public int getKind() {
 		return kind;
+	}
+
+	public long getID() {
+		return id;
+	}
+
+	public void setID(long id) {
+		this.id = id;
 	}
 
 	/*

@@ -8,6 +8,9 @@ package com.anwrt.ldt.parser.ast.expressions;
 
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 import org.eclipse.dltk.ast.expressions.Literal;
+import java.lang.String;
+
+import com.anwrt.ldt.internal.parser.Index;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -15,7 +18,9 @@ import org.eclipse.dltk.ast.expressions.Literal;
  * 
  * @author kkinfoo
  */
-public class Identifier extends Literal implements LeftHandSide {
+public class Identifier extends Literal implements LeftHandSide, Index {
+
+	private long id;
 
 	/**
 	 * Instantiates a new identifier.
@@ -27,7 +32,7 @@ public class Identifier extends Literal implements LeftHandSide {
 	 * @param value
 	 *            the value
 	 */
-	public Identifier(int start, int end, java.lang.String value) {
+	public Identifier(int start, int end, String value) {
 		super(start, end);
 		fLiteralValue = value;
 	}
@@ -54,6 +59,14 @@ public class Identifier extends Literal implements LeftHandSide {
 		return ExpressionConstants.E_IDENTIFIER;
 	}
 
+	public long getID() {
+		return id;
+	}
+
+	public void setID(long id) {
+		this.id = id;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -69,7 +82,7 @@ public class Identifier extends Literal implements LeftHandSide {
 	 * 
 	 * @see org.eclipse.dltk.ast.expressions.Literal#toString()
 	 */
-	public java.lang.String toString() {
+	public String toString() {
 		return fLiteralValue;
 	}
 

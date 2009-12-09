@@ -13,15 +13,17 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Statement;
 
+import com.anwrt.ldt.internal.parser.Index;
 import com.anwrt.ldt.parser.LuaExpressionConstants;
 // TODO: Auto-generated Javadoc
 /**
  * The Class Table.
  */
-public class Table extends Expression{
+public class Table extends Expression implements Index{
 	
 	/** The statements. */
 	List<Statement> statements;
+	private long id;
 
 	/**
 	 * Instantiates a new table.
@@ -72,5 +74,15 @@ public class Table extends Expression{
 			}
 			pVisitor.endvisit(this);
 		}
+	}
+
+	@Override
+	public long getID() {
+		return id;
+	}
+
+	@Override
+	public void setID(long id) {
+		this.id = id;
 	}
 }
