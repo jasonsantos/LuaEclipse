@@ -20,8 +20,11 @@ package org.keplerproject.ldt.ui.baseExts.completion;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ContextInformation;
@@ -35,7 +38,6 @@ import org.keplerproject.ldt.ui.baseExts.BaseExtsPlugin;
 import org.keplerproject.ldt.ui.baseExts.scanner.ILuaSyntax;
 import org.keplerproject.ldt.ui.baseExts.scanner.LuaVariableDetector;
 import org.keplerproject.luajava.LuaState;
-import org.keplerproject.luajava.LuaStateFactory;
 
 /**
  * A simple Lua Completion Processor thats use the default Lua Packages to
@@ -45,86 +47,156 @@ import org.keplerproject.luajava.LuaStateFactory;
  * @version $Id: LuaCompletionProcessor.java,v 1.8 2007/05/20 23:17:09 guilherme
  *          Exp $
  */
-public class LuaCompletionProcessor implements IContentAssistProcessor,
-		ILuaSyntax {
+public class LuaCompletionProcessor implements IContentAssistProcessor, ILuaSyntax {
 
-	protected ArrayList	proposalList;
+	protected ArrayList<ICompletionProposal>	proposalList;
 
 	public LuaCompletionProcessor() {
-		proposalList = new ArrayList();
+		proposalList = new ArrayList<ICompletionProposal>();
 	}
 
+	@SuppressWarnings("unchecked")
 	public ICompletionProposal[] computeCompletionProposals(
 			final ITextViewer viewer, final int documentOffset) {
-		
-		LuaState L = LuaScriptsSpecs.getDefault().getLuaState();
-		
-		if (L == null)
-			return new ICompletionProposal[] {};
 
-		LuaVariableDetector wordPart = new LuaVariableDetector(viewer,
-				documentOffset);
-		try {
-			if (wordPart.getVariable() != null)
-				L.LdoString("return " + wordPart.getVariable());
-			else
-				L.getGlobal("_G");
-		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (L.isTable(-1)) {
-			L.pushNil();
+		LuaVariableDetector wordPart = new LuaVariableDetector(viewer, documentOffset);
 
-			while (L.next(-2) != 0) {
-				String key = L.toString(-2);
+		List<ICompletionProposal> internalProposalList = getInternalProposals(wordPart);
+		proposalList.addAll(internalProposalList);
 
-				if (key.startsWith(wordPart.getString())) {
+		List<ICompletionProposal> functionProposalList = getFunctionProposals(viewer.getDocument().get(), wordPart);
+		proposalList.addAll(functionProposalList);
 
-					String contextKey = null;
-					if (wordPart.getVariable() != null)
-						contextKey = wordPart.getVariable() + "." + key;
-					else
-						contextKey = key;
-
-					Image image = null;
-					String strLuaType = L.typeName(L.type(-1));
-					// load function.gif, table.gif or string.gif
-					image = BaseExtsPlugin.getDefault().getImageRegistry().get(
-							strLuaType);
-
-					// To functions, use de ().
-					if (FUNCTION_TYPE_NAME.equals(strLuaType)) {
-						key += "()";
-					}
-
-					IContextInformation info = new ContextInformation(
-							contextKey, getContentInfoString(contextKey));
-
-					ICompletionProposal proposal = new CompletionProposal(key,
-							wordPart.getOffset(),
-							wordPart.getString().length(), key.length(), image,
-							key, info, getContentInfoString(key));
-
-					proposalList.add(proposal);
-				}
-				L.pop(1); // removes `value'; keeps `key' for next iteration
-			}
-
-		}
-		L.pop(1);
 		Collections.sort(proposalList, new CompletionProposalComparator());
-		ICompletionProposal result[] = new ICompletionProposal[proposalList
-				.size()];
-		int index = 0;
-		for (Iterator i = proposalList.iterator(); i.hasNext();) {
-			result[index] = (CompletionProposal) i.next();
-			index++;
-		}
+
+		ICompletionProposal result[] = new ICompletionProposal[proposalList.size()];
+		result = proposalList.toArray(result);
 
 		proposalList.clear();
+		
 		return result;
 	}
+	
+	private List<ICompletionProposal> getInternalProposals(LuaVariableDetector wordPart) {
+		LuaState L = LuaScriptsSpecs.getDefault().getLuaState();
+		
+		if (L == null) {
+			return Collections.emptyList();
+		}
+		
+		try {
+			if (wordPart.getVariable() != null) {
+				L.LdoString("return " + wordPart.getVariable());
+			} else {
+				L.getGlobal("_G");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
+		
+		if (!L.isTable(-1)) {
+			L.pop(1);
+			return Collections.emptyList();
+		}
+
+		String 	stem = wordPart.getString();
+		int 	wordOffset = wordPart.getOffset();
+
+		ImageRegistry imageRegistry = BaseExtsPlugin.getDefault().getImageRegistry(); 
+
+		ArrayList<ICompletionProposal> internalList = new ArrayList<ICompletionProposal>();
+
+		L.pushNil();
+		while (L.next(-2) != 0) {
+			String key = L.toString(-2);
+
+			if (!key.startsWith(wordPart.getString())) {
+				
+				String contextKey = null;
+				if (wordPart.getVariable() != null) {
+					contextKey = wordPart.getVariable() + "." + key;
+				} else {
+					contextKey = key;
+				}
+				
+				String strLuaType = L.typeName(L.type(-1));
+				// load function.gif, table.gif or string.gif
+				Image image = imageRegistry.get(strLuaType);
+
+				int cursorLocation = key.length();
+					
+				// To functions, use de ().
+				if (FUNCTION_TYPE_NAME.equals(strLuaType)) {
+					key += "()";
+					cursorLocation += 1; 		//Put cursor inside "()"
+				}
+
+				IContextInformation info;
+				info = new ContextInformation(contextKey, getContentInfoString(contextKey));
+
+				ICompletionProposal proposal = new CompletionProposal(
+						key,											//Replacement string
+						wordOffset, stem.length(),						//Replacement offset & length
+						cursorLocation, 								//Cursor location relative to offset
+						image,											//Display image
+						key, 											//Display string
+						info, 											//Context information
+						getContentInfoString(key));						//Extra string information
+
+				internalList.add(proposal);
+			}
+			L.pop(1); // removes `value'; keeps `key' for next iteration
+		}
+		L.pop(1);	
+		
+		return internalList;
+	}
+	
+	static final Pattern fLuaFunctionPattern = Pattern.compile("^\\w*function\\s+(\\w+)\\s*\\(.*$", Pattern.MULTILINE);
+	protected ArrayList<ICompletionProposal> getFunctionProposals(String fileContents, LuaVariableDetector wordPart) {
+		ICompletionProposal proposal;
+
+		String 	stem = wordPart.getString();
+		int 	wordOffset = wordPart.getOffset();
+		
+		ArrayList<ICompletionProposal> functionList = new ArrayList<ICompletionProposal>();
+		
+		Matcher matcher = fLuaFunctionPattern.matcher(fileContents);
+		int offset = 0;
+//		int startOffset = 0;
+		while(matcher.find(offset)) {
+			//startOffset = matcher.start();
+			offset = matcher.end();
+			String functionName = matcher.group(1);
+			
+			if(!functionName.startsWith(stem)) {
+				continue;
+			}
+			//We can't do this for all completions
+			functionName += "()";
+		
+			//Put the cursor inside the brackets 
+			int cursorLocation = functionName.length() - 1;
+			
+			ImageRegistry imageRegistry = BaseExtsPlugin.getDefault().getImageRegistry(); 
+			Image displayImage = imageRegistry.get("function");
+
+			String displayName = functionName;
+			
+			proposal = new CompletionProposal(functionName,		//Replacement string
+					wordOffset, stem.length(),					//Replacement offset & length
+					cursorLocation,								//Cursor location relative to offset
+					displayImage,								//Display Image
+					displayName,								//Display string
+					null, 										//Context information
+					null);									    //Extra string information
+			
+			functionList.add(proposal);
+		}
+	
+		return functionList;
+	}	
 
 	private String getContentInfoString(String keyWord) {
 		String resourceKey = "ContextString." + keyWord;
@@ -140,7 +212,7 @@ public class LuaCompletionProcessor implements IContentAssistProcessor,
 	}
 
 	public char[] getCompletionProposalAutoActivationCharacters() {
-		char result[] = new char[] { '.', ':' };
+		char result[] = new char[] { '.', ':', ' '};
 		return result;
 	}
 
