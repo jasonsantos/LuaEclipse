@@ -1,9 +1,12 @@
 package com.anwrt.ldt.internal.parser;
 
+import org.eclipse.dltk.ast.expressions.CallArgumentsList;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.expressions.Literal;
 import org.eclipse.dltk.ast.references.SimpleReference;
 
-import com.anwrt.ldt.parser.ast.expressions.Identifier;
+import com.anwrt.ldt.parser.ast.expressions.BinaryExpression;
+import com.anwrt.ldt.parser.ast.expressions.Call;
 import com.anwrt.ldt.parser.ast.expressions.Index;
 import com.anwrt.ldt.parser.ast.expressions.String;
 
@@ -31,7 +34,6 @@ public class NameFinder {
 		return new SimpleReference(start, end, extractName(node));
 	}
 
-
 	/**
 	 * @see NameFinder#getReference(Expression)
 	 * @param node
@@ -41,50 +43,78 @@ public class NameFinder {
 		//
 		// Some function declarations look like : function table:method() end
 		// Those ones use an index as name.
-		//		`Set{ { `Index{ `Id "table", `String "method" } }, 
-		// 			{ `Function{ { `Id "self" }, { } } } }
+		// `Set{ { `Index{ `Id "table", `String "method" } },
+		// { `Function{ { `Id "self" }, { } } } }
 		// So let's use a composed name, as instance: table.method()
 		//
 		java.lang.String name;
 		if (expr instanceof Index) {
-			// First part of name, before the dot
+			// Deal with key of index
 			Index index = (Index) expr;
-			if ( index.getKey() instanceof Identifier ){
-				name = ((Identifier)index.getKey()).getValue();
-			}else if ( index.getKey() instanceof Index ){
-				//
-				// Deal with `Index(es) that contains indexes
-				// `Set{ { `Index{ `Index{ `Id "MT", `String "project" },
-				//		`String "new_datatype" } },
-				//	{ `Function{ { `Id "self", `Id "name", `Dots }, { } } } }
-				//
-				name = extractName(index.getKey());
-			}else{
-				name = index.getKey().toString();
-			}
+			name = extractName(index.getKey());
 
-			// After the separator
-			name+='.';
-			if ( index.getValue() instanceof String ){
-				name += ((String)index.getValue()).getValue();
-			}else{
-				name += index.getKey().toString();
+			/*
+			 * Choose between "[*]" and ".*" depending on type of key value
+			 */
+			Expression value = index.getValue();
+			if (value instanceof Call || value instanceof BinaryExpression) {
+				name += '[' + extractName(value) + ']';
+			} else {
+				name += '.' + extractName(value);
 			}
-		} else if (expr instanceof Identifier) {
+		} else if (expr instanceof BinaryExpression) {
+			name = extractNameFromBinary((BinaryExpression) expr);
+		} else if (expr instanceof Literal) {
 			/*
 			 * When call is designed by an identifier, just name the function
 			 * after it.
 			 */
-			name = ((Identifier) expr).getValue();
-		} else if (expr instanceof com.anwrt.ldt.parser.ast.expressions.String) {
-			name = ((com.anwrt.ldt.parser.ast.expressions.String) expr).getValue();
-		}else{
+			name = ((Literal) expr).getValue();
+		} else if (expr instanceof Call) {
+			// Cast argument
+			Call call = (Call) expr;
+
+			// Built argument list
+			CallArgumentsList args = call.getArgs();
+			java.lang.String argsList = new java.lang.String();
+			for (Object arg : args.getChilds()) {
+				assert arg instanceof Expression : "Statement found in argument list.";
+				argsList += ", " + extractName((Expression) arg);
+			}
+
+			// Compose name
+			if (!argsList.isEmpty()) {
+				argsList = argsList.substring(2);
+			}
+			name = call.getName() + '(' + argsList + ')';
+		} else {
 			/*
 			 * When expression does not match any of previous types, just go
-			 * with "...". 
+			 * with "...".
 			 */
 			name = "...";
 		}
 		return name;
+	}
+
+	private static java.lang.String extractNameFromBinary(BinaryExpression bin) {
+
+		int left = 0, right = 1;
+		java.lang.String[] operand = { "left", "right" };
+		Expression[] expressions = { bin.getLeft(), bin.getRight() };
+		int k = 0;
+		for (Expression expr : expressions) {
+			if (expr instanceof String) {
+				operand[k] = '"' + ((String) expr).getValue() + '"';
+			} else if (expr instanceof Literal) {
+				operand[k] = ((Literal) expr).getValue();
+			} else if (expr instanceof BinaryExpression) {
+				operand[k] = extractNameFromBinary((BinaryExpression) expr);
+			} else {
+				operand[k] = extractName(expr);
+			}
+			k++;
+		}
+		return operand[left] + bin.getOperator() + operand[right];
 	}
 }

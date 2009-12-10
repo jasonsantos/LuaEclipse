@@ -208,9 +208,10 @@ public class NodeFactory implements LuaExpressionConstants,
 			int kind = NodeFactoryHelper.opid(helper.getValue(id));
 
 			// Compute both sides of '='
-			left = (Statement) getNode(childNodes.get(0));
-			right = (Statement) getNode(childNodes.get(1));
-			node = new BinaryExpression(start, end, left, kind, right);
+			left = (Expression) getNode(childNodes.get(0));
+			right = (Expression) getNode(childNodes.get(1));
+			node = new BinaryExpression(start, end, (Expression) left, kind,
+					(Expression) right);
 			break;
 		/*
 		 * Assignment
@@ -344,8 +345,8 @@ public class NodeFactory implements LuaExpressionConstants,
 				node = new ElseIf(start, end, expression, chunk);
 
 				/*
-				 * Elseif nodes goes by pair: Expression then Chunk.
-				 * That's why we'll use a range of 2.
+				 * Elseif nodes goes by pair: Expression then Chunk. That's why
+				 * we'll use a range of 2.
 				 */
 				for (int pair = 2; pair < childCount - 1; pair += 2) {
 
@@ -463,6 +464,32 @@ public class NodeFactory implements LuaExpressionConstants,
 		case E_DOTS:
 			node = new Dots(start, end);
 			break;
+		/*
+		 * Invoke
+		 */
+//		case E_INVOKE:
+//			assert childCount > 1 : "No name defined for invocation.";
+//			expression = (Expression) getNode(childNodes.get(0));
+//			altExpression = (String) getNode(childNodes.get(1));
+//			if (childCount > 2) {
+//				CallArgumentsList args = new CallArgumentsList();
+//				for (int parameter = 2; parameter < childCount; parameter++) {
+//					Expression expr = (Expression) getNode(childNodes.get(parameter));
+//					args.addNode(expr);
+//
+//					// Define parameter list position in code
+//					if (parameter == 2) {
+//						args.setStart(expr.matchStart());
+//					} else if (parameter == (childCount - 1)) {
+//						args.setEnd(expr.matchStart()
+//								+ expr.matchLength());
+//					}
+//				}
+//				node = new Invoke(start, end, expression, altExpression, args);
+//			} else {
+//				node = new Invoke(start, end, expression, altExpression);
+//			}
+//			break; 
 		}
 
 		return node;

@@ -8,6 +8,8 @@ package com.anwrt.ldt.parser.ast.expressions;
 
 import org.eclipse.dltk.ast.expressions.ExpressionConstants;
 import org.eclipse.dltk.ast.expressions.Literal;
+import org.eclipse.dltk.utils.CorePrinter;
+
 import java.lang.String;
 
 import com.anwrt.ldt.internal.parser.Index;
@@ -61,6 +63,9 @@ public class Identifier extends Literal implements LeftHandSide, Index {
 
 	public long getID() {
 		return id;
+	}
+	public void printNode(CorePrinter output){
+		output.formatPrintLn(getValue());
 	}
 
 	public void setID(long id) {

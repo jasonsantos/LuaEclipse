@@ -114,6 +114,12 @@ public class TestExpressions extends TestCase {
 		assertFalse("Field-like index is not handled.", module.isEmpty());
 	}
 
+	public void testInvoke() {
+		char[] source = "y(ii):w(ty).y".toCharArray();
+		module = new LuaSourceParser().parse(fileName, source, this.reporter);
+		assertFalse("Invocation is not handled.", module.isEmpty());
+	}
+
 	/**
 	 * Test pair.
 	 */

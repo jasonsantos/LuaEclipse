@@ -8,7 +8,6 @@ package com.anwrt.ldt.parser.ast.expressions;
 
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
-import org.eclipse.dltk.ast.statements.Statement;
 
 import com.anwrt.ldt.internal.parser.NameFinder;
 import com.anwrt.ldt.parser.LuaExpressionConstants;
@@ -32,7 +31,7 @@ public class Pair extends BinaryExpression {
      * @param right
      *            the right
      */
-    public Pair(int start, int end, Statement left, Statement right) {
+    public Pair(int start, int end, Expression left, Expression right) {
 	super(start, end, left, LuaExpressionConstants.E_PAIR, right);
 	if (right instanceof Function) {
 	    SimpleReference ref = NameFinder.getReference((Expression) left);

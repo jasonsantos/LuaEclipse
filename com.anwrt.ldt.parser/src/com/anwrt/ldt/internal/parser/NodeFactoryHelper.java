@@ -48,16 +48,17 @@ public class NodeFactoryHelper implements LuaExpressionConstants,
 	private NodeFactoryHelper() {
 		try {
 			/*
-			 *  Define path to source file
+			 * Define path to source file
 			 */
-			
+
 			// Make sure that file is available on disk
 			URL url = Platform.getBundle(Activator.PLUGIN_ID).getEntry(
 					"/scripts/ast_to_table.mlua");
-			
+
 			// Retrieve absolute URI of file
-			String path = new File(FileLocator.toFileURL(url).getFile()).getPath();
-			
+			String path = new File(FileLocator.toFileURL(url).getFile())
+					.getPath();
+
 			// Run file
 			state = Metalua.get();
 			state.LdoFile(path);
@@ -513,8 +514,9 @@ public class NodeFactoryHelper implements LuaExpressionConstants,
 			return LuaStatementConstants.D_FUNC_DEC;
 		} else if ("Dots".equals(typeName)) {
 			return LuaExpressionConstants.E_DOTS;
-		}
-
+		}// else if ("Invoke".equals(typeName)) {
+//			return LuaExpressionConstants.E_INVOKE;
+//		}
 		// Typical blocks do not have tags
 		return LuaStatementConstants.S_BLOCK;
 	}

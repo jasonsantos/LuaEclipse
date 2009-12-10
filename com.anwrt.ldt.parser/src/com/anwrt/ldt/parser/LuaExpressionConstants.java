@@ -52,4 +52,6 @@ public interface LuaExpressionConstants extends ExpressionConstants {
 	 * Optional parameters operator {@code var = ...}
 	 */
 	public static final int E_DOTS = 38010;
+
+	public static final int E_INVOKE = 38011;
 }

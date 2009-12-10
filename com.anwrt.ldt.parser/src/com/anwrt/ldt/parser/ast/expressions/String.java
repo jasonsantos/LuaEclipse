@@ -7,6 +7,7 @@
 package com.anwrt.ldt.parser.ast.expressions;
 
 import org.eclipse.dltk.ast.expressions.Literal;
+import org.eclipse.dltk.utils.CorePrinter;
 
 import com.anwrt.ldt.parser.LuaExpressionConstants;
 
@@ -42,7 +43,10 @@ public class String extends Literal implements Index {
 		return id;
 	}
 
-
+	public void printNode(CorePrinter output){
+		output.formatPrintLn(getValue());
+	}
+	
 	public void setID(long id) {
 		this.id = id;
 	}

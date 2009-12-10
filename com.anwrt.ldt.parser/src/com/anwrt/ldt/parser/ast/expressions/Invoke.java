@@ -22,6 +22,7 @@ public class Invoke extends Call implements LuaExpressionConstants {
 
 	/** The args. */
 	private List<Expression> args;
+	private Expression string;
 
 	/**
 	 * Instantiates a new invoke.
@@ -30,8 +31,9 @@ public class Invoke extends Call implements LuaExpressionConstants {
 	 * @param end the end
 	 * @param module the module
 	 */
-	public Invoke(int start, int end, Identifier module) {
+	public Invoke(int start, int end, Expression module, Expression string) {
 		super(start, end, module, new CallArgumentsList());
+		this.string = string;
 	}
 
 	/**
@@ -42,17 +44,22 @@ public class Invoke extends Call implements LuaExpressionConstants {
 	 * @param module the module
 	 * @param parameters the parameters
 	 */
-	public Invoke(int start, int end, Identifier module,
+	public Invoke(int start, int end, Expression module,Expression string,
 			CallArgumentsList parameters) {
 		super(start, end, module);
+		this.string = string;
 	}
-
+	@Override
+	public int getKind() {
+		return E_INVOKE;
+	}
 	/* (non-Javadoc)
 	 * @see com.anwrt.ldt.parser.ast.expressions.Call#traverse(org.eclipse.dltk.ast.ASTVisitor)
 	 */
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
 			super.traverse(visitor);
+			string.traverse(visitor);
 			for (Expression parameter : args) {
 				parameter.traverse(visitor);
 			}

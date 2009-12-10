@@ -8,7 +8,6 @@ package com.anwrt.ldt.parser.ast.expressions;
 
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.utils.CorePrinter;
 
 import com.anwrt.ldt.internal.parser.Index;
@@ -20,10 +19,10 @@ import com.anwrt.ldt.internal.parser.Index;
 public class BinaryExpression extends Expression implements Index {
 
 	/** Left parent of the expression. */
-	private Statement left;
+	private Expression left;
 
 	/** Right parent of the expression. */
-	private Statement right;
+	private Expression right;
 
 	/** Kind of expression's operator. */
 	protected int kind;
@@ -46,15 +45,17 @@ public class BinaryExpression extends Expression implements Index {
 	 * 
 	 * @see org.eclipse.dltk.ast.expressions.ExpressionConstants
 	 */
-	public BinaryExpression(int start, int end, Statement left, int kind,
-			Statement right) {
+	public BinaryExpression(int start, int end, Expression left, int kind,
+			Expression right) {
 		super(start, end);
 		if (left != null) {
 			this.setStart(left.sourceStart());
+			assert left instanceof Expression;
 		}
 
 		if (right != null) {
 			this.setEnd(right.sourceEnd());
+			assert right instanceof Expression;
 		}
 
 		this.kind = kind;
@@ -72,7 +73,7 @@ public class BinaryExpression extends Expression implements Index {
 	 * @param right
 	 *            the right
 	 */
-	public BinaryExpression(Statement left, int kind, Statement right) {
+	public BinaryExpression(Expression left, int kind, Expression right) {
 		this(0, 0, left, kind, right);
 	}
 
@@ -81,8 +82,17 @@ public class BinaryExpression extends Expression implements Index {
 	 * 
 	 * @return Left parent of the expression
 	 */
-	public Statement getLeft() {
+	public Expression getLeft() {
 		return left;
+	}
+
+	public java.lang.String getOperator() {
+		switch (getKind()) {
+		case E_CONCAT:
+			return "..";
+		default:
+		}
+		return super.getOperator();
 	}
 
 	/**
@@ -90,7 +100,7 @@ public class BinaryExpression extends Expression implements Index {
 	 * 
 	 * @return Left parent of the expression
 	 */
-	public Statement getRight() {
+	public Expression getRight() {
 		return right;
 	}
 
