@@ -52,7 +52,7 @@ public class Metalua {
 			 * Locate plug-in root, it will be Metalua's include path
 			 */
 			Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
-			// Ensure to have source available on disk, not from jar or anykind of archive
+			// Ensure to have source available on disk, not from jar or any kind of archive
 			bundle.getEntry("/");
 
 			// Stop when plug-in's root can't be located

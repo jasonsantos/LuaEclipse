@@ -2,6 +2,8 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         id="com.anwrt.ldt.editor"
+         name="Lua editor"
          point="org.eclipse.ui.editors">
       <editor
             class="com.anwrt.ldt.editor.LuaEditor"

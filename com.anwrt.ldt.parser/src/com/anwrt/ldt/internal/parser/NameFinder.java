@@ -38,25 +38,33 @@ public class NameFinder {
 	 * @return {@link String} name from reference
 	 */
 	public static java.lang.String extractName(Expression expr) {
-		/*
-		 * Some function declarations look like : function table:method() end
-		 * Those ones use an index as name.
-		 *		`Set{ { `Index{ `Id "table", `String "method" } }, 
-       	 * 			{ `Function{ { `Id "self" }, { } } } }
-       	 * So let's use a composed name, as instance: table.method()
-		 */
+		//
+		// Some function declarations look like : function table:method() end
+		// Those ones use an index as name.
+		//		`Set{ { `Index{ `Id "table", `String "method" } }, 
+		// 			{ `Function{ { `Id "self" }, { } } } }
+		// So let's use a composed name, as instance: table.method()
+		//
 		java.lang.String name;
 		if (expr instanceof Index) {
 			// First part of name, before the dot
 			Index index = (Index) expr;
 			if ( index.getKey() instanceof Identifier ){
 				name = ((Identifier)index.getKey()).getValue();
+			}else if ( index.getKey() instanceof Index ){
+				//
+				// Deal with `Index(es) that contains indexes
+				// `Set{ { `Index{ `Index{ `Id "MT", `String "project" },
+				//		`String "new_datatype" } },
+				//	{ `Function{ { `Id "self", `Id "name", `Dots }, { } } } }
+				//
+				name = extractName(index.getKey());
 			}else{
 				name = index.getKey().toString();
 			}
 
-			// After the dot
-			name +='.';
+			// After the separator
+			name+='.';
 			if ( index.getValue() instanceof String ){
 				name += ((String)index.getValue()).getValue();
 			}else{
