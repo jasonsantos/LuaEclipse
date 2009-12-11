@@ -4,7 +4,7 @@ Bundle-Name: Parser
 Bundle-SymbolicName: com.anwrt.ldt.parser;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: com.anwrt.ldt.parser.Activator
-Bundle-Vendor: ANWRT
+Bundle-Vendor: Sierra Wireless
 Require-Bundle: org.eclipse.core.resources;bundle-version="3.5.0",
  org.eclipse.core.runtime,
  org.eclipse.dltk.core;bundle-version="1.0.0",
