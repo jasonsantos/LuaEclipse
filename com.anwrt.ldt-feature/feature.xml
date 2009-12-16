@@ -36,21 +36,21 @@
          id="com.anwrt.ldt"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.0.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="com.anwrt.ldt.editor"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.0.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="com.anwrt.ldt.lua"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.0.0.qualifier"
          unpack="false"/>
 
    <plugin
@@ -59,7 +59,7 @@
          arch="x86"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.0.0.qualifier"
          fragment="true"
          unpack="false"/>
 
@@ -69,7 +69,7 @@
          arch="x86"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.0.0.qualifier"
          fragment="true"
          unpack="false"/>
 
@@ -77,12 +77,12 @@
          id="com.anwrt.ldt.parser"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="1.0.0.qualifier"/>
 
    <plugin
          id="com.anwrt.metalua"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="1.0.0.qualifier"/>
 
 </feature>
