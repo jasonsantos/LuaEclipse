@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Metalua
 Bundle-SymbolicName: com.anwrt.metalua;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: com.anwrt.metalua.Activator
 Bundle-Vendor: ANWRT
 Require-Bundle: org.eclipse.ui,

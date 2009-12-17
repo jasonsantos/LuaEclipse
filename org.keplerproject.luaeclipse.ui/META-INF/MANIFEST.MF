@@ -7,10 +7,17 @@ Bundle-Activator: com.anwrt.ldt.ui.Activator
 Bundle-Vendor: ANWRT
 Require-Bundle: org.eclipse.core.runtime,
  com.anwrt.ldt;bundle-version="1.0.0",
+<<<<<<< HEAD:org.keplerproject.luaeclipse.ui/META-INF/MANIFEST.MF
  org.eclipse.dltk.core;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.dltk.debug.ui;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.dltk.launching;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.dltk.ui;bundle-version="[2.0.0,3.0.0)",
+=======
+ org.eclipse.dltk.core;bundle-version="1.0.0",
+ org.eclipse.dltk.debug.ui;bundle-version="1.0.0",
+ org.eclipse.dltk.launching;bundle-version="1.0.0",
+ org.eclipse.dltk.ui;bundle-version="1.0.0",
+>>>>>>> bdb602c... Last version of plugin compliant to DLTK 1.0, it is possible to compile it with DLTK 2.0 but it will break binary compatibility:com.anwrt.ldt.ui/META-INF/MANIFEST.MF
  org.eclipse.ui;bundle-version="3.5.0",
  org.eclipse.jface.text;bundle-version="3.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

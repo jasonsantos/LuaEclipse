@@ -10,8 +10,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text;bundle-version="3.5.0",
  org.eclipse.ui.editors;bundle-version="3.5.0",
  org.eclipse.ui.ide;bundle-version="3.5.0",
+<<<<<<< HEAD:org.keplerproject.luaeclipse.editor/META-INF/MANIFEST.MF
  org.eclipse.dltk.ui;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.dltk.core;bundle-version="[2.0.0,3.0.0)",
+=======
+ org.eclipse.dltk.ui;bundle-version="1.0.0",
+ org.eclipse.dltk.core;bundle-version="1.0.0",
+>>>>>>> bdb602c... Last version of plugin compliant to DLTK 1.0, it is possible to compile it with DLTK 2.0 but it will break binary compatibility:com.anwrt.ldt.editor/META-INF/MANIFEST.MF
  com.anwrt.ldt;bundle-version="1.0.0",
  com.anwrt.ldt.parser;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
