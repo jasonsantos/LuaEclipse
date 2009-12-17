@@ -2,9 +2,9 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="com.anwrt.ldt.tests.testSuites">
+         point="org.keplerproject.luaeclipse.tests.testSuites">
       <testSuite
-            class="com.anwrt.metalua.tests.Suite">
+            class="org.keplerproject.luaeclipse.metalua.tests.Suite">
       </testSuite>
    </extension>
 

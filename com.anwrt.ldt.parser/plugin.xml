@@ -15,7 +15,7 @@
       <parserContribution
             natureId="com.anwrt.ldt.nature">
          <parser
-               class="com.anwrt.ldt.parser.LuaSourceParserFactory"
+               class="org.keplerproject.luaeclipse.parser.LuaSourceParserFactory"
                description="Metalua based Lua source parser"
                id="com.anwrt.ldt.parser.sourceParser"
                name="sourceParser.name"
@@ -26,7 +26,7 @@
    <extension
          point="org.eclipse.dltk.core.sourceElementParsers">
       <parser
-            class="com.anwrt.ldt.parser.LuaSourceElementParser"
+            class="org.keplerproject.luaeclipse.parser.LuaSourceElementParser"
             nature="com.anwrt.ldt.nature"
             priority="1">
       </parser>

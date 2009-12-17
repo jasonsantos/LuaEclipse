@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Windows Fragment
-Bundle-SymbolicName: com.anwrt.ldt.lua.windows
-Bundle-Version: 1.0.0.qualifier
-Bundle-Vendor: ANWRT
-Fragment-Host: com.anwrt.ldt.lua;bundle-version="1.0.0"
+Bundle-SymbolicName: org.keplerproject.luaeclipse.lua.windows
+Bundle-Version: 1.1.0.qualifier
+Bundle-Vendor: Kepler Project
+Fragment-Host: org.keplerproject.luaeclipse.lua;bundle-version="1.1.0.qualifier"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-PlatformFilter: (&(osgi.os=win32)(osgi.arch=x86))
 Bundle-NativeCode: lib/luajava-1.1.dll
