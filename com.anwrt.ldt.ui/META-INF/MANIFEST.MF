@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ui
+Bundle-SymbolicName: com.anwrt.ldt.ui;singleton:=true
+Bundle-Version: 1.1.0.qualifier
+Bundle-Activator: com.anwrt.ldt.ui.Activator
+Bundle-Vendor: ANWRT
+Require-Bundle: org.eclipse.core.runtime,
+ com.anwrt.ldt;bundle-version="1.0.0",
+ org.eclipse.dltk.core;bundle-version="[2.0.0,3.0.0)",
+ org.eclipse.dltk.debug.ui;bundle-version="[2.0.0,3.0.0)",
+ org.eclipse.dltk.launching;bundle-version="[2.0.0,3.0.0)",
+ org.eclipse.dltk.ui;bundle-version="[2.0.0,3.0.0)",
+ org.eclipse.ui;bundle-version="3.5.0",
+ org.eclipse.jface.text;bundle-version="3.5.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
