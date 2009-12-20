@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Lua Editor
-Bundle-SymbolicName: com.anwrt.ldt;singleton:=true
+Bundle-SymbolicName: org.keplerproject.luaeclipse;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: com.anwrt.ldt.Activator
 Bundle-Vendor: Sierra Wireless

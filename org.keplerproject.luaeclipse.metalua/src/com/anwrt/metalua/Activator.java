@@ -15,7 +15,7 @@ public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	/** The Constant PLUGIN_ID. */
-	public static final String PLUGIN_ID = "com.anwrt.metalua";
+	public static final String PLUGIN_ID = "org.keplerproject.luaeclipse.metalua";
 
 	// The shared instance
 	/** The plugin. */

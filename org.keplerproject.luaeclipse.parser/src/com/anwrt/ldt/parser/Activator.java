@@ -17,7 +17,7 @@ public class Activator extends Plugin {
 
 	// The plug-in ID
 	/** The Constant PLUGIN_ID. */
-	public static final String PLUGIN_ID = "com.anwrt.ldt.parser";
+	public static final String PLUGIN_ID = "org.keplerproject.luaeclipse.parser";
 
 	// The shared instance
 	/** The plugin. */

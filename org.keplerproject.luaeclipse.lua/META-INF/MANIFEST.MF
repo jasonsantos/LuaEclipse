@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Lua
-Bundle-SymbolicName: com.anwrt.ldt.lua
+Bundle-SymbolicName: org.keplerproject.luaeclipse.lua
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.anwrt.ldt.lua.Activator
 Bundle-Vendor: ANWRT

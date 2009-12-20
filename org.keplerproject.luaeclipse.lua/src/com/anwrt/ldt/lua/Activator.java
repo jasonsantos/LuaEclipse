@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.anwrt.ldt.lua";
+	public static final String PLUGIN_ID = "org.keplerproject.luaeclipse.lua";
 
 	// The shared instance
 	private static Activator plugin;

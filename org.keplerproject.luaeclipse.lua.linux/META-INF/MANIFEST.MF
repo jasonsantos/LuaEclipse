@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Linux
-Bundle-SymbolicName: com.anwrt.ldt.lua.linux
+Bundle-SymbolicName: org.keplerproject.luaeclipse.lua.linux
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: ANWRT
-Fragment-Host: com.anwrt.ldt.lua
+Fragment-Host: org.keplerproject.luaeclipse.lua
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-PlatformFilter: (&(osgi.os=linux)(osgi.arch=x86))
 Bundle-NativeCode: lib/libluajava-1.1.so

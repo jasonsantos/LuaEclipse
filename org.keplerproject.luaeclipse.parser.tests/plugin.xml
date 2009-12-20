@@ -2,7 +2,7 @@
 <?eclipse version="3.5"?>
 <plugin>
    <extension
-         point="com.anwrt.ldt.tests.testSuites">
+         point="org.keplerproject.luaeclipse.tests.testSuites">
       <testSuite
             class="com.anwrt.ldt.parser.tests.Suite">
       </testSuite>

@@ -17,7 +17,7 @@ public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	/** The Constant PLUGIN_ID. */
-	public static final String PLUGIN_ID = "com.anwrt.ldt";
+	public static final String PLUGIN_ID = "org.keplerproject.luaeclipse";
 
 	// The shared instance
 	/** The plugin. */
