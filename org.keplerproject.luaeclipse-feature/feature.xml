@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.anwrt.ldt"
+      label="Lua Editor"
+      version="1.1.0.qualifier"
+      provider-name="Sierra Wireless">
+
+   <description>
+      Enable Lua source code files edition.
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.resources" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.dltk.core" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface.text" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.editors" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.ide" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.dltk.ui" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="com.anwrt.ldt" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="com.anwrt.ldt.parser" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="com.anwrt.ldt.lua" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="com.anwrt.metalua" version="1.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="com.anwrt.ldt"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="com.anwrt.ldt.editor"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="com.anwrt.ldt.lua"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="com.anwrt.ldt.lua.linux"
+         os="linux"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="com.anwrt.ldt.lua.windows"
+         os="win32"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="com.anwrt.ldt.parser"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.qualifier"/>
+
+   <plugin
+         id="com.anwrt.metalua"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"/>
+
+</feature>

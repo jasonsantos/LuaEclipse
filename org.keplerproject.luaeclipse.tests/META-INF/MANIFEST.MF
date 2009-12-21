@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: org.keplerproject.luaeclipse.tests;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: com.anwrt.ldt.tests.Activator
+Bundle-Vendor: ANWRT
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.junit4;bundle-version="4.5.0",
+ org.keplerproject.luaeclipse;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: com.anwrt.ldt.tests

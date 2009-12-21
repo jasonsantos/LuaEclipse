@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Compile com.anwrt.ldt" default="main">
+	<target name="main">
+		<ant antfile="build.xml" dir="../com.anwrt.ldt.lua" target="build.jars"/>
+		<ant antfile="build.xml" dir="../com.anwrt.metalua" target="build.jars"/>
+		<ant antfile="build.xml" dir="../com.anwrt.ldt.lua.windows" target="build.jars"/>
+		<ant antfile="build.xml" dir="../com.anwrt.ldt.lua.linux" target="build.jars"/>
+		<ant antfile="build.xml" dir="../com.anwrt.ldt" target="build.jars"/>
+		<ant antfile="build.xml" dir="../com.anwrt.ldt.parser" target="build.jars"/>
+		<ant antfile="build.xml" dir="../com.anwrt.ldt.editor" target="build.jars"/>
+	</target>
+</project>
