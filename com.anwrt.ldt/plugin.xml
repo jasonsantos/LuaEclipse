@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="nature"
+         name="Lua nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="com.anwrt.ldt.core.LuaNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            describer="com.anwrt.ldt.core.LuaContentDescriber"
+            file-extensions="lua"
+            id="com.anwrt.ldt.content-type"
+            name="Lua Source File"
+            priority="high">
+      </content-type>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.language">
+      <language
+            class="com.anwrt.ldt.core.LuaLanguageToolkit"
+            nature="com.anwrt.ldt.nature"
+            priority="0">
+      </language>
+   </extension>
+
+</plugin>
