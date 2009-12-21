@@ -15,7 +15,7 @@ public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	/** The Constant PLUGIN_ID. */
-	public static final String PLUGIN_ID = "com.anwrt.ldt.tests";
+	public static final String PLUGIN_ID = "org.keplerproject.luaeclipse.tests";
 	
 	/** The Constant EXTENSION_POINT. */
 	public static final String EXTENSION_POINT = Activator.PLUGIN_ID
