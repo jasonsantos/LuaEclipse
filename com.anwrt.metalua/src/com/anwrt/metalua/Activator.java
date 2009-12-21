@@ -1,21 +1,28 @@
-package com.anwrt.ldt.ui;
+/**
+ * @author	Kevin KIN-FOO <kkinfoo@anyware-tech.com>
+ * @date 
+ */
+package com.anwrt.metalua;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+// TODO: Auto-generated Javadoc
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle.
  */
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.anwrt.ldt.ui";
+	/** The Constant PLUGIN_ID. */
+	public static final String PLUGIN_ID = "com.anwrt.metalua";
 
 	// The shared instance
+	/** The plugin. */
 	private static Activator plugin;
 	
 	/**
-	 * The constructor
+	 * The constructor.
 	 */
 	public Activator() {
 	}
@@ -39,8 +46,8 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns the shared instance
-	 *
+	 * Returns the shared instance.
+	 * 
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
