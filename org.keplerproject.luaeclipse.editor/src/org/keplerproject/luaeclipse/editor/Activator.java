@@ -1,9 +1,9 @@
-package com.anwrt.ldt.editor;
+package org.keplerproject.luaeclipse.editor;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.keplerproject.luaeclipse.editor.internal.text.LuaTextTools;
 import org.osgi.framework.BundleContext;
 
-import com.anwrt.ldt.internal.editor.text.LuaTextTools;
 
 /**
  * The activator class controls the plug-in life cycle

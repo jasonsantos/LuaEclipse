@@ -1,4 +1,4 @@
-package com.anwrt.ldt.internal.editor.text;
+package org.keplerproject.luaeclipse.editor.internal.text;
 
 import org.eclipse.osgi.util.NLS;
 

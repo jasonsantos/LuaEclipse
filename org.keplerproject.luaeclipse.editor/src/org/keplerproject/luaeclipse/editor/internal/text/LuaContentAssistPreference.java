@@ -1,9 +1,9 @@
-package com.anwrt.ldt.internal.editor.text;
+package org.keplerproject.luaeclipse.editor.internal.text;
 
 import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.text.completion.ContentAssistPreference;
+import org.keplerproject.luaeclipse.editor.Activator;
 
-import com.anwrt.ldt.editor.Activator;
 
 public class LuaContentAssistPreference extends ContentAssistPreference {
 

@@ -1,4 +1,4 @@
-package com.anwrt.ldt.internal.editor.text;
+package org.keplerproject.luaeclipse.editor.internal.text;
 
 import org.eclipse.dltk.internal.ui.typehierarchy.HierarchyInformationControl;
 import org.eclipse.dltk.ui.text.AbstractScriptScanner;

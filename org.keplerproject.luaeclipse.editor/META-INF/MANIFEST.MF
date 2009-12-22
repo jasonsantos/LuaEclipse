@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Lua Editor
 Bundle-SymbolicName: org.keplerproject.luaeclipse.editor;singleton:=true
 Bundle-Version: 2.0.0.qualifier
-Bundle-Activator: com.anwrt.ldt.editor.Activator
+Bundle-Activator: org.keplerproject.luaeclipse.editor.Activator
 Bundle-Vendor: Sierra Wireless
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

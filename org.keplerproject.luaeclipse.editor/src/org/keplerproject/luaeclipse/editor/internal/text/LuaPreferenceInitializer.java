@@ -1,4 +1,4 @@
-package com.anwrt.ldt.internal.editor.text;
+package org.keplerproject.luaeclipse.editor.internal.text;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
@@ -7,8 +7,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.editors.text.EditorsUI;
+import org.keplerproject.luaeclipse.editor.Activator;
 
-import com.anwrt.ldt.editor.Activator;
 
 public class LuaPreferenceInitializer extends AbstractPreferenceInitializer {
 

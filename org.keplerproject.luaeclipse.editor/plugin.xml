@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="com.anwrt.ldt.editor.LuaEditor"
+            class="org.keplerproject.luaeclipse.editor.LuaEditor"
             default="false"
             icon="img/lua-logo.gif"
             id="com.anwrt.ldt.editor"
@@ -17,7 +17,7 @@
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="com.anwrt.ldt.internal.editor.text.LuaPreferenceInitializer">
+            class="org.keplerproject.luaeclipse.editor.internal.text.LuaPreferenceInitializer">
       </initializer>
    </extension>
 

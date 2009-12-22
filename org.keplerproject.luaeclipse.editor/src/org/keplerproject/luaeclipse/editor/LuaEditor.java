@@ -1,4 +1,4 @@
-package com.anwrt.ldt.editor;
+package org.keplerproject.luaeclipse.editor;
 
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
@@ -8,9 +8,9 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.ui.IEditorInput;
 import org.keplerproject.luaeclipse.core.LuaLanguageToolkit;
+import org.keplerproject.luaeclipse.editor.internal.text.ILuaPartitions;
+import org.keplerproject.luaeclipse.editor.internal.text.LuaTextTools;
 
-import com.anwrt.ldt.internal.editor.text.ILuaPartitions;
-import com.anwrt.ldt.internal.editor.text.LuaTextTools;
 
 public class LuaEditor extends ScriptEditor {
 

@@ -1,4 +1,4 @@
-package com.anwrt.ldt.editor.internal.partition;
+package org.keplerproject.luaeclipse.editor.internal.partition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.PatternRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
 import org.eclipse.jface.text.rules.Token;
+import org.keplerproject.luaeclipse.editor.internal.text.ILuaPartitions;
 
-import com.anwrt.ldt.internal.editor.text.ILuaPartitions;
 
 /**
  * Defines rules to follow in order to highlight source code in editor

@@ -1,4 +1,4 @@
-package com.anwrt.ldt.internal.editor.text;
+package org.keplerproject.luaeclipse.editor.internal.text;
 
 import java.util.ArrayList;
 import java.util.List;

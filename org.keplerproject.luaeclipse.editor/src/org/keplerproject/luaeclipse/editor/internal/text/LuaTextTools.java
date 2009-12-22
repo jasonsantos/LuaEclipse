@@ -1,12 +1,12 @@
-package com.anwrt.ldt.internal.editor.text;
+package org.keplerproject.luaeclipse.editor.internal.text;
 
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.rules.IPartitionTokenScanner;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.keplerproject.luaeclipse.editor.internal.partition.LuaPartitionScanner;
 
-import com.anwrt.ldt.editor.internal.partition.LuaPartitionScanner;
 
 public class LuaTextTools extends ScriptTextTools {
 
