@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Parser
-Bundle-SymbolicName: com.anwrt.ldt.parser;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.keplerproject.luaeclipse.parser;singleton:=true
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: com.anwrt.ldt.parser.Activator
 Bundle-Vendor: Sierra Wireless
 Require-Bundle: org.eclipse.core.resources;bundle-version="3.5.0",

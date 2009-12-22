@@ -19,52 +19,34 @@
 
    <requires>
       <import plugin="org.eclipse.ui" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.resources" version="3.5.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.dltk.core" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jface.text" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.editors" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.ide" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.dltk.ui" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="com.anwrt.ldt" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="com.anwrt.ldt.parser" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="com.anwrt.ldt.lua" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="com.anwrt.metalua" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.resources" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.keplerproject.luaeclipse.lua"/>
    </requires>
 
    <plugin
-         id="com.anwrt.ldt"
+         id="org.keplerproject.luaeclipse"
          download-size="0"
          install-size="0"
-         version="1.1.0.qualifier"
+         version="2.0.0.qualifier"
          unpack="false"/>
 
    <plugin
-         id="com.anwrt.ldt.editor"
+         id="org.keplerproject.luaeclipse.editor"
          download-size="0"
          install-size="0"
-         version="1.1.0.qualifier"
+         version="2.0.0.qualifier"
          unpack="false"/>
 
    <plugin
-         id="com.anwrt.ldt.lua"
-         download-size="0"
-         install-size="0"
-         version="1.0.0.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="com.anwrt.ldt.lua.linux"
-         os="linux"
-         arch="x86"
+         id="org.keplerproject.luaeclipse.lua"
          download-size="0"
          install-size="0"
          version="1.0.0.qualifier"
-         fragment="true"
          unpack="false"/>
 
    <plugin
-         id="com.anwrt.ldt.lua.windows"
+         id="org.keplerproject.luaeclipse.lua.linux"
          os="win32"
          arch="x86"
          download-size="0"
@@ -74,15 +56,26 @@
          unpack="false"/>
 
    <plugin
-         id="com.anwrt.ldt.parser"
+         id="org.keplerproject.luaeclipse.lua.windows"
+         os="win32"
+         arch="x86"
          download-size="0"
          install-size="0"
-         version="1.1.0.qualifier"/>
+         version="1.0.0.qualifier"
+         fragment="true"
+         unpack="false"/>
 
    <plugin
-         id="com.anwrt.metalua"
+         id="org.keplerproject.luaeclipse.metalua"
          download-size="0"
          install-size="0"
          version="1.0.0.qualifier"/>
+
+   <plugin
+         id="org.keplerproject.luaeclipse.parser"
+         download-size="0"
+         install-size="0"
+         version="1.1.0.qualifier"
+         unpack="false"/>
 
 </feature>

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ui
-Bundle-SymbolicName: com.anwrt.ldt.ui;singleton:=true
+Bundle-SymbolicName: org.keplerproject.luaeclipse.ui;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: com.anwrt.ldt.ui.Activator
 Bundle-Vendor: ANWRT
