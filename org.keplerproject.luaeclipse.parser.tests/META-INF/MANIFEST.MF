@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: org.keplerproject.luaeclipse.parser.tests;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: com.anwrt.ldt.parser.tests.Activator
+Bundle-Activator: org.keplerproject.luaeclipse.parser.tests.Activator
 Bundle-Vendor: ANWRT
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

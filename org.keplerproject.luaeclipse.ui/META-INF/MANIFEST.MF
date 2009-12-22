@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Ui
 Bundle-SymbolicName: org.keplerproject.luaeclipse.ui;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: com.anwrt.ldt.ui.Activator
+Bundle-Activator: org.keplerproject.luaeclipse.ui.Activator
 Bundle-Vendor: ANWRT
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.dltk.core;bundle-version="[2.0.0,3.0.0)",

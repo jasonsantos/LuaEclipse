@@ -4,7 +4,7 @@
    <extension
          point="org.keplerproject.luaeclipse.tests.testSuites">
       <testSuite
-            class="com.anwrt.ldt.parser.tests.Suite">
+            class="org.keplerproject.luaeclipse.parser.tests.Suite">
       </testSuite>
    </extension>
 

@@ -1,8 +1,8 @@
 package org.keplerproject.luaeclipse.editor.internal.text;
 
 import org.eclipse.jface.text.IDocument;
+import org.keplerproject.luaeclipse.parser.LuaConstants;
 
-import com.anwrt.ldt.parser.LuaConstants;
 
 public interface ILuaPartitions {
 	public static final String LUA_PARTITIONING = LuaConstants.LUA_PARTITIONING;

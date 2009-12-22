@@ -4,14 +4,14 @@
    <extension
          point="org.eclipse.dltk.launching.interpreterInstallTypes">
       <interpreterInstallType
-            class="com.anwrt.ldt.ui.internal.interpreter.LuaInterpreterInstallType"
+            class="org.keplerproject.luaeclipse.ui.internal.interpreter.LuaInterpreterInstallType"
             id="com.anwrt.ldt.interpreterInstallType">
       </interpreterInstallType>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="com.anwrt.ldt.ui.interpreter.preferences.LuaInterpreterPreferencePage"
+            class="org.keplerproject.luaeclipse.ui.interpreter.preferences.LuaInterpreterPreferencePage"
             id="com.anwrt.ldt.ui.interpreter.preferences"
             name="Lua interpreters">
       </page>
