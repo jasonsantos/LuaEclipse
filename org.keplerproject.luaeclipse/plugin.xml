@@ -26,7 +26,7 @@
          point="org.eclipse.dltk.core.language">
       <language
             class="org.keplerproject.luaeclipse.core.LuaLanguageToolkit"
-            nature="com.anwrt.ldt.nature"
+            nature="org.keplerproject.luaeclipse.nature"
             priority="0">
       </language>
    </extension>

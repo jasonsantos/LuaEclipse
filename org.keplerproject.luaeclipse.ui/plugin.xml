@@ -24,7 +24,7 @@
       </category>
       <wizard
             category="com.anwrt.ldt.category"
-            class="org.eclipse.dltk.ui.wizards.GenericDLTKProjectWizard:com.anwrt.ldt.nature"
+            class="org.eclipse.dltk.ui.wizards.GenericDLTKProjectWizard:org.keplerproject.luaeclipse.nature"
             icon="img/lua.gif"
             id="com.anwrt.ldt.wizard"
             name="Lua project wizard"

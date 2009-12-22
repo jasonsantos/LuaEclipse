@@ -13,3 +13,4 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="3.5.0",
  org.keplerproject.luaeclipse.metalua;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.keplerproject.luaeclipse.parser
+Bundle-ActivationPolicy: lazy
