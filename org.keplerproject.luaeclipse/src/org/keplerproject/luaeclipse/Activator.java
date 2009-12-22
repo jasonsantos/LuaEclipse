@@ -4,7 +4,7 @@
  * $Author: kkinfoo $
  * $Id: Activator.java 1840 2009-06-15 15:30:48Z kkinfoo $
  */
-package com.anwrt.ldt;
+package org.keplerproject.luaeclipse;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

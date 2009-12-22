@@ -7,8 +7,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.ui.IEditorInput;
+import org.keplerproject.luaeclipse.core.LuaLanguageToolkit;
 
-import com.anwrt.ldt.core.LuaLanguageToolkit;
 import com.anwrt.ldt.internal.editor.text.ILuaPartitions;
 import com.anwrt.ldt.internal.editor.text.LuaTextTools;
 

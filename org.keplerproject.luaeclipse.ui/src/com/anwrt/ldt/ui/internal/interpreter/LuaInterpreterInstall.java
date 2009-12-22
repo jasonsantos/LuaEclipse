@@ -2,8 +2,8 @@ package com.anwrt.ldt.ui.internal.interpreter;
 
 import org.eclipse.dltk.launching.AbstractInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
+import org.keplerproject.luaeclipse.core.LuaNature;
 
-import com.anwrt.ldt.core.LuaNature;
 
 public class LuaInterpreterInstall extends AbstractInterpreterInstall {
 

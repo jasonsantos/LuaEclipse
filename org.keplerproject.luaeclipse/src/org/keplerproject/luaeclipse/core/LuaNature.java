@@ -4,11 +4,11 @@
  * $Author: kkinfoo $
  * $Id: LuaNature.java 1841 2009-06-15 15:55:03Z kkinfoo $
  */
-package com.anwrt.ldt.core;
+package org.keplerproject.luaeclipse.core;
 
 import org.eclipse.dltk.core.ScriptNature;
+import org.keplerproject.luaeclipse.Activator;
 
-import com.anwrt.ldt.Activator;
 
 // TODO: Auto-generated Javadoc
 /**

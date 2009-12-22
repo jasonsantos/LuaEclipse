@@ -4,8 +4,8 @@ import org.eclipse.dltk.internal.debug.ui.interpreters.AddScriptInterpreterDialo
 import org.eclipse.dltk.internal.debug.ui.interpreters.InterpretersBlock;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.ScriptRuntime;
+import org.keplerproject.luaeclipse.core.LuaNature;
 
-import com.anwrt.ldt.core.LuaNature;
 import com.anwrt.ldt.ui.interpreter.preferences.AddLuaInterpreterDialog;
 
 public class LuaInterpretersBlock extends InterpretersBlock {

@@ -4,7 +4,7 @@
  * $Author: kkinfoo $
  * $Id: LuaContentDescriber.java 1840 2009-06-15 15:30:48Z kkinfoo $
  */
-package com.anwrt.ldt.core;
+package org.keplerproject.luaeclipse.core;
 
 import java.util.regex.Pattern;
 

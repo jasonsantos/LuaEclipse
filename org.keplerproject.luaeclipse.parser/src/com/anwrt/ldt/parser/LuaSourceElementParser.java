@@ -8,8 +8,8 @@ package com.anwrt.ldt.parser;
 
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
 import org.eclipse.dltk.core.AbstractSourceElementParser;
+import org.keplerproject.luaeclipse.core.LuaNature;
 
-import com.anwrt.ldt.core.LuaNature;
 
 // TODO: Auto-generated Javadoc
 /**

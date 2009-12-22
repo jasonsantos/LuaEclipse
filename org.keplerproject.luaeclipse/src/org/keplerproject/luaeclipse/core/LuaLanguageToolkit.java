@@ -4,7 +4,7 @@
  * $Author: kkinfoo $
  * $Id: LuaLanguageToolkit.java 1840 2009-06-15 15:30:48Z kkinfoo $
  */
-package com.anwrt.ldt.core;
+package org.keplerproject.luaeclipse.core;
 
 import org.eclipse.dltk.core.AbstractLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;

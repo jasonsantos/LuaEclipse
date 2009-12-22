@@ -7,10 +7,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.environment.IDeployment;
 import org.eclipse.dltk.internal.launching.AbstractInterpreterInstallType;
 import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.keplerproject.luaeclipse.core.LuaNature;
 import org.osgi.framework.Bundle;
 
 import com.anwrt.ldt.ui.Activator;
-import com.anwrt.ldt.core.LuaNature;
 import com.anwrt.ldt.ui.internal.interpreter.LuaInterpreterInstall;
 
 public class LuaInterpreterInstallType extends AbstractInterpreterInstallType {
