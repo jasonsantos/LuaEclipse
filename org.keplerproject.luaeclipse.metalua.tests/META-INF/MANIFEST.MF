@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: org.keplerproject.luaeclipse.metalua.tests;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Vendor: ANWRT
+Bundle-Vendor: Kepler project
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.keplerproject.luaeclipse.lua;bundle-version="1.0.0",
  org.keplerproject.luaeclipse.metalua;bundle-version="1.0.0",
