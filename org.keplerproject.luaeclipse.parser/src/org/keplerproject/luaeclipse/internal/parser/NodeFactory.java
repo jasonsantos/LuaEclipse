@@ -19,7 +19,7 @@
  */
 package org.keplerproject.luaeclipse.internal.parser;
 
-import java.net.URL;
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
@@ -71,17 +71,17 @@ public class NodeFactory implements LuaExpressionConstants,
 	private ModuleDeclaration root;
 
 	/** The helper. */
-	private NodeFactoryHelper helper;
+	private MetaluaASTWalker helper;
 
 	/**
 	 * Initialize factory with current Lua context, assumes that an AST named
 	 * "ast" already exits in Lua context.
 	 * 
-	 * @param NodeFactoryHelper
+	 * @param MetaluaASTWalker
 	 *            help Tool making communication with Lua a lot easier
 	 * @param int sourceLength the source's length
 	 */
-	protected NodeFactory(NodeFactoryHelper help, int sourceLength) {
+	protected NodeFactory(MetaluaASTWalker help, int sourceLength) {
 		this.helper = help;
 		this.root = new ModuleDeclaration(sourceLength);
 	}
@@ -89,10 +89,10 @@ public class NodeFactory implements LuaExpressionConstants,
 	/**
 	 * Instantiates a new node factory.
 	 * 
-	 * @param NodeFactoryHelper
+	 * @param MetaluaASTWalker
 	 *            helper Tool making communication with Lua a lot easier
 	 */
-	protected NodeFactory(NodeFactoryHelper helper) {
+	protected NodeFactory(MetaluaASTWalker helper) {
 		this(helper, 0);
 	}
 
@@ -103,7 +103,7 @@ public class NodeFactory implements LuaExpressionConstants,
 	 *            the source
 	 */
 	public NodeFactory(final java.lang.String source) {
-		this(new NodeFactoryHelper(source), source.length());
+		this(new MetaluaASTWalker(source), source.length());
 	}
 
 	/**
@@ -121,8 +121,8 @@ public class NodeFactory implements LuaExpressionConstants,
 	 * @param sourceFile
 	 *            the source file
 	 */
-	public NodeFactory(final URL sourceFile) {
-		this(new NodeFactoryHelper(sourceFile));
+	public NodeFactory(final File sourceFile) {
+		this(new MetaluaASTWalker(sourceFile));
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class NodeFactory implements LuaExpressionConstants,
 			assert childCount > 1 : "Too many expressions "
 					+ "in binary operation: " + childCount;
 			// Determine king of expression
-			int kind = NodeFactoryHelper.opid(helper.getValue(id));
+			int kind = MetaluaASTWalker.opid(helper.getValue(id));
 
 			// Compute both sides of '='
 			left = (Expression) getNode(childNodes.get(0));
