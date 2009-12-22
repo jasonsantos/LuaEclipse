@@ -9,7 +9,7 @@ import com.anwrt.metalua.tests.internal.cases.TestMetaluaStateFactory;
 public class Suite extends TestSuite {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.anwrt.metalua.tests";
+	public static final String PLUGIN_ID = "org.keplerproject.luaeclipse.metalua.tests";
 
 	/** Registers all tests to run */
 	public Suite(){
