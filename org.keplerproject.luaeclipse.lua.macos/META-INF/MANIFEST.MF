@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: ANWRT
 Fragment-Host: org.keplerproject.luaeclipse.lua;bundle-version="1.0.0.qualifier"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Eclipse-PlatformFilter: (osgi.os=macos)
+Eclipse-PlatformFilter: (osgi.os=macosx)
 Bundle-NativeCode: lib/libluajava-1.1.jnilib
 Bundle-ClassPath: lib/,
  .

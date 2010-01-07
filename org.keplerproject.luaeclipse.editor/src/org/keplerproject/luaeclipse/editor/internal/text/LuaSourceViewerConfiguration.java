@@ -10,7 +10,6 @@
  *          - initial API and implementation and initial documentation
  *****************************************************************************/
 
-
 package org.keplerproject.luaeclipse.editor.internal.text;
 
 import org.eclipse.dltk.internal.ui.typehierarchy.HierarchyInformationControl;

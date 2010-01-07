@@ -22,18 +22,15 @@ package org.keplerproject.luaeclipse;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-// TODO: Auto-generated Javadoc
 /**
  * The activator class controls the plug-in life cycle.
  */
 public class Activator extends AbstractUIPlugin {
 
-	// The plug-in ID
-	/** The Constant PLUGIN_ID. */
+	/** The plug-in ID */
 	public static final String PLUGIN_ID = "org.keplerproject.luaeclipse";
 
-	// The shared instance
-	/** The plugin. */
+	/** The shared instance */
 	private static Activator plugin;
 	
 	/**

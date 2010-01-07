@@ -10,7 +10,6 @@
  *          - initial API and implementation and initial documentation
  *****************************************************************************/
 
-
 /**
  * @author	Kevin KIN-FOO <kkinfoo@anyware-tech.com>
  * @date $Date: 2009-07-29 17:56:04 +0200 (mer., 29 juil. 2009) $
@@ -57,12 +56,13 @@ import org.keplerproject.luaeclipse.parser.ast.statements.Return;
 import org.keplerproject.luaeclipse.parser.ast.statements.Set;
 import org.keplerproject.luaeclipse.parser.ast.statements.While;
 
-
 /**
  * A factory for creating Node objects.
  * 
  * From Lua source this class is capable of producing a DLTK AST using the
  * Metalua library.
+ * 
+ * @author Kevin KIN-FOO <kkin-foo@sierrawireless.com>
  */
 public class NodeFactory implements LuaExpressionConstants,
 		LuaStatementConstants {
@@ -70,19 +70,19 @@ public class NodeFactory implements LuaExpressionConstants,
 	/** Root of all the nodes produced by this instance of {@link NodeFactory}. */
 	private ModuleDeclaration root;
 
-	/** The helper. */
-	private MetaluaASTWalker helper;
+	/** Enables to waked Lua AST from parsed code. */
+	private MetaluaASTWalker walker;
 
 	/**
 	 * Initialize factory with current Lua context, assumes that an AST named
 	 * "ast" already exits in Lua context.
 	 * 
 	 * @param MetaluaASTWalker
-	 *            help Tool making communication with Lua a lot easier
+	 *            Tool making communication with Lua a lot easier
 	 * @param int sourceLength the source's length
 	 */
-	protected NodeFactory(MetaluaASTWalker help, int sourceLength) {
-		this.helper = help;
+	protected NodeFactory(MetaluaASTWalker w, int sourceLength) {
+		this.walker = w;
 		this.root = new ModuleDeclaration(sourceLength);
 	}
 
@@ -90,7 +90,7 @@ public class NodeFactory implements LuaExpressionConstants,
 	 * Instantiates a new node factory.
 	 * 
 	 * @param MetaluaASTWalker
-	 *            helper Tool making communication with Lua a lot easier
+	 *            Tool making communication with Lua a lot easier
 	 */
 	protected NodeFactory(MetaluaASTWalker helper) {
 		this(helper, 0);
@@ -100,19 +100,10 @@ public class NodeFactory implements LuaExpressionConstants,
 	 * Instantiates a new node factory.
 	 * 
 	 * @param source
-	 *            the source
+	 *            AST will be generated from this source this source
 	 */
 	public NodeFactory(final java.lang.String source) {
 		this(new MetaluaASTWalker(source), source.length());
-	}
-
-	/**
-	 * Just indicates if there is any syntax error in parsed code
-	 * 
-	 * @return True is code contains any syntax error, false else way
-	 */
-	public boolean errorDetected() {
-		return helper.hasSyntaxErrors();
 	}
 
 	/**
@@ -126,7 +117,18 @@ public class NodeFactory implements LuaExpressionConstants,
 	}
 
 	/**
-	 * Gets the node.
+	 * Just indicates if there is any syntax error in parsed code
+	 * 
+	 * @return True is code contains any syntax error, false else way
+	 */
+	public boolean errorDetected() {
+		return walker.hasSyntaxErrors();
+	}
+
+	/**
+	 * Retrieve a node for the given ID from {@linkplain MetaluaASTWalker}
+	 * instance. This node comes with all its child nodes. In order to do so,
+	 * this function is called recursively.
 	 * 
 	 * @param long id ID of the node in Lua indexed AST
 	 * 
@@ -140,12 +142,12 @@ public class NodeFactory implements LuaExpressionConstants,
 		Expression expression, altExpression;
 
 		// Child node IDs will help for recursive node instantiation
-		List<Long> childNodes = helper.children(id);
+		List<Long> childNodes = walker.children(id);
 
 		// Define position in code
 		int childCount = childNodes.size();
-		int end = helper.getEndPosition(id);
-		int start = helper.getStartPosition(id);
+		int end = walker.getEndPosition(id);
+		int start = walker.getStartPosition(id);
 
 		// Check if gap of 2 characters in Lua string is allowed
 		assert (start - 1) <= (end + 1) : "Wrong code offsets for node: " + id
@@ -155,20 +157,20 @@ public class NodeFactory implements LuaExpressionConstants,
 		 * Fetch root type
 		 */
 		ASTNode node = null;
-		int kindOfNode = helper.typeOfNode(id);
+		int kindOfNode = walker.typeOfNode(id);
 		switch (kindOfNode) {
 		/*
 		 * Numbers
 		 */
 		case LuaExpressionConstants.NUMBER_LITERAL:
-			int value = Integer.valueOf(helper.getValue(id));
+			int value = Integer.valueOf(walker.getValue(id));
 			node = new Number(start, end, value);
 			break;
 		/*
 		 * Strings
 		 */
 		case LuaExpressionConstants.STRING_LITERAL:
-			node = new String(start, end, helper.getValue(id));
+			node = new String(start, end, walker.getValue(id));
 			break;
 		/*
 		 * Tables
@@ -218,7 +220,7 @@ public class NodeFactory implements LuaExpressionConstants,
 			assert childCount > 1 : "Too many expressions "
 					+ "in binary operation: " + childCount;
 			// Determine king of expression
-			int kind = MetaluaASTWalker.opid(helper.getValue(id));
+			int kind = MetaluaASTWalker.opid(walker.getValue(id));
 
 			// Compute both sides of '='
 			left = (Expression) getNode(childNodes.get(0));
@@ -248,7 +250,7 @@ public class NodeFactory implements LuaExpressionConstants,
 		case LuaExpressionConstants.E_IDENTIFIER:
 			// TODO: Deal with multiple expressions
 			assert childCount == 0 : "Id has child nodes: " + childCount;
-			node = new Identifier(start, end, helper.getValue(id));
+			node = new Identifier(start, end, walker.getValue(id));
 			break;
 		/*
 		 * "Do" and Chunks statements
@@ -325,7 +327,7 @@ public class NodeFactory implements LuaExpressionConstants,
 
 			// Handle assignment at declaration
 			chunk = (Chunk) getNode(childNodes.get(0));
-			if (helper.nodeHasLineInfo(childNodes.get(1))) {
+			if (walker.nodeHasLineInfo(childNodes.get(1))) {
 				altChunk = (Chunk) getNode(childNodes.get(1));
 				node = new Local(start, end, chunk, altChunk);
 			} else {
@@ -463,7 +465,7 @@ public class NodeFactory implements LuaExpressionConstants,
 
 			// Handle assignment at declaration
 			chunk = (Chunk) getNode(childNodes.get(0));
-			if (helper.nodeHasLineInfo(childNodes.get(1))) {
+			if (walker.nodeHasLineInfo(childNodes.get(1))) {
 				altChunk = (Chunk) getNode(childNodes.get(1));
 				node = new LocalRec(start, end, chunk, altChunk);
 			} else {
@@ -480,29 +482,29 @@ public class NodeFactory implements LuaExpressionConstants,
 		/*
 		 * Invoke
 		 */
-//		case E_INVOKE:
-//			assert childCount > 1 : "No name defined for invocation.";
-//			expression = (Expression) getNode(childNodes.get(0));
-//			altExpression = (String) getNode(childNodes.get(1));
-//			if (childCount > 2) {
-//				CallArgumentsList args = new CallArgumentsList();
-//				for (int parameter = 2; parameter < childCount; parameter++) {
-//					Expression expr = (Expression) getNode(childNodes.get(parameter));
-//					args.addNode(expr);
-//
-//					// Define parameter list position in code
-//					if (parameter == 2) {
-//						args.setStart(expr.matchStart());
-//					} else if (parameter == (childCount - 1)) {
-//						args.setEnd(expr.matchStart()
-//								+ expr.matchLength());
-//					}
-//				}
-//				node = new Invoke(start, end, expression, altExpression, args);
-//			} else {
-//				node = new Invoke(start, end, expression, altExpression);
-//			}
-//			break; 
+		// case E_INVOKE:
+		// assert childCount > 1 : "No name defined for invocation.";
+		// expression = (Expression) getNode(childNodes.get(0));
+		// altExpression = (String) getNode(childNodes.get(1));
+		// if (childCount > 2) {
+		// CallArgumentsList args = new CallArgumentsList();
+		// for (int parameter = 2; parameter < childCount; parameter++) {
+		// Expression expr = (Expression) getNode(childNodes.get(parameter));
+		// args.addNode(expr);
+		//
+		// // Define parameter list position in code
+		// if (parameter == 2) {
+		// args.setStart(expr.matchStart());
+		// } else if (parameter == (childCount - 1)) {
+		// args.setEnd(expr.matchStart()
+		// + expr.matchLength());
+		// }
+		// }
+		// node = new Invoke(start, end, expression, altExpression, args);
+		// } else {
+		// node = new Invoke(start, end, expression, altExpression);
+		// }
+		// break;
 		}
 
 		return node;
@@ -512,7 +514,7 @@ public class NodeFactory implements LuaExpressionConstants,
 	 * Gets the root of DLTK AST
 	 * 
 	 * @see ModuleDeclaration
-	 * @return ModuleDeclaration root of of any DLTK compliant AST
+	 * @return ModuleDeclaration root of any DLTK compliant AST
 	 */
 	public ModuleDeclaration getRoot() {
 		root.addStatement((Statement) getNode(1));

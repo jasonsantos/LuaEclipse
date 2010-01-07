@@ -10,48 +10,48 @@
  *          - initial API and implementation and initial documentation
  *****************************************************************************/
 
-
-/**
- * @author	Kevin KIN-FOO <kkinfoo@anyware-tech.com>
- * @date $Date: 2009-06-15 17:30:48 +0200 (lun., 15 juin 2009) $
- * $Author: kkinfoo $
- * $Id: LuaLanguageToolkit.java 1840 2009-06-15 15:30:48Z kkinfoo $
- */
 package org.keplerproject.luaeclipse.core;
 
 import org.eclipse.dltk.core.AbstractLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class LuaLanguageToolkit.
+ * The Class LuaLanguageToolkit gather some Eclipse editor conventions.
+ *@author Kevin KIN-FOO <kkin-foo@sierrawireless.com> 
  */
 public class LuaLanguageToolkit extends AbstractLanguageToolkit {
-	
-	/** The toolkit. */
+
+	/** Current instance of editor. */
 	private static IDLTKLanguageToolkit toolkit = null;
-	
+
 	/**
-	 * Gets the default.
+	 * Getter on current instance of ToolKit.
 	 * 
-	 * @return the default
+	 * @return current instance of {@linkplain Toolkit}
 	 */
 	public static IDLTKLanguageToolkit getDefault() {
-		if ( toolkit == null ){
+		if (toolkit == null) {
 			toolkit = new LuaLanguageToolkit();
 		}
 		return toolkit;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Gives a content-type for the language
+	 * 
 	 * @see org.eclipse.dltk.core.IDLTKLanguageToolkit#getLanguageContentType()
+	 * @return String
 	 */
 	@Override
 	public String getLanguageContentType() {
-		return "com.anwrt.ldt.content-type";
+		// TODO: Compose contet type from plug in ID
+		return "org.keplerproject.luaeclipse.content-type";
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Just gives current language name.
+	 * 
+	 * @return String
 	 * @see org.eclipse.dltk.core.IDLTKLanguageToolkit#getLanguageName()
 	 */
 	@Override
@@ -59,7 +59,8 @@ public class LuaLanguageToolkit extends AbstractLanguageToolkit {
 		return "Lua";
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * Nature of current editor
 	 * @see org.eclipse.dltk.core.IDLTKLanguageToolkit#getNatureId()
 	 */
 	@Override

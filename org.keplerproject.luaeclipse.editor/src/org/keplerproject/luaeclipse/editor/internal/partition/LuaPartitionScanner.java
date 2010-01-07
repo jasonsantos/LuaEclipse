@@ -10,7 +10,6 @@
  *          - initial API and implementation and initial documentation
  *****************************************************************************/
 
-
 package org.keplerproject.luaeclipse.editor.internal.partition;
 
 import java.util.ArrayList;
@@ -25,11 +24,10 @@ import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
 import org.eclipse.jface.text.rules.Token;
 import org.keplerproject.luaeclipse.editor.internal.text.ILuaPartitions;
 
-
 /**
  * Defines rules to follow in order to highlight source code in editor
- * @author kkinfoo
- *
+ * 
+ * @author Kevin KIN-FOO <kkin-foo@sierrawireless.com>
  */
 public class LuaPartitionScanner extends RuleBasedPartitionScanner {
 

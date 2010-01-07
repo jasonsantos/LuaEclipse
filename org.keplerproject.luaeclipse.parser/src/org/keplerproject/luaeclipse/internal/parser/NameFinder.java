@@ -10,7 +10,6 @@
  *          - initial API and implementation and initial documentation
  *****************************************************************************/
 
-
 package org.keplerproject.luaeclipse.internal.parser;
 
 import org.eclipse.dltk.ast.expressions.CallArgumentsList;
@@ -22,14 +21,12 @@ import org.keplerproject.luaeclipse.parser.ast.expressions.Call;
 import org.keplerproject.luaeclipse.parser.ast.expressions.Index;
 import org.keplerproject.luaeclipse.parser.ast.expressions.String;
 
-
 /**
  * In an AST from Lua code sometimes you need a name or a reference for a node,
  * but most of the time the name is hidden in the child nodes. This class seek
  * for name in AST.
  * 
- * @author Kevin KIN-FOO <kkinfoo@anyware-tech.com>
- * @date $Date$ $Author$ $Id$
+ * @author Kevin KIN-FOO <kkin-foo@sierrawireless.com>
  */
 public class NameFinder {
 
@@ -110,6 +107,13 @@ public class NameFinder {
 		return name;
 	}
 
+	/**
+	 * Compose a name from a binary expression
+	 * 
+	 * @param bin
+	 *            Binary expression parsed to compose name
+	 * @return The value of the current binary expression
+	 */
 	private static java.lang.String extractNameFromBinary(BinaryExpression bin) {
 
 		int left = 0, right = 1;
