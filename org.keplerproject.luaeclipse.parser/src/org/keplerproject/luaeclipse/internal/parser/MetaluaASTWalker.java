@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.Declaration;
+import org.eclipse.dltk.compiler.problem.IProblem;
 import org.keplerproject.luaeclipse.metalua.Metalua;
 import org.keplerproject.luaeclipse.parser.Activator;
 import org.keplerproject.luaeclipse.parser.LuaExpressionConstants;
@@ -61,7 +62,7 @@ public class MetaluaASTWalker implements LuaExpressionConstants,
 	private String source;
 
 	/** Indicates if Metalua had problem while parsing code. */
-	private boolean _syntaxErrors;
+	private LuaParseErrorAnalyzer _errorAnalyzer = null;
 
 	/**
 	 * Instantiates a new Lua instance ready to parse.
@@ -89,7 +90,7 @@ public class MetaluaASTWalker implements LuaExpressionConstants,
 			state = Metalua.get();
 			state.LdoFile(path);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Activator.log(e);
 		}
 		// Implement comparator in order to be able to sort child node IDs
 		this.comparator = new Comparator<Long>() {
@@ -148,7 +149,7 @@ public class MetaluaASTWalker implements LuaExpressionConstants,
 			assert state.getTop() == 1 && state.isTable(-1) : "Lua AST generation failed.";
 
 			// So far, no syntax errors
-			_syntaxErrors = false;
+			_errorAnalyzer = null;
 
 			// Store result in global variable 'ast' in Lua side
 			state.setGlobal("ast");
@@ -158,15 +159,16 @@ public class MetaluaASTWalker implements LuaExpressionConstants,
 			// TODO: Store error
 			// Retrieve error from Lua stack
 			String error = state.toString(-1);
-			_syntaxErrors = true;
 			state.setTop(0);
 			/*
 			 * AST computation result is stored in the 'ast' global variable, in
 			 * order to avoid any kind of trouble, let's define an empty AST as
 			 * we got an error
 			 */
-			state.LdoString("ast = {}");
-			System.err.println("Bind error: o/ " + error + " \\o");
+			// state.LdoString("ast = {}");
+			_errorAnalyzer = new LuaParseErrorAnalyzer(source, error);
+			_errorAnalyzer.syntaxErrorOffset();
+			Activator.logWarning("Bind error:\n" + error);
 			break;
 		}
 		// Index AST made from sources
@@ -360,8 +362,11 @@ public class MetaluaASTWalker implements LuaExpressionConstants,
 	}
 
 	/**
-	 * Indicates if nodes has line info in Lua AST, most of the time chunks don't.
-	 * @param id of the node to parse from the last parsed source code.
+	 * Indicates if nodes has line info in Lua AST, most of the time chunks
+	 * don't.
+	 * 
+	 * @param id
+	 *            of the node to parse from the last parsed source code.
 	 * @return {@link Boolean}
 	 */
 	public boolean nodeHasLineInfo(final long id) {
@@ -374,6 +379,14 @@ public class MetaluaASTWalker implements LuaExpressionConstants,
 		hasLineInfo = state.toBoolean(-1);
 		state.setTop(0);
 		return hasLineInfo;
+	}
+
+	/**
+	 * @return {@link IProblem} giving information on syntax error
+	 */
+	public LuaParseErrorAnalyzer analyzer() {
+		assert hasSyntaxErrors() : "No problems without syntax error";
+		return _errorAnalyzer;
 	}
 
 	/**
@@ -492,7 +505,7 @@ public class MetaluaASTWalker implements LuaExpressionConstants,
 
 	/** Indicates if any error occurred. */
 	public boolean hasSyntaxErrors() {
-		return _syntaxErrors;
+		return _errorAnalyzer != null;
 	}
 
 	/**

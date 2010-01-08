@@ -16,12 +16,14 @@ package org.keplerproject.luaeclipse.editor;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
+import org.eclipse.dltk.ui.text.folding.IFoldingStructureProvider;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.ui.IEditorInput;
 import org.keplerproject.luaeclipse.core.LuaLanguageToolkit;
 import org.keplerproject.luaeclipse.editor.internal.text.ILuaPartitions;
+import org.keplerproject.luaeclipse.editor.internal.text.LuaASTFoldingStructureProvider;
 import org.keplerproject.luaeclipse.editor.internal.text.LuaTextTools;
 
 
@@ -29,6 +31,7 @@ public class LuaEditor extends ScriptEditor {
 
 	public static final String EDITOR_ID = Activator.PLUGIN_ID + ".LuaEditor"; //$NON-NLS-1$
 	public static final String EDITOR_CONTEXT = "#LuaEditorContext";
+	private IFoldingStructureProvider foldingStructureProvider = null;
 
 	protected void connectPartitioningToElement(IEditorInput input,
 			IDocument document) {
@@ -53,6 +56,14 @@ public class LuaEditor extends ScriptEditor {
 		return EDITOR_ID;
 	}
 
+	@Override
+	protected IFoldingStructureProvider getFoldingStructureProvider() {
+		if (foldingStructureProvider == null) {
+			foldingStructureProvider = new LuaASTFoldingStructureProvider();
+		}
+		return foldingStructureProvider;
+	}
+	
 	@Override
 	public IDLTKLanguageToolkit getLanguageToolkit() {
 		return LuaLanguageToolkit.getDefault();

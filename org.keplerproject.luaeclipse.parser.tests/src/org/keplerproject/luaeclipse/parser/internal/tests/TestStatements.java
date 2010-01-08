@@ -228,7 +228,7 @@ public class TestStatements extends TestCase {
 
 		char[] source = "while( true ) do break end".toCharArray();
 		module = new LuaSourceParser().parse(fileName, source, this.reporter);
-		assertFalse("Whiel statement is not recognized.", module.isEmpty());
+		assertFalse("While statement is not recognized.", module.isEmpty());
 	}
 
 }

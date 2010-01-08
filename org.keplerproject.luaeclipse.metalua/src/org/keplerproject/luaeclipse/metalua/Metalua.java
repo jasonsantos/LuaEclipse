@@ -49,7 +49,7 @@ public class Metalua {
 		try {
 			state = MetaluaStateFactory.newLuaState();
 		} catch (LuaException e) {
-			e.printStackTrace();
+			Activator.log(e);
 		}
 	}
 

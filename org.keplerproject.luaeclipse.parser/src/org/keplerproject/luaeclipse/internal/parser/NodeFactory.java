@@ -107,15 +107,6 @@ public class NodeFactory implements LuaExpressionConstants,
 	}
 
 	/**
-	 * Just indicates if there is any syntax error in parsed code
-	 * 
-	 * @return True is code contains any syntax error, false else way
-	 */
-	public boolean errorDetected() {
-		return helper.hasSyntaxErrors();
-	}
-
-	/**
 	 * Instantiates a new node factory.
 	 * 
 	 * @param sourceFile
@@ -123,6 +114,15 @@ public class NodeFactory implements LuaExpressionConstants,
 	 */
 	public NodeFactory(final File sourceFile) {
 		this(new MetaluaASTWalker(sourceFile));
+	}
+
+	/**
+	 * Just indicates if there is any syntax error in parsed code
+	 * 
+	 * @return True is code contains any syntax error, false else way
+	 */
+	public boolean errorDetected() {
+		return helper.hasSyntaxErrors();
 	}
 
 	/**
@@ -517,5 +517,13 @@ public class NodeFactory implements LuaExpressionConstants,
 	public ModuleDeclaration getRoot() {
 		root.addStatement((Statement) getNode(1));
 		return root;
+	}
+	
+	/**
+	 * Report syntax error analyzer if there is any
+	 * @return {@link LuaParseErrorAnalyzer}
+	 */
+	public LuaParseErrorAnalyzer analyser() {
+		return helper.analyzer();
 	}
 }

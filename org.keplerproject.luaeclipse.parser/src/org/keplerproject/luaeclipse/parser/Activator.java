@@ -10,7 +10,6 @@
  *          - initial API and implementation and initial documentation
  *****************************************************************************/
 
-
 /**
  * @author	Kevin KIN-FOO <kkinfoo@anyware-tech.com>
  * @date $Date: 2009-06-15 17:55:03 +0200 (lun., 15 juin 2009) $
@@ -19,7 +18,9 @@
  */
 package org.keplerproject.luaeclipse.parser;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
 // TODO: Auto-generated Javadoc
@@ -35,7 +36,7 @@ public class Activator extends Plugin {
 	// The shared instance
 	/** The plugin. */
 	private static Activator plugin;
-	
+
 	/**
 	 * The constructor.
 	 */
@@ -44,7 +45,10 @@ public class Activator extends Plugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -53,7 +57,10 @@ public class Activator extends Plugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
@@ -69,4 +76,47 @@ public class Activator extends Plugin {
 		return plugin;
 	}
 
+	/**
+	 * build a Status
+	 * 
+	 * @param level
+	 *            of the status, such as error or warning from {@link IStatus}
+	 *            constants
+	 * @param thr
+	 *            Raised to build status
+	 * @return
+	 */
+	public static IStatus buildStatus(int level, final Throwable thr) {
+		String defaultMsg = "No details available.";
+		String msg = thr.getMessage() == null ? defaultMsg : thr.getMessage();
+		IStatus status = new Status(level, PLUGIN_ID, 0, msg, thr);
+		return status;
+	}
+
+	public static IStatus buildStatus(int level, final String msg) {
+		IStatus status = new Status(level, PLUGIN_ID, 0, msg, null);
+		return status;
+	}
+
+	/**
+	 * Enable to log events such as {@link Exception} in plugin log
+	 * 
+	 * @param thr
+	 */
+	public static void log(final Throwable thr) {
+		log(buildStatus(IStatus.ERROR, thr));
+	}
+
+	/**
+	 * Enables to log statuses in plugin log
+	 * 
+	 * @param status
+	 */
+	public static void log(final IStatus status) {
+		getDefault().getLog().log(status);
+	}
+
+	public static void logWarning(final String msg) {
+		getDefault().getLog().log(buildStatus(IStatus.WARNING, msg));
+	}
 }

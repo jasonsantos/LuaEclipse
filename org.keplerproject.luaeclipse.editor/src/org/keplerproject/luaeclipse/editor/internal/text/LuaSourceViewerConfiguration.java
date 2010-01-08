@@ -10,7 +10,6 @@
  *          - initial API and implementation and initial documentation
  *****************************************************************************/
 
-
 package org.keplerproject.luaeclipse.editor.internal.text;
 
 import org.eclipse.dltk.internal.ui.typehierarchy.HierarchyInformationControl;
@@ -69,14 +68,15 @@ public class LuaSourceViewerConfiguration extends
 			ISourceViewer sourceViewer, final String commandId) {
 		return new IInformationControlCreator() {
 
+			/**
+			 * Returns empty object
+			 */
 			@Override
 			public IInformationControl createInformationControl(Shell parent) {
-				// TODO Auto-generated method stub
 				return new HierarchyInformationControl(parent, 0, 0) {
 
 					@Override
 					protected IPreferenceStore getPreferenceStore() {
-						// TODO Auto-generated method stub
 						return null;
 					}
 				};
@@ -114,7 +114,9 @@ public class LuaSourceViewerConfiguration extends
 		return reconciler;
 	}
 
-	// This method called from base class.
+	/**
+	 * This method is called from base class.
+	 */
 	protected void initializeScanners() {
 		// This is our code scanner
 		this.fCodeScanner = new LuaCodeScanner(this.getColorManager(),
