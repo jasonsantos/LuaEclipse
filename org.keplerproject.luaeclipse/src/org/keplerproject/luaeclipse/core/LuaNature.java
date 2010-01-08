@@ -10,7 +10,6 @@
  *          - initial API and implementation and initial documentation
  *****************************************************************************/
 
-
 /**
  * @author	Kevin KIN-FOO <kkinfoo@anyware-tech.com>
  * @date $Date: 2009-06-15 17:55:03 +0200 (lun., 15 juin 2009) $
@@ -22,13 +21,17 @@ package org.keplerproject.luaeclipse.core;
 import org.eclipse.dltk.core.ScriptNature;
 import org.keplerproject.luaeclipse.Activator;
 
-
-// TODO: Auto-generated Javadoc
 /**
- * The Class LuaNature.
+ * The Class LuaNature gives a common denomination used by several components of
+ * the IDE.
+ * @author Kevin KIN-FOO <kkin-foo@sierrawireless.com>
  */
 public class LuaNature extends ScriptNature {
 
-	/** The Constant LUA_NATURE. */
+	/**
+	 * Nature of IDE composed from plug-in ID
+	 * 
+	 * @return String
+	 */
 	public static final String LUA_NATURE = Activator.PLUGIN_ID + ".nature";
 }

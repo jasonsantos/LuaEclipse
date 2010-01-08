@@ -10,7 +10,6 @@
  *          - initial API and implementation and initial documentation
  *****************************************************************************/
 
-
 package org.keplerproject.luaeclipse.editor;
 
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -26,18 +25,26 @@ import org.keplerproject.luaeclipse.editor.internal.text.ILuaPartitions;
 import org.keplerproject.luaeclipse.editor.internal.text.LuaASTFoldingStructureProvider;
 import org.keplerproject.luaeclipse.editor.internal.text.LuaTextTools;
 
-
+/**
+ * 
+ * @author Kevin KIN-FOO <kkin-foo@sierrawireless.com>
+ *
+ */
 public class LuaEditor extends ScriptEditor {
 
 	public static final String EDITOR_ID = Activator.PLUGIN_ID + ".LuaEditor"; //$NON-NLS-1$
 	public static final String EDITOR_CONTEXT = "#LuaEditorContext";
 	private IFoldingStructureProvider foldingStructureProvider = null;
 
+	/**
+	 * Connects partitions used to deal with comments or strings in editor.
+	 */
 	protected void connectPartitioningToElement(IEditorInput input,
 			IDocument document) {
 		if (document instanceof IDocumentExtension3) {
 			IDocumentExtension3 extension = (IDocumentExtension3) document;
-			if (extension.getDocumentPartitioner(ILuaPartitions.LUA_PARTITIONING) == null) {
+			if (extension
+					.getDocumentPartitioner(ILuaPartitions.LUA_PARTITIONING) == null) {
 				LuaTextTools tools = Activator.getDefault().getTextTools();
 				tools.setupDocumentPartitioner(document,
 						ILuaPartitions.LUA_PARTITIONING);
@@ -45,12 +52,18 @@ public class LuaEditor extends ScriptEditor {
 		}
 	}
 
+	/**
+	 * Initialize language specific and parent content.
+	 */
 	@Override
 	protected void initializeEditor() {
 		super.initializeEditor();
 		setEditorContextMenuId(EDITOR_CONTEXT);
 	}
 
+	/**
+	 * Retrieve ID of editor it is composed from plug-in ID.
+	 */
 	@Override
 	public String getEditorId() {
 		return EDITOR_ID;
@@ -69,6 +82,9 @@ public class LuaEditor extends ScriptEditor {
 		return LuaLanguageToolkit.getDefault();
 	}
 
+	/**
+	 * @return Editor's preferences
+	 */
 	@Override
 	protected IPreferenceStore getScriptPreferenceStore() {
 		return Activator.getDefault().getPreferenceStore();

@@ -509,14 +509,14 @@ public class MetaluaASTWalker implements LuaExpressionConstants,
 	}
 
 	/**
-	 * Statement or expression.
+	 * Retrieve kind of statement or expression from Lua AST.
 	 * 
 	 * @param id
-	 *            the id
+	 *            ID of node from the last AST 
 	 * 
-	 * @return the int
+	 * @return Kind of node as represented in {@linkplain LuaExpressionConstants}
 	 */
-	public int statementOrExpression(final long id) {
+	public int typeOfNode(final long id) {
 		/*
 		 * Determine type of operator
 		 */
@@ -592,15 +592,4 @@ public class MetaluaASTWalker implements LuaExpressionConstants,
 		return LuaStatementConstants.S_BLOCK;
 	}
 
-	/**
-	 * Type of node.
-	 * 
-	 * @param id
-	 *            the id
-	 * 
-	 * @return the int
-	 */
-	public int typeOfNode(final long id) {
-		return statementOrExpression(id);
-	}
 }

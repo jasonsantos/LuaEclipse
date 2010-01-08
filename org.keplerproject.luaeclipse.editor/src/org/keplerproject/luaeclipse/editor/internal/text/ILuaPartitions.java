@@ -16,7 +16,11 @@ package org.keplerproject.luaeclipse.editor.internal.text;
 import org.eclipse.jface.text.IDocument;
 import org.keplerproject.luaeclipse.parser.LuaConstants;
 
-
+/**
+ * 
+ * @author kinoo
+ *
+ */
 public interface ILuaPartitions {
 	public static final String LUA_PARTITIONING = LuaConstants.LUA_PARTITIONING;
 
